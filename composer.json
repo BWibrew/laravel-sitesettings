@@ -1,14 +1,16 @@
 {
   "name": "jamin87/laravel-sitesettings",
-  "description": "Persistant site settings for Laravel 5.4",
+  "description": "Persistent site settings for Laravel 5.4",
   "keywords": [
-    "module",
-    "laravel"
+    "laravel",
+    "cms",
+    "settings"
   ],
   "authors": [
     {
-      "name": "ben",
-      "email": "benjamin.wibrew@gmail.com"
+      "name": "Benjamin Wibrew",
+      "email": "benjamin.wibrew@gmail.com",
+      "homepage": "http://benjaminwibrew.com"
     }
   ],
   "license": "MIT",
