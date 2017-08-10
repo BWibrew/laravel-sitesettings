@@ -13,7 +13,11 @@ class SiteSettingsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__.'/database/migrations');
+        $this->loadMigrationsFrom(__DIR__ . '/database/migrations');
+
+        $this->publishes([
+            __DIR__ . '/config/sitesettings.php' => config_path('sitesettings.php'),
+        ], 'config');
     }
 
     /**
