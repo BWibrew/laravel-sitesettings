@@ -16,14 +16,20 @@ Install using Composer by running:
 
 Then add the service provider to the providers array in `config/app.php`:
 
-    'providers' => [
-        ...
-        Jamin87\SiteSettings\SiteSettingsServiceProvider::class,
-    ];
+```php
+'providers' => [
+    ...
+    Jamin87\SiteSettings\SiteSettingsServiceProvider::class,
+];
+```
 
 Then run table migrations with:
 
     php artisan migrate
+
+Publish the config file with:
+
+    php artisan vendor:publish --provider="Jamin87\SiteSettings\SiteSettingsServiceProvider"
 
 ## Usage
 This package provides access to the `Setting` eloquent model with the following methods:
@@ -31,33 +37,47 @@ This package provides access to the `Setting` eloquent model with the following 
 ### Registering a new setting
 A setting is created like this:
 
-    Setting::register('homepage_title');
+```php
+Setting::register('homepage_title');
+```
     
 You can also assign a value when creating a setting:
 
-    Setting::register('homepage_title', 'Laravel Site Settings');
+```php
+Setting::register('homepage_title', 'Laravel Site Settings');
+```
 
 You can then retrieve the value of the setting:
 
-    Setting::getValue($name);
+```php
+Setting::getValue($name);
+```
 
 ### Updating a setting
 To update an existing setting:
 
-    $setting = Setting::where('name', 'homepage_title')->first();
-    
-    // Update setting value
-    $setting->updateValue('A new title');
-    
-    // Update setting name
-    $setting->updateName('new_name');
+```php
+$setting = Setting::where('name', 'homepage_title')->first();
+
+// Update setting value
+$setting->updateValue('A new title');
+
+// Update setting name
+$setting->updateName('new_name');
+```
 
 You can also retrieve the ID of the user whom last updated the setting and when the update was made.
 
-    Setting::getUpdatedBy($name); // Returns user ID
-    
-    Setting::getWhenUpdated($name); // Returns Carbon date object
-    
+```php
+Setting::getUpdatedBy($name); // Returns user ID
+
+Setting::getWhenUpdated($name); // Returns Carbon date object
+```
+
+## Configuration
+To enforce a naming style for your settings make sure `force_naming_style` is set to true in the config file. 
+Currently only `'snake_case'` is available.
+
 ## Testing
 Run tests with:
 
