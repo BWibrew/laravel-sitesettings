@@ -24,14 +24,6 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_only_accepts_a_name_in_snake_case()
-    {
-        $this->expectException('Exception');
-
-        new Setting(['name' => 'A Setting Name']);
-    }
-
-    /** @test */
     public function it_can_register_a_new_setting()
     {
         $user = factory(User::class)->create();

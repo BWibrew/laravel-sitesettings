@@ -35,6 +35,10 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
         $app['config']->set('auth.providers.users.model', User::class);
+        $app['config']->set('sitesettings.force_naming_style', true);
+        $app['config']->set('sitesettings.naming_styles', [
+            'snake_case',
+        ]);
     }
 
     /**

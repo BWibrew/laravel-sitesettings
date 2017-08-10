@@ -16,16 +16,16 @@ class Setting extends Model
     /**
      * Set the settings name.
      *
-     * @param  string $value
+     * @param  string $name
      * @return void
      * @throws \Exception
      */
-    public function setNameAttribute($value)
+    public function setNameAttribute($name)
     {
-        if ($value !== snake_case($value)) {
-            throw new \Exception();
+        if (config('sitesettings.force_naming_style') && !$this->followsNamingStyle($name)) {
+            throw new \Exception('Setting name does not match naming style');
         }
-        $this->attributes['name'] = $value;
+        $this->attributes['name'] = $name;
     }
 
     public static function register($name, $value = null, $user = null)
@@ -77,5 +77,14 @@ class Setting extends Model
     public static function getWhenUpdated($name)
     {
         return Setting::where('name', $name)->pluck('updated_at')->first();
+    }
+
+    protected function followsNamingStyle($name)
+    {
+        if (in_array('snake_case', config('sitesettings.naming_styles'))) {
+            return $name === snake_case($name);
+        }
+
+        return true;
     }
 }
