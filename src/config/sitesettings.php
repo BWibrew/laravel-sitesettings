@@ -9,6 +9,9 @@ return [
 
     /**
      * The list of available naming styles to use.
+     *
+     * Supported choices: snake_case, camel_case, kebab_case, studly_case
+     *
      */
     'naming_styles' => [
         'snake_case',

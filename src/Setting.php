@@ -29,8 +29,9 @@ class Setting extends Model
     {
         if (config('sitesettings.force_naming_style') && !$this->followsNamingStyle($name)) {
             throw new \Exception('Setting name does not match naming style');
+        } else {
+            $this->attributes['name'] = $name;
         }
-        $this->attributes['name'] = $name;
     }
 
     /**
@@ -133,10 +134,26 @@ class Setting extends Model
      */
     protected function followsNamingStyle($name)
     {
-        if (in_array('snake_case', config('sitesettings.naming_styles'))) {
-            return $name === snake_case($name);
+        $naming_styles = config('sitesettings.naming_styles');
+        $follows_style = false;
+
+        foreach ($naming_styles as $style) {
+            switch ($style) {
+                case in_array('snake_case', $naming_styles) && $name === snake_case($name):
+                    $follows_style = true;
+                    break;
+                case in_array('camel_case', $naming_styles) && $name === camel_case($name):
+                    $follows_style = true;
+                    break;
+                case in_array('kebab_case', $naming_styles) && $name === kebab_case($name):
+                    $follows_style = true;
+                    break;
+                case in_array('studly_case', $naming_styles) && $name === studly_case($name):
+                    $follows_style = true;
+                    break;
+            }
         }
 
-        return true;
+        return $follows_style;
     }
 }
