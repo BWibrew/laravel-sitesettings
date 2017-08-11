@@ -77,8 +77,14 @@ class Setting extends Model
      */
     public function updateName($name)
     {
-        $this->name = $name;
-        $this->save();
+        if ($parts = $this->parseScopeName($name)) {
+            $this->name = $parts['name'];
+            $this->scope = $parts['scope'];
+            $this->save();
+        } else {
+            $this->name = $name;
+            $this->save();
+        }
 
         return $this;
     }

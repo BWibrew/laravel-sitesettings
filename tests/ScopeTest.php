@@ -64,4 +64,28 @@ class ScopeTest extends TestCase
         $this->assertEquals($setting->name, 'registered_scope.registered_setting');
         $this->assertEquals($setting->scope, null);
     }
+
+    /** @test */
+    public function it_can_update_the_setting_name_with_a_scope()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $setting = factory(Setting::class)->create(['name' => 'original_name', 'scope' => null]);
+
+        $setting->updateName('scope.new_name');
+
+        $this->assertEquals('new_name', $setting->name);
+        $this->assertEquals('scope', $setting->scope);
+    }
+
+    /** @test */
+    public function it_cannot_update_the_setting_name_with_a_scope_when_scopes_are_disabled()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', false);
+        $setting = factory(Setting::class)->create(['name' => 'original_name', 'scope' => null]);
+
+        $setting->updateName('scope.new_name');
+
+        $this->assertEquals('scope.new_name', $setting->name);
+        $this->assertEquals(null, $setting->scope);
+    }
 }
