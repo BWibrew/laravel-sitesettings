@@ -222,10 +222,8 @@ class Setting extends Model
         if (!config('sitesettings.use_scopes') || count($name_parts) < 2) {
             return null;
         } else {
-            $scope = array_shift($name_parts);
-
             return [
-                'scope' => $scope,
+                'scope' => array_shift($name_parts),
                 'name' => implode('.', $name_parts),
             ];
         }
