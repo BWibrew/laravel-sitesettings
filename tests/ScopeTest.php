@@ -90,4 +90,19 @@ class ScopeTest extends TestCase
         $this->assertEquals('scope.new_name', $setting->name);
         $this->assertEquals(null, $setting->scope);
     }
+
+    /** @test */
+    public function it_can_update_the_setting_value_with_a_scope()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $user = factory(User::class)->create();
+        $setting = factory(Setting::class)->create([
+            'name' => 'name', 'value' => 'original value', 'scope' => 'scope'
+        ]);
+
+        $setting->updateValue('new value', $user);
+
+        $this->assertEquals('new value', $setting->value);
+        $this->assertEquals('scope', $setting->scope);
+    }
 }
