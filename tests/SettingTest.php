@@ -30,7 +30,7 @@ class SettingTest extends TestCase
 
         $setting = Setting::register('registered_setting', null, $user);
 
-        $this->assertEquals($setting->name, 'registered_setting');
+        $this->assertEquals('registered_setting', $setting->name);
     }
 
     /** @test */
@@ -41,8 +41,8 @@ class SettingTest extends TestCase
 
         $setting = Setting::where('name', 'new_setting')->first();
 
-        $this->assertEquals($setting->name, 'new_setting');
-        $this->assertEquals($setting->value, 'setting value');
+        $this->assertEquals('new_setting', $setting->name);
+        $this->assertEquals('setting value', $setting->value);
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class SettingTest extends TestCase
 
         $setting->updateName('new_name', $user);
 
-        $this->assertEquals($setting->name, 'new_name');
+        $this->assertEquals('new_name', $setting->name);
     }
 
     /** @test */
@@ -64,7 +64,7 @@ class SettingTest extends TestCase
 
         $setting->updateValue('new value', $user);
 
-        $this->assertEquals($setting->value, 'new value');
+        $this->assertEquals('new value', $setting->value);
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class SettingTest extends TestCase
 
         $value = Setting::getValue('setting_name');
 
-        $this->assertEquals($value, 'setting value');
+        $this->assertEquals('setting value', $value);
     }
 
     /** @test */
@@ -104,7 +104,7 @@ class SettingTest extends TestCase
 
         $setting = Setting::register('setting_name', null, $user);
 
-        $this->assertEquals($setting->updated_by, $user->id);
+        $this->assertEquals($user->id, $setting->updated_by);
     }
 
     /** @test */
@@ -114,7 +114,7 @@ class SettingTest extends TestCase
 
         $user_id = Setting::getUpdatedBy('setting_name');
 
-        $this->assertEquals($user_id, 1);
+        $this->assertEquals(1, $user_id);
     }
 
     /** @test */
@@ -124,6 +124,6 @@ class SettingTest extends TestCase
 
         $timestamp = Setting::getWhenUpdated('setting_name');
 
-        $this->assertEquals($timestamp, $setting->updated_at);
+        $this->assertEquals($setting->updated_at, $timestamp);
     }
 }

@@ -13,7 +13,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         $setting = factory(Setting::class)->create(['scope' => 'scope_name']);
 
-        $this->assertEquals($setting->scope, 'scope_name');
+        $this->assertEquals('scope_name', $setting->scope);
     }
 
     /** @test */
@@ -24,8 +24,8 @@ class ScopeTest extends TestCase
 
         $setting = Setting::register('registered_scope.registered_setting', null, $user);
 
-        $this->assertEquals($setting->name, 'registered_setting');
-        $this->assertEquals($setting->scope, 'registered_scope');
+        $this->assertEquals('registered_setting', $setting->name);
+        $this->assertEquals('registered_scope', $setting->scope);
     }
 
     /** @test */
@@ -36,9 +36,9 @@ class ScopeTest extends TestCase
 
         $setting = Setting::register('registered_scope.registered_setting', 'registered_value', $user);
 
-        $this->assertEquals($setting->name, 'registered_setting');
-        $this->assertEquals($setting->scope, 'registered_scope');
-        $this->assertEquals($setting->value, 'registered_value');
+        $this->assertEquals('registered_setting', $setting->name);
+        $this->assertEquals('registered_scope', $setting->scope);
+        $this->assertEquals('registered_value', $setting->value);
     }
 
     /** @test */
@@ -49,8 +49,8 @@ class ScopeTest extends TestCase
 
         $setting = Setting::register('scope.name.other.item', null, $user);
 
-        $this->assertEquals($setting->name, 'name.other.item');
-        $this->assertEquals($setting->scope, 'scope');
+        $this->assertEquals('name.other.item', $setting->name);
+        $this->assertEquals('scope', $setting->scope);
     }
 
     /** @test */
@@ -61,8 +61,8 @@ class ScopeTest extends TestCase
 
         $setting = Setting::register('registered_scope.registered_setting', null, $user);
 
-        $this->assertEquals($setting->name, 'registered_scope.registered_setting');
-        $this->assertEquals($setting->scope, null);
+        $this->assertEquals('registered_scope.registered_setting', $setting->name);
+        $this->assertEquals(null, $setting->scope);
     }
 
     /** @test */

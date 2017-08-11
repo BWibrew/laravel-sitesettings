@@ -13,7 +13,7 @@ class NamingStyleTest extends TestCase
         $this->app['config']->set('sitesettings.naming_styles', ['snake_case']);
 
         $setting = new Setting(['name' => 'setting_name']);
-        $this->assertEquals($setting->name, 'setting_name');
+        $this->assertEquals('setting_name', $setting->name);
 
         $this->expectException('Exception');
         new Setting(['name' => 'Setting Name']);
@@ -26,7 +26,7 @@ class NamingStyleTest extends TestCase
         $this->app['config']->set('sitesettings.naming_styles', ['camel_case']);
 
         $setting = new Setting(['name' => 'settingName']);
-        $this->assertEquals($setting->name, 'settingName');
+        $this->assertEquals('settingName', $setting->name);
 
         $this->expectException('Exception');
         new Setting(['name' => 'Setting Name']);
@@ -39,7 +39,7 @@ class NamingStyleTest extends TestCase
         $this->app['config']->set('sitesettings.naming_styles', ['kebab_case']);
 
         $setting = new Setting(['name' => 'setting-name']);
-        $this->assertEquals($setting->name, 'setting-name');
+        $this->assertEquals('setting-name', $setting->name);
 
         $this->expectException('Exception');
         new Setting(['name' => 'Setting Name']);
@@ -52,7 +52,7 @@ class NamingStyleTest extends TestCase
         $this->app['config']->set('sitesettings.naming_styles', ['studly_case']);
 
         $setting = new Setting(['name' => 'SettingName']);
-        $this->assertEquals($setting->name, 'SettingName');
+        $this->assertEquals('SettingName', $setting->name);
 
         $this->expectException('Exception');
         new Setting(['name' => 'Setting Name']);
@@ -67,16 +67,16 @@ class NamingStyleTest extends TestCase
         ]);
 
         $setting = new Setting(['name' => 'setting_name']);
-        $this->assertEquals($setting->name, 'setting_name');
+        $this->assertEquals('setting_name', $setting->name);
 
         $setting = new Setting(['name' => 'settingName']);
-        $this->assertEquals($setting->name, 'settingName');
+        $this->assertEquals('settingName', $setting->name);
 
         $setting = new Setting(['name' => 'setting-name']);
-        $this->assertEquals($setting->name, 'setting-name');
+        $this->assertEquals('setting-name', $setting->name);
 
         $setting = new Setting(['name' => 'SettingName']);
-        $this->assertEquals($setting->name, 'SettingName');
+        $this->assertEquals('SettingName', $setting->name);
 
         $this->expectException('Exception');
         new Setting(['name' => 'Setting Name']);
@@ -89,7 +89,7 @@ class NamingStyleTest extends TestCase
 
         $setting = new Setting(['name' => 'Setting Name']);
 
-        $this->assertEquals($setting->name, 'Setting Name');
+        $this->assertEquals('Setting Name', $setting->name);
 
         $this->app['config']->set('sitesettings.force_naming_style', true);
         $this->app['config']->set('sitesettings.naming_styles', ['snake_case']);
