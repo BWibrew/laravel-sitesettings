@@ -156,6 +156,29 @@ class Setting extends Model
     }
 
     /**
+     * Update a scope.
+     *
+     * @param $scope
+     * @return $this
+     */
+    public function updateScope($scope)
+    {
+        $this->scope = $scope;
+
+        return $this;
+    }
+
+    /**
+     * Remove scope from setting.
+     *
+     * @return $this
+     */
+    public function removeScope()
+    {
+        return $this->updateScope(null);
+    }
+
+    /**
      * Assert the setting name follows the naming style.
      *
      * @param $name

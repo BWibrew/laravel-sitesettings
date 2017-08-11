@@ -17,6 +17,28 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
+    public function it_can_remove_a_scope()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $setting = factory(Setting::class)->create(['scope' => 'scope']);
+
+        $setting->removeScope();
+
+        $this->assertEquals(null, $setting->scope);
+    }
+
+    /** @test */
+    public function it_can_update_a_scope()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $setting = factory(Setting::class)->create(['scope' => 'original_scope']);
+
+        $setting->updateScope('new_scope');
+
+        $this->assertEquals('new_scope', $setting->scope);
+    }
+
+    /** @test */
     public function it_can_register_a_new_setting_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
