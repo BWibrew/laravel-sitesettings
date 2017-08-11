@@ -52,21 +52,16 @@ class Setting extends Model
         }
 
         if ($parts = (new Setting)->parseScopeName($name)) {
-            $setting = Setting::create([
-                'name' => $parts['name'],
-                'scope' => $parts['scope'],
-                'value' => $value,
-                'updated_by' => $user->id,
-            ]);
-        } else {
-            $setting = Setting::create([
-                'name' => $name,
-                'value' => $value,
-                'updated_by' => $user->id,
-            ]);
+            $name = $parts['name'];
+            $scope = $parts['scope'];
         }
 
-        return $setting;
+        return Setting::create([
+            'name' => $name,
+            'scope' => isset($scope) ? $scope : null,
+            'value' => $value,
+            'updated_by' => $user->id,
+        ]);
     }
 
     /**
@@ -85,13 +80,12 @@ class Setting extends Model
         if ($parts = $this->parseScopeName($name)) {
             $this->name = $parts['name'];
             $this->scope = $parts['scope'];
-            $this->updated_by = $user->id;
-            $this->save();
         } else {
             $this->name = $name;
-            $this->updated_by = $user->id;
-            $this->save();
         }
+
+        $this->updated_by = $user->id;
+        $this->save();
 
         return $this;
     }
@@ -125,10 +119,10 @@ class Setting extends Model
     public static function getValue($name)
     {
         if ($parts = (new Setting)->parseScopeName($name)) {
-            return Setting::where('name', $parts['name'])->pluck('value')->first();
-        } else {
-            return Setting::where('name', $name)->pluck('value')->first();
+            $name = $parts['name'];
         }
+
+        return Setting::where('name', $name)->pluck('value')->first();
     }
 
     /**
@@ -140,10 +134,10 @@ class Setting extends Model
     public static function getUpdatedBy($name)
     {
         if ($parts = (new Setting)->parseScopeName($name)) {
-            return Setting::where('name', $parts['name'])->pluck('updated_by')->first();
-        } else {
-            return Setting::where('name', $name)->pluck('updated_by')->first();
+            $name = $parts['name'];
         }
+
+        return Setting::where('name', $name)->pluck('updated_by')->first();
     }
 
     /**
@@ -155,10 +149,10 @@ class Setting extends Model
     public static function getWhenUpdated($name)
     {
         if ($parts = (new Setting)->parseScopeName($name)) {
-            return Setting::where('name', $parts['name'])->pluck('updated_at')->first();
-        } else {
-            return Setting::where('name', $name)->pluck('updated_at')->first();
+            $name = $parts['name'];
         }
+
+        return Setting::where('name', $name)->pluck('updated_at')->first();
     }
 
     /**
