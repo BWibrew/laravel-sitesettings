@@ -73,16 +73,23 @@ class Setting extends Model
      * Update current setting name.
      *
      * @param $name
+     * @param null $user
      * @return $this
      */
-    public function updateName($name)
+    public function updateName($name, $user = null)
     {
+        if (!$user) {
+            $user = Auth::user();
+        }
+
         if ($parts = $this->parseScopeName($name)) {
             $this->name = $parts['name'];
             $this->scope = $parts['scope'];
+            $this->updated_by = $user->id;
             $this->save();
         } else {
             $this->name = $name;
+            $this->updated_by = $user->id;
             $this->save();
         }
 

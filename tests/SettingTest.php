@@ -48,9 +48,10 @@ class SettingTest extends TestCase
     /** @test */
     public function it_can_update_the_setting_name()
     {
+        $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => '']);
 
-        $setting->updateName('new_name');
+        $setting->updateName('new_name', $user);
 
         $this->assertEquals($setting->name, 'new_name');
     }
@@ -79,14 +80,20 @@ class SettingTest extends TestCase
     /** @test */
     public function it_updates_the_user_id_when_updating_a_setting()
     {
-        $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'original value']);
-        $this->actingAs($user);
+        $user1 = factory(User::class)->create();
+        $user2 = factory(User::class)->create();
+        $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'original value']);
+        $this->actingAs($user1);
 
-        $setting->updateValue('new value', $user);
-        $setting = Setting::where('name', 'setting_name')->first();
+        $setting->updateValue('new value', $user1);
 
-        $this->assertEquals($setting->updated_by, $user->id);
+        $this->assertEquals($user1->id, $setting->updated_by);
+
+        $this->actingAs($user2);
+
+        $setting->updateName('new_name', $user2);
+
+        $this->assertEquals($user2->id, $setting->updated_by);
     }
 
     /** @test */

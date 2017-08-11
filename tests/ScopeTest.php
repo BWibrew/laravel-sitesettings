@@ -69,9 +69,10 @@ class ScopeTest extends TestCase
     public function it_can_update_the_setting_name_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
+        $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'scope' => null]);
 
-        $setting->updateName('scope.new_name');
+        $setting->updateName('scope.new_name', $user);
 
         $this->assertEquals('new_name', $setting->name);
         $this->assertEquals('scope', $setting->scope);
@@ -81,9 +82,10 @@ class ScopeTest extends TestCase
     public function it_cannot_update_the_setting_name_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
+        $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'scope' => null]);
 
-        $setting->updateName('scope.new_name');
+        $setting->updateName('scope.new_name', $user);
 
         $this->assertEquals('scope.new_name', $setting->name);
         $this->assertEquals(null, $setting->scope);
