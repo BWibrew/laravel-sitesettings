@@ -15,6 +15,7 @@ class Setting extends Model
     protected $fillable = [
         'name',
         'value',
+        'scope',
         'updated_by',
     ];
 
@@ -50,11 +51,20 @@ class Setting extends Model
             $user = Auth::user();
         }
 
-        $setting = Setting::create([
-            'name' => $name,
-            'value' => $value,
-            'updated_by' => $user->id,
-        ]);
+        if ($parts = (new Setting)->parseScopeName($name)) {
+            $setting = Setting::create([
+                'name' => $parts['name'],
+                'scope' => $parts['scope'],
+                'value' => $value,
+                'updated_by' => $user->id,
+            ]);
+        } else {
+            $setting = Setting::create([
+                'name' => $name,
+                'value' => $value,
+                'updated_by' => $user->id,
+            ]);
+        }
 
         return $setting;
     }
@@ -155,5 +165,27 @@ class Setting extends Model
         }
 
         return $follows_style;
+    }
+
+    /**
+     * Parses scope name dot syntax. e.g. 'scope.name'
+     *
+     * @param $name
+     * @return array|null
+     */
+    protected function parseScopeName($name)
+    {
+        $name_parts = explode('.', $name);
+
+        if (!config('sitesettings.use_scopes') || count($name_parts) < 2) {
+            return null;
+        } else {
+            $scope = array_shift($name_parts);
+
+            return [
+                'scope' => $scope,
+                'name' => implode('.', $name_parts),
+            ];
+        }
     }
 }
