@@ -10,7 +10,7 @@ class SettingTest extends TestCase
     /** @test */
     public function it_has_a_name()
     {
-        $setting = new Setting(['name' => 'a_setting_name']);
+        $setting = factory(Setting::class)->create(['name' => 'a_setting_name']);
 
         $this->assertEquals('a_setting_name', $setting->name);
     }
@@ -18,7 +18,7 @@ class SettingTest extends TestCase
     /** @test */
     public function it_has_a_value()
     {
-        $setting = new Setting(['value' => 'Hello World!']);
+        $setting = factory(Setting::class)->create(['value' => 'Hello World!']);
 
         $this->assertEquals('Hello World!', $setting->value);
     }
@@ -48,7 +48,7 @@ class SettingTest extends TestCase
     /** @test */
     public function it_can_update_the_setting_name()
     {
-        $setting = Setting::create(['name' => 'original_name', 'value' => '']);
+        $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => '']);
 
         $setting->updateName('new_name');
 
@@ -59,7 +59,7 @@ class SettingTest extends TestCase
     public function it_can_update_the_setting_value()
     {
         $user = factory(User::class)->create();
-        $setting = Setting::create(['name' => 'name', 'value' => 'original value']);
+        $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'original value']);
 
         $setting->updateValue('new value', $user);
 
@@ -69,7 +69,7 @@ class SettingTest extends TestCase
     /** @test */
     public function it_can_get_the_value()
     {
-        Setting::create(['name' => 'setting_name', 'value' => 'setting value']);
+        factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'setting value']);
 
         $value = Setting::getValue('setting_name');
 
@@ -80,7 +80,7 @@ class SettingTest extends TestCase
     public function it_updates_the_user_id_when_updating_a_setting()
     {
         $user = factory(User::class)->create();
-        $setting = Setting::create(['name' => 'setting_name', 'value' => 'original value']);
+        $setting = factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'original value']);
         $this->actingAs($user);
 
         $setting->updateValue('new value', $user);
@@ -103,7 +103,7 @@ class SettingTest extends TestCase
     /** @test */
     public function it_can_get_the_updated_by_user_id()
     {
-        Setting::create(['name' => 'setting_name', 'value' => 'value name', 'updated_by' => 1]);
+        factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'value name', 'updated_by' => 1]);
 
         $user_id = Setting::getUpdatedBy('setting_name');
 
@@ -113,7 +113,7 @@ class SettingTest extends TestCase
     /** @test */
     public function it_can_get_the_updated_timestamp()
     {
-        $setting = Setting::create(['name' => 'setting_name']);
+        $setting = factory(Setting::class)->create(['name' => 'setting_name']);
 
         $timestamp = Setting::getWhenUpdated('setting_name');
 
