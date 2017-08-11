@@ -39,6 +39,7 @@ class TestCase extends Orchestra
         $app['config']->set('sitesettings.naming_styles', [
             'snake_case',
         ]);
+        $app['config']->set('sitesettings.use_scopes', true);
     }
 
     /**

@@ -17,4 +17,9 @@ return [
         'snake_case',
     ],
 
+    /**
+     * Enable the use of setting scopes.
+     */
+    'use_scopes' => true,
+
 ];
