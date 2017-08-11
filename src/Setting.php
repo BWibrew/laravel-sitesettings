@@ -124,7 +124,11 @@ class Setting extends Model
      */
     public static function getValue($name)
     {
-        return Setting::where('name', $name)->pluck('value')->first();
+        if ($parts = (new Setting)->parseScopeName($name)) {
+            return Setting::where('name', $parts['name'])->pluck('value')->first();
+        } else {
+            return Setting::where('name', $name)->pluck('value')->first();
+        }
     }
 
     /**
@@ -135,7 +139,11 @@ class Setting extends Model
      */
     public static function getUpdatedBy($name)
     {
-        return Setting::where('name', $name)->pluck('updated_by')->first();
+        if ($parts = (new Setting)->parseScopeName($name)) {
+            return Setting::where('name', $parts['name'])->pluck('updated_by')->first();
+        } else {
+            return Setting::where('name', $name)->pluck('updated_by')->first();
+        }
     }
 
     /**
@@ -146,7 +154,11 @@ class Setting extends Model
      */
     public static function getWhenUpdated($name)
     {
-        return Setting::where('name', $name)->pluck('updated_at')->first();
+        if ($parts = (new Setting)->parseScopeName($name)) {
+            return Setting::where('name', $parts['name'])->pluck('updated_at')->first();
+        } else {
+            return Setting::where('name', $name)->pluck('updated_at')->first();
+        }
     }
 
     /**
