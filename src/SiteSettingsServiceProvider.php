@@ -18,6 +18,10 @@ class SiteSettingsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/config/sitesettings.php' => config_path('sitesettings.php'),
         ], 'config');
+
+        $this->publishes([
+            __DIR__.'/database/migrations/' => database_path('migrations')
+        ], 'migrations');
     }
 
     /**
