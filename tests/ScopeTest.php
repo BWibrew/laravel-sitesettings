@@ -197,4 +197,73 @@ class ScopeTest extends TestCase
 
         $this->assertEquals($setting->updated_at, $timestamp);
     }
+
+    /** @test */
+    public function it_can_get_all_the_values_from_a_scope()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        factory(Setting::class, 10)->create(['scope' => 'scope']);
+
+        $values = Setting::getScopeValues('scope');
+
+        $this->assertCount(10, $values);
+    }
+
+    /** @test */
+    public function it_cannot_get_all_the_values_from_a_scope_when_scopes_are_disabled()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', false);
+        factory(Setting::class, 10)->create(['scope' => 'scope']);
+
+        $values = Setting::getScopeValues('scope');
+
+        $this->assertEquals(null, $values);
+    }
+
+    /** @test */
+    public function it_can_get_the_scope_updated_by_user_id()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        factory(Setting::class, 10)->create(['scope' => 'scope', 'updated_by' => 1]);
+
+        $user_id = Setting::getScopeUpdatedBy('scope');
+
+        $this->assertEquals(1, $user_id);
+    }
+
+    /** @test */
+    public function it_cannot_get_the_scope_updated_by_user_id_when_scopes_are_disabled()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', false);
+        factory(Setting::class, 10)->create(['scope' => 'scope', 'updated_by' => 1]);
+
+        $user_id = Setting::getScopeUpdatedBy('scope');
+
+        $this->assertEquals(null, $user_id);
+    }
+
+    /** @test */
+    public function it_can_get_the_scope_updated_timestamp()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $setting = factory(Setting::class, 10)
+                   ->create(['scope' => 'scope'])
+                   ->sortBy('updated_at')
+                   ->first();
+
+        $timestamp = Setting::getWhenScopeUpdated('scope');
+
+        $this->assertEquals($setting->updated_at, $timestamp);
+    }
+
+    /** @test */
+    public function it_cannot_get_the_scope_updated_timestamp_when_scopes_are_disabled()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', false);
+        factory(Setting::class, 10)->create(['scope' => 'scope']);
+
+        $timestamp = Setting::getWhenScopeUpdated('scope');
+
+        $this->assertEquals(null, $timestamp);
+    }
 }

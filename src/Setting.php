@@ -149,6 +149,21 @@ class Setting extends Model
     }
 
     /**
+     * Get all values in a scope.
+     *
+     * @param $scope
+     * @return \Illuminate\Support\Collection|null
+     */
+    public static function getScopeValues($scope)
+    {
+        if (!config('sitesettings.use_scopes')) {
+            return null;
+        }
+
+        return Setting::where('scope', $scope)->pluck('value');
+    }
+
+    /**
      * Get the 'updated_by' user ID.
      *
      * @param $name
@@ -164,6 +179,24 @@ class Setting extends Model
     }
 
     /**
+     * Get the 'updated_by' user ID for a scope.
+     *
+     * @param $scope
+     * @return mixed|null
+     */
+    public static function getScopeUpdatedBy($scope)
+    {
+        if (!config('sitesettings.use_scopes')) {
+            return null;
+        }
+
+        return Setting::where('scope', $scope)
+                      ->orderBy('updated_at')
+                      ->pluck('updated_by')
+                      ->first();
+    }
+
+    /**
      * Get the updated_at timestamp.
      *
      * @param $name
@@ -176,6 +209,24 @@ class Setting extends Model
         }
 
         return Setting::where('name', $name)->pluck('updated_at')->first();
+    }
+
+    /**
+     * Get the updated_at timestamp for a scope.
+     *
+     * @param $scope
+     * @return mixed|null
+     */
+    public static function getWhenScopeUpdated($scope)
+    {
+        if (!config('sitesettings.use_scopes')) {
+            return null;
+        }
+
+        return Setting::where('scope', $scope)
+            ->orderBy('updated_at')
+            ->pluck('updated_at')
+            ->first();
     }
 
     /**
