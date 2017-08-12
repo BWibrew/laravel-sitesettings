@@ -2,20 +2,19 @@
 
 *** **Currently under active development** ***
 
+**Todo:**
+- Add support for media uploads
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jamin87/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/jamin87/laravel-sitesettings)
 [![Build Status](https://img.shields.io/travis/jamin87/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/jamin87/laravel-sitesettings)
 
-## Todo:
-- Add support for media uploads
-- Integration with Laravel config
-
 ## Installation
 Install using Composer by running:
-
-    composer require jamin87/laravel-sitesettings
+```
+composer require jamin87/laravel-sitesettings
+```
 
 Then add the service provider to the providers array in `config/app.php`:
-
 ```php
 'providers' => [
     ...
@@ -24,12 +23,19 @@ Then add the service provider to the providers array in `config/app.php`:
 ```
 
 Then run table migrations with:
-
-    php artisan migrate
+```
+php artisan migrate
+```
 
 Publish the config file with:
+```
+php artisan vendor:publish --provider="Jamin87\SiteSettings\SiteSettingsServiceProvider" ==tag="config"
+```
 
-    php artisan vendor:publish --provider="Jamin87\SiteSettings\SiteSettingsServiceProvider"
+Publish the migrations with:
+```
+php artisan vendor:publish --provider="Jamin87\SiteSettings\SiteSettingsServiceProvider" --tag="migrations"
+```
 
 ## Usage
 This package provides access to the `Setting` eloquent model with the following methods:
@@ -57,7 +63,7 @@ Setting::getValue($name);
 To update an existing setting:
 
 ```php
-$setting = Setting::where('name', 'homepage_title')->first();
+$setting = Setting::where('name', 'setting_name')->first();
 
 // Update setting value
 $setting->updateValue('A new title');
@@ -74,11 +80,44 @@ Setting::getUpdatedBy($name); // Returns user ID
 Setting::getWhenUpdated($name); // Returns Carbon date object
 ```
 
+### Using scopes
+You can categories your settings into 'scopes'. Scopes use a simple 'dot' syntax on the setting name.
+
+To assign or retrieve a setting in a scope, place the scope name in front of the setting name and separate them with a dot ('.'). e.g. `scope_name.setting_name`.
+This works the same way with all methods which take a setting name as a parameter.
+
+There are also a number of extra methods used with scopes:
+
+```php
+// Return an array of all values from a scope
+Setting::getScopeValues();
+
+// Return the user ID of the user which last updated a setting in a scope
+Setting::getScopeUpdatedBy();
+
+// Return when the most recent update was made in a scope
+Setting::whenScopeUpdated();
+```
+
+To update or remove a scope:
+```php
+$setting = Setting::where('name', 'setting_name')->first();
+
+$setting->updateScope('new_scope_name');
+
+$setting->removeScope(); // Sets scope to null.
+```
+
+
 ## Configuration
-To enforce a naming style for your settings make sure `force_naming_style` is set to true in the config file. 
-Currently only `'snake_case'` is available.
+To enforce a naming style for your settings make sure `force_naming_style` is set to true in the config file.
+Define which naming styles you wish to use in the `naming_styles` array. 
+Currently `'snake_case'`, `'camel_case'`, `'kebab_case'` and `'studly_case'` are available.
+
+To use scopes ensure that `use_scopes` is set to `true`
 
 ## Testing
 Run tests with:
-
-    composer test
+```
+composer test
+```
