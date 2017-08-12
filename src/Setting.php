@@ -36,35 +36,6 @@ class Setting extends Model
     }
 
     /**
-     * Register a new setting with optional value.
-     *
-     * Authenticated user ID will be assigned to 'updated_by' column.
-     *
-     * @param $name
-     * @param null $value
-     * @param null $user
-     * @return $this|Model
-     */
-    public static function register($name, $value = null, $user = null)
-    {
-        if (!$user) {
-            $user = Auth::user();
-        }
-
-        if ($parts = (new Setting)->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
-
-        return Setting::create([
-            'name' => $name,
-            'scope' => isset($scope) ? $scope : null,
-            'value' => $value,
-            'updated_by' => $user->id,
-        ]);
-    }
-
-    /**
      * Update current setting name.
      *
      * @param $name
@@ -111,6 +82,58 @@ class Setting extends Model
     }
 
     /**
+     * Update a scope.
+     *
+     * @param $scope
+     * @return $this
+     */
+    public function updateScope($scope)
+    {
+        $this->scope = $scope;
+
+        return $this;
+    }
+
+    /**
+     * Remove scope from setting.
+     *
+     * @return $this
+     */
+    public function removeScope()
+    {
+        return $this->updateScope(null);
+    }
+
+    /**
+     * Register a new setting with optional value.
+     *
+     * Authenticated user ID will be assigned to 'updated_by' column.
+     *
+     * @param $name
+     * @param null $value
+     * @param null $user
+     * @return $this|Model
+     */
+    public static function register($name, $value = null, $user = null)
+    {
+        if (!$user) {
+            $user = Auth::user();
+        }
+
+        if ($parts = (new Setting)->parseScopeName($name)) {
+            $name = $parts['name'];
+            $scope = $parts['scope'];
+        }
+
+        return Setting::create([
+            'name' => $name,
+            'scope' => isset($scope) ? $scope : null,
+            'value' => $value,
+            'updated_by' => $user->id,
+        ]);
+    }
+
+    /**
      * Get a setting value.
      *
      * @param $name
@@ -153,29 +176,6 @@ class Setting extends Model
         }
 
         return Setting::where('name', $name)->pluck('updated_at')->first();
-    }
-
-    /**
-     * Update a scope.
-     *
-     * @param $scope
-     * @return $this
-     */
-    public function updateScope($scope)
-    {
-        $this->scope = $scope;
-
-        return $this;
-    }
-
-    /**
-     * Remove scope from setting.
-     *
-     * @return $this
-     */
-    public function removeScope()
-    {
-        return $this->updateScope(null);
     }
 
     /**
