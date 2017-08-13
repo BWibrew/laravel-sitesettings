@@ -40,6 +40,13 @@ class TestCase extends Orchestra
             'snake_case',
         ]);
         $app['config']->set('sitesettings.use_scopes', true);
+        $app['config']->set('filesystems.disks.media', [
+            'driver' => 'local',
+            'root'   => public_path('media'),
+        ]);
+
+        include_once __DIR__ . '/migrations/create_media_table.php.stub';
+        (new \CreateMediaTable())->up();
     }
 
     /**
