@@ -4,9 +4,13 @@ namespace Jamin87\SiteSettings;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
-class Setting extends Model
+class Setting extends Model implements HasMedia
 {
+    use HasMediaTrait;
+
     /**
      * The attributes that are mass assignable.
      *

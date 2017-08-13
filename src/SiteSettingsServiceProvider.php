@@ -31,6 +31,6 @@ class SiteSettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->register(\Spatie\MediaLibrary\MediaLibraryServiceProvider::class);
     }
 }
