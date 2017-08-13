@@ -6,11 +6,16 @@ php:
   - hhvm
   - nightly
 
+matrix:
+  allow_failures:
+  - php: hhvm
+  - php: nightly
+
 before_install:
   - composer self-update
 
 install:
-  - composer update
+  - composer update --ignore-platform-reqs
 
 script:
   composer test
