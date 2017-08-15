@@ -1,5 +1,5 @@
 {
-  "name": "jamin87/laravel-sitesettings",
+  "name": "BWibrew/laravel-sitesettings",
   "description": "Persistent site settings for Laravel 5.4",
   "keywords": [
     "laravel",
@@ -30,12 +30,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Jamin87\\SiteSettings\\": "src"
+      "BWibrew\\SiteSettings\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Jamin87\\SiteSettings\\Tests\\": "tests/"
+      "BWibrew\\SiteSettings\\Tests\\": "tests/"
     }
   },
   "scripts": {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jamin87\SiteSettings\Tests;
+namespace BWibrew\SiteSettings\Tests;
 
-use Jamin87\SiteSettings\Setting;
-use Jamin87\SiteSettings\Tests\Models\User;
+use BWibrew\SiteSettings\Setting;
+use BWibrew\SiteSettings\Tests\Models\User;
 
 class ScopeTest extends TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jamin87\SiteSettings;
+namespace BWibrew\SiteSettings;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;

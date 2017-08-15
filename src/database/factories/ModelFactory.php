@@ -1,7 +1,7 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(Jamin87\SiteSettings\Tests\Models\User::class, function (Faker\Generator $faker) {
+$factory->define(BWibrew\SiteSettings\Tests\Models\User::class, function (Faker\Generator $faker) {
     static $password;
     return [
         'name' => $faker->name,
@@ -11,14 +11,14 @@ $factory->define(Jamin87\SiteSettings\Tests\Models\User::class, function (Faker\
     ];
 });
 
-$factory->define(Jamin87\SiteSettings\Setting::class, function (Faker\Generator $faker) {
+$factory->define(BWibrew\SiteSettings\Setting::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
         'scope' => $faker->optional(0.8)->word,
         'value' => $faker->optional(0.9)->sentence(),
         'updated_by' => function () {
             if (mt_rand(0, 1)) {
-                return factory(Jamin87\SiteSettings\Tests\Models\User::class)->create()->id;
+                return factory(BWibrew\SiteSettings\Tests\Models\User::class)->create()->id;
             } else {
                 return null;
             }
