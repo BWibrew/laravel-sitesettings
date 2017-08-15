@@ -5,20 +5,20 @@
 **Todo:**
 - Add support for media uploads
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/jamin87/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/jamin87/laravel-sitesettings)
-[![Build Status](https://img.shields.io/travis/jamin87/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/jamin87/laravel-sitesettings)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
+[![Build Status](https://img.shields.io/travis/BWibrew/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/BWibrew/laravel-sitesettings)
 
 ## Installation
 Install using Composer by running:
 ```
-composer require jamin87/laravel-sitesettings
+composer require BWibrew/laravel-sitesettings
 ```
 
 Then add the service provider to the providers array in `config/app.php`:
 ```php
 'providers' => [
     ...
-    Jamin87\SiteSettings\SiteSettingsServiceProvider::class,
+    BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
 ];
 ```
 
@@ -29,12 +29,12 @@ php artisan migrate
 
 Publish the config file with:
 ```
-php artisan vendor:publish --provider="Jamin87\SiteSettings\SiteSettingsServiceProvider" ==tag="config"
+php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" ==tag="config"
 ```
 
 Publish the migrations with:
 ```
-php artisan vendor:publish --provider="Jamin87\SiteSettings\SiteSettingsServiceProvider" --tag="migrations"
+php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" --tag="migrations"
 ```
 
 ## Usage

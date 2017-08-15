@@ -1,8 +1,8 @@
 <?php
 
-namespace Jamin87\SiteSettings\Tests;
+namespace BWibrew\SiteSettings\Tests;
 
-use Jamin87\SiteSettings\Setting;
+use BWibrew\SiteSettings\Setting;
 
 class NamingStyleTest extends TestCase
 {

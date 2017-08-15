@@ -1,9 +1,9 @@
 <?php
 
-namespace Jamin87\SiteSettings\Tests;
+namespace BWibrew\SiteSettings\Tests;
 
-use Jamin87\SiteSettings\Setting;
-use Jamin87\SiteSettings\Tests\Models\User;
+use BWibrew\SiteSettings\Setting;
+use BWibrew\SiteSettings\Tests\Models\User;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -59,7 +59,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app)
     {
         return [
-            \Jamin87\SiteSettings\SiteSettingsServiceProvider::class,
+            \BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
         ];
     }
 

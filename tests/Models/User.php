@@ -1,6 +1,6 @@
 <?php
 
-namespace Jamin87\SiteSettings\Tests\Models;
+namespace BWibrew\SiteSettings\Tests\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
