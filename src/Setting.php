@@ -3,6 +3,7 @@
 namespace BWibrew\SiteSettings;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
@@ -129,12 +130,16 @@ class Setting extends Model implements HasMedia
             $scope = $parts['scope'];
         }
 
-        return Setting::create([
-            'name' => $name,
-            'scope' => isset($scope) ? $scope : null,
-            'value' => $value,
-            'updated_by' => $user->id,
-        ]);
+        if ($value instanceof UploadedFile) {
+            return (new Setting)->syncWithMediaLibrary($name, $value, $user);
+        } else {
+            return Setting::create([
+                'name' => $name,
+                'scope' => isset($scope) ? $scope : null,
+                'value' => $value,
+                'updated_by' => $user->id,
+            ]);
+        }
     }
 
     /**
@@ -282,5 +287,31 @@ class Setting extends Model implements HasMedia
                 'name' => implode('.', $name_parts),
             ];
         }
+    }
+
+    protected function syncWithMediaLibrary($name, $value = null, $user = null)
+    {
+        if ($parts = (new Setting)->parseScopeName($name)) {
+            $name = $parts['name'];
+            $scope = $parts['scope'];
+        }
+
+        $file = $value;
+        $value = $value->getClientOriginalName();
+
+        $setting = Setting::updateOrCreate(
+            [
+                'name' => $name,
+                'scope' => isset($scope) ? $scope : null,
+            ],
+            [
+                'value' => $value,
+                'updated_by' => $user->id,
+            ]
+        );
+
+        $setting->addMedia($file)->toMediaCollection();
+
+        return $setting;
     }
 }
