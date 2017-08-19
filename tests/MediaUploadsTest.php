@@ -17,7 +17,7 @@ class MediaUploadsTest extends TestCase
 
         $file_path = Faker::create()->file(__DIR__ . '/tmp/src', __DIR__ . '/tmp/dest');
 
-        $this->file = new UploadedFile($file_path, '.gitignore', null, null, null, true);
+        $this->file = new UploadedFile($file_path, 'test_file.txt', null, null, null, true);
     }
 
     /** @test */
@@ -37,7 +37,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('upload', $this->file, $user);
 
-        $this->assertEquals('.gitignore', $setting->value);
+        $this->assertEquals('test_file.txt', $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
 }
