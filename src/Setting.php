@@ -79,11 +79,15 @@ class Setting extends Model implements HasMedia
             $user = Auth::user();
         }
 
-        $this->value = $value;
-        $this->updated_by = $user->id;
-        $this->save();
+        if ($value instanceof UploadedFile) {
+            return $this->syncWithMediaLibrary(null, $value, $user);
+        } else {
+            $this->value = $value;
+            $this->updated_by = $user->id;
+            $this->save();
 
-        return $this;
+            return $this;
+        }
     }
 
     /**
@@ -289,23 +293,27 @@ class Setting extends Model implements HasMedia
         }
     }
 
-    protected function syncWithMediaLibrary($name, $value = null, $user = null)
+    protected function syncWithMediaLibrary($name = null, $value = null, $user = null)
     {
-        if ($parts = $this->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
+        if ($name) {
+            if ($parts = $this->parseScopeName($name)) {
+                $name = $parts['name'];
+                $scope = $parts['scope'];
+            }
 
-        $setting = self::updateOrCreate(
-            [
-                'name' => $name,
-                'scope' => isset($scope) ? $scope : null,
-            ],
-            [
-                'value' => null,
-                'updated_by' => $user->id,
-            ]
-        );
+            $setting = self::updateOrCreate(
+                [
+                    'name' => $name,
+                    'scope' => isset($scope) ? $scope : null,
+                ],
+                [
+                    'value' => null,
+                    'updated_by' => $user->id,
+                ]
+            );
+        } else {
+            $setting = $this;
+        }
 
         $setting->addMedia($value)->usingName($setting->name)->toMediaCollection();
 

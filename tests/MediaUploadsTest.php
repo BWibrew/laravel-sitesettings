@@ -40,4 +40,15 @@ class MediaUploadsTest extends TestCase
         $this->assertEquals('test_file.txt', $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
+
+    /** @test */
+    public function it_can_update_the_setting_with_a_file_upload()
+    {
+        $user = factory(User::class)->create();
+        $setting = factory(Setting::class)->create(['name' => 'name', 'scope' => null]);
+
+        $setting->updateValue($this->file, $user);
+
+        $this->assertEquals('test_file.txt', $setting->value);
+    }
 }
