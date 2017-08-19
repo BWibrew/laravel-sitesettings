@@ -133,7 +133,7 @@ class Setting extends Model implements HasMedia
         if ($value instanceof UploadedFile) {
             return (new Setting)->syncWithMediaLibrary($name, $value, $user);
         } else {
-            return Setting::create([
+            return self::create([
                 'name' => $name,
                 'scope' => isset($scope) ? $scope : null,
                 'value' => $value,
@@ -154,7 +154,7 @@ class Setting extends Model implements HasMedia
             $name = $parts['name'];
         }
 
-        return Setting::where('name', $name)->pluck('value')->first();
+        return self::where('name', $name)->pluck('value')->first();
     }
 
     /**
@@ -169,7 +169,7 @@ class Setting extends Model implements HasMedia
             return null;
         }
 
-        return Setting::where('scope', $scope)->pluck('value');
+        return self::where('scope', $scope)->pluck('value');
     }
 
     /**
@@ -184,7 +184,7 @@ class Setting extends Model implements HasMedia
             $name = $parts['name'];
         }
 
-        return Setting::where('name', $name)->pluck('updated_by')->first();
+        return self::where('name', $name)->pluck('updated_by')->first();
     }
 
     /**
@@ -199,10 +199,10 @@ class Setting extends Model implements HasMedia
             return null;
         }
 
-        return Setting::where('scope', $scope)
-                      ->orderBy('updated_at')
-                      ->pluck('updated_by')
-                      ->first();
+        return self::where('scope', $scope)
+            ->orderBy('updated_at')
+            ->pluck('updated_by')
+            ->first();
     }
 
     /**
@@ -217,7 +217,7 @@ class Setting extends Model implements HasMedia
             $name = $parts['name'];
         }
 
-        return Setting::where('name', $name)->pluck('updated_at')->first();
+        return self::where('name', $name)->pluck('updated_at')->first();
     }
 
     /**
@@ -232,7 +232,7 @@ class Setting extends Model implements HasMedia
             return null;
         }
 
-        return Setting::where('scope', $scope)
+        return self::where('scope', $scope)
             ->orderBy('updated_at')
             ->pluck('updated_at')
             ->first();
@@ -291,26 +291,26 @@ class Setting extends Model implements HasMedia
 
     protected function syncWithMediaLibrary($name, $value = null, $user = null)
     {
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = $this->parseScopeName($name)) {
             $name = $parts['name'];
             $scope = $parts['scope'];
         }
 
-        $file = $value;
-        $value = $value->getClientOriginalName();
-
-        $setting = Setting::updateOrCreate(
+        $setting = self::updateOrCreate(
             [
                 'name' => $name,
                 'scope' => isset($scope) ? $scope : null,
             ],
             [
-                'value' => $value,
+                'value' => null,
                 'updated_by' => $user->id,
             ]
         );
 
-        $setting->addMedia($file)->toMediaCollection();
+        $setting->addMedia($value)->usingName($setting->name)->toMediaCollection();
+
+        $setting->value = $setting->getMedia()->first()->file_name;
+        $setting->save();
 
         return $setting;
     }
