@@ -154,11 +154,14 @@ class Setting extends Model implements HasMedia
      */
     public static function getValue($name)
     {
+        $scope = 'default';
+
         if ($parts = (new Setting)->parseScopeName($name)) {
             $name = $parts['name'];
+            $scope = $parts['scope'];
         }
 
-        return self::where('name', $name)->pluck('value')->first();
+        return self::where([['name', $name], ['scope', $scope]])->pluck('value')->first();
     }
 
     /**
@@ -167,7 +170,7 @@ class Setting extends Model implements HasMedia
      * @param $scope
      * @return \Illuminate\Support\Collection|null
      */
-    public static function getScopeValues($scope)
+    public static function getScopeValues($scope = 'default')
     {
         if (!config('sitesettings.use_scopes')) {
             return null;
@@ -184,11 +187,14 @@ class Setting extends Model implements HasMedia
      */
     public static function getUpdatedBy($name)
     {
+        $scope = 'default';
+
         if ($parts = (new Setting)->parseScopeName($name)) {
             $name = $parts['name'];
+            $scope = $parts['scope'];
         }
 
-        return self::where('name', $name)->pluck('updated_by')->first();
+        return self::where([['name', $name], ['scope', $scope]])->pluck('updated_by')->first();
     }
 
     /**
@@ -197,7 +203,7 @@ class Setting extends Model implements HasMedia
      * @param $scope
      * @return mixed|null
      */
-    public static function getScopeUpdatedBy($scope)
+    public static function getScopeUpdatedBy($scope = 'default')
     {
         if (!config('sitesettings.use_scopes')) {
             return null;
@@ -230,7 +236,7 @@ class Setting extends Model implements HasMedia
      * @param $scope
      * @return mixed|null
      */
-    public static function getWhenScopeUpdated($scope)
+    public static function getWhenScopeUpdated($scope = 'default')
     {
         if (!config('sitesettings.use_scopes')) {
             return null;
