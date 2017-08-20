@@ -139,7 +139,7 @@ class Setting extends Model implements HasMedia
         } else {
             return self::create([
                 'name' => $name,
-                'scope' => isset($scope) ? $scope : null,
+                'scope' => isset($scope) ? $scope : 'default',
                 'value' => $value,
                 'updated_by' => $user->id,
             ]);
@@ -304,7 +304,7 @@ class Setting extends Model implements HasMedia
             $setting = self::updateOrCreate(
                 [
                     'name' => $name,
-                    'scope' => isset($scope) ? $scope : null,
+                    'scope' => isset($scope) ? $scope : 'default',
                 ],
                 [
                     'value' => null,

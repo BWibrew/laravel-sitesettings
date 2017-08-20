@@ -126,4 +126,15 @@ class SettingTest extends TestCase
 
         $this->assertEquals($setting->updated_at, $timestamp);
     }
+
+    /** @test */
+    public function it_cannot_set_two_settings_with_matching_names()
+    {
+        $this->expectException('Exception');
+        $setting1 = factory(Setting::class)->create(['name' => 'name', 'value' => 'value1']);
+        $setting2 = factory(Setting::class)->create(['name' => 'name', 'value' => 'value2']);
+
+        $this->assertEquals('value1', $setting1->value);
+        $this->assertEquals('value2', $setting2->value);
+    }
 }

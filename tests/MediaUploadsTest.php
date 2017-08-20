@@ -45,7 +45,7 @@ class MediaUploadsTest extends TestCase
     public function it_can_update_the_setting_with_a_file_upload()
     {
         $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'name', 'scope' => null]);
+        $setting = factory(Setting::class)->create(['name' => 'name']);
 
         $setting->updateValue($this->file, $user);
 

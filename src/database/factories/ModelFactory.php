@@ -14,7 +14,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\User::class, function (Faker\
 $factory->define(BWibrew\SiteSettings\Setting::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
-        'scope' => $faker->optional(0.8)->word,
+        'scope' => 'default',
         'value' => $faker->optional(0.9)->sentence(),
         'updated_by' => function () {
             if (mt_rand(0, 1)) {

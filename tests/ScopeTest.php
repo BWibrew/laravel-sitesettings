@@ -84,7 +84,7 @@ class ScopeTest extends TestCase
         $setting = Setting::register('registered_scope.registered_setting', null, $user);
 
         $this->assertEquals('registered_scope.registered_setting', $setting->name);
-        $this->assertEquals(null, $setting->scope);
+        $this->assertEquals('default', $setting->scope);
     }
 
     /** @test */
@@ -92,7 +92,7 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'original_name', 'scope' => null]);
+        $setting = factory(Setting::class)->create(['name' => 'original_name']);
 
         $setting->updateName('scope.new_name', $user);
 
@@ -105,12 +105,12 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'original_name', 'scope' => null]);
+        $setting = factory(Setting::class)->create(['name' => 'original_name']);
 
         $setting->updateName('scope.new_name', $user);
 
         $this->assertEquals('scope.new_name', $setting->name);
-        $this->assertEquals(null, $setting->scope);
+        $this->assertEquals('default', $setting->scope);
     }
 
     /** @test */
@@ -132,18 +132,21 @@ class ScopeTest extends TestCase
     public function it_can_get_the_value_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope', 'value' => 'value']);
+        factory(Setting::class)->create(['name' => 'name', 'value' => 'value1']);
+        factory(Setting::class)->create(['name' => 'name', 'value' => 'value2', 'scope' => 'scope']);
 
-        $value = Setting::getValue('scope.name');
+        $value1 = Setting::getValue('name');
+        $value2 = Setting::getValue('scope.name');
 
-        $this->assertEquals('value', $value);
+        $this->assertEquals('value1', $value1);
+        $this->assertEquals('value2', $value2);
     }
 
     /** @test */
     public function it_cannot_get_the_value_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
-        factory(Setting::class)->create(['name' => 'setting.name', 'scope' => null, 'value' => 'value']);
+        factory(Setting::class)->create(['name' => 'setting.name', 'value' => 'value']);
 
         $value = Setting::getValue('setting.name');
 
@@ -155,21 +158,24 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class)->create([
-            'name' => 'name', 'scope' => 'scope', 'value' => 'value', 'updated_by' => 1
+            'name' => 'name', 'value' => 'value1', 'updated_by' => 1
+        ]);
+        factory(Setting::class)->create([
+            'name' => 'name', 'value' => 'value2', 'updated_by' => 2, 'scope' => 'scope'
         ]);
 
-        $user_id = Setting::getUpdatedBy('scope.name');
+        $user_id1 = Setting::getUpdatedBy('name');
+        $user_id2 = Setting::getUpdatedBy('scope.name');
 
-        $this->assertEquals(1, $user_id);
+        $this->assertEquals(1, $user_id1);
+        $this->assertEquals(2, $user_id2);
     }
 
     /** @test */
     public function it_cannot_get_the_updated_by_user_id_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
-        factory(Setting::class)->create([
-            'name' => 'setting.name', 'scope' => null, 'value' => 'value', 'updated_by' => 1
-        ]);
+        factory(Setting::class)->create(['name' => 'setting.name', 'value' => 'value', 'updated_by' => 1]);
 
         $user_id = Setting::getUpdatedBy('setting.name');
 
@@ -180,18 +186,21 @@ class ScopeTest extends TestCase
     public function it_can_get_the_updated_timestamp_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $setting = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope']);
+        $setting1 = factory(Setting::class)->create(['name' => 'name']);
+        $setting2 = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope']);
 
-        $timestamp = Setting::getWhenUpdated('scope.name');
+        $timestamp1 = Setting::getWhenUpdated('name');
+        $timestamp2 = Setting::getWhenUpdated('scope.name');
 
-        $this->assertEquals($setting->updated_at, $timestamp);
+        $this->assertEquals($setting1->updated_at, $timestamp1);
+        $this->assertEquals($setting2->updated_at, $timestamp2);
     }
 
     /** @test */
     public function it_cannot_get_the_updated_timestamp_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
-        $setting = factory(Setting::class)->create(['name' => 'setting.name', 'scope' => null]);
+        $setting = factory(Setting::class)->create(['name' => 'setting.name']);
 
         $timestamp = Setting::getWhenUpdated('setting.name');
 
@@ -202,11 +211,14 @@ class ScopeTest extends TestCase
     public function it_can_get_all_the_values_from_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
+        factory(Setting::class, 10)->create();
         factory(Setting::class, 10)->create(['scope' => 'scope']);
 
-        $values = Setting::getScopeValues('scope');
+        $unscoped_values = Setting::getScopeValues();
+        $scope_values = Setting::getScopeValues('scope');
 
-        $this->assertCount(10, $values);
+        $this->assertCount(10, $unscoped_values);
+        $this->assertCount(10, $scope_values);
     }
 
     /** @test */
@@ -224,11 +236,14 @@ class ScopeTest extends TestCase
     public function it_can_get_the_scope_updated_by_user_id()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class, 10)->create(['scope' => 'scope', 'updated_by' => 1]);
+        factory(Setting::class, 10)->create(['updated_by' => 1]);
+        factory(Setting::class, 10)->create(['updated_by' => 2, 'scope' => 'scope']);
 
-        $user_id = Setting::getScopeUpdatedBy('scope');
+        $unscoped_user_id = Setting::getScopeUpdatedBy();
+        $scoped_user_id = Setting::getScopeUpdatedBy('scope');
 
-        $this->assertEquals(1, $user_id);
+        $this->assertEquals(1, $unscoped_user_id);
+        $this->assertEquals(2, $scoped_user_id);
     }
 
     /** @test */
@@ -246,14 +261,14 @@ class ScopeTest extends TestCase
     public function it_can_get_the_scope_updated_timestamp()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $setting = factory(Setting::class, 10)
-                   ->create(['scope' => 'scope'])
-                   ->sortBy('updated_at')
-                   ->first();
+        $unscoped_settings = factory(Setting::class, 10)->create()->sortBy('updated_at')->first();
+        $scoped_settings = factory(Setting::class, 10)->create(['scope' => 'scope'])->sortBy('updated_at')->first();
 
-        $timestamp = Setting::getWhenScopeUpdated('scope');
+        $unscoped_timestamp = Setting::getWhenScopeUpdated();
+        $scoped_timestamp = Setting::getWhenScopeUpdated('scope');
 
-        $this->assertEquals($setting->updated_at, $timestamp);
+        $this->assertEquals($unscoped_settings->updated_at, $unscoped_timestamp);
+        $this->assertEquals($scoped_settings->updated_at, $scoped_timestamp);
     }
 
     /** @test */
@@ -265,5 +280,15 @@ class ScopeTest extends TestCase
         $timestamp = Setting::getWhenScopeUpdated('scope');
 
         $this->assertEquals(null, $timestamp);
+    }
+
+    /** @test */
+    public function it_can_have_multiple_matching_names_in_different_scopes()
+    {
+        $setting1 = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope1', 'value' => 'value1']);
+        $setting2 = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope2', 'value' => 'value2']);
+
+        $this->assertEquals('value1', $setting1->value);
+        $this->assertEquals('value2', $setting2->value);
     }
 }
