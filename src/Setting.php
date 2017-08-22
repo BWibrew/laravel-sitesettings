@@ -129,14 +129,14 @@ class Setting extends Model implements HasMedia
             $user = Auth::user();
         }
 
-        if ($parts = (new Setting)->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
-
         if ($value instanceof UploadedFile) {
             return (new Setting)->syncWithMediaLibrary($name, $value, $user);
         } else {
+            if ($parts = (new Setting)->parseScopeName($name)) {
+                $name = $parts['name'];
+                $scope = $parts['scope'];
+            }
+
             return self::create([
                 'name' => $name,
                 'scope' => isset($scope) ? $scope : 'default',
@@ -324,6 +324,7 @@ class Setting extends Model implements HasMedia
         $setting->addMedia($value)->usingName($setting->name)->toMediaCollection();
 
         $setting->value = $setting->getMedia()->first()->file_name;
+        $setting->updated_by = $user->id;
         $setting->save();
 
         return $setting;

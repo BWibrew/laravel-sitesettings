@@ -51,4 +51,16 @@ class MediaUploadsTest extends TestCase
 
         $this->assertEquals('test_file.txt', $setting->value);
     }
+
+    /** @test */
+    public function it_updates_the_user_id_when_updating_a_setting()
+    {
+        $user = factory(User::class)->create();
+        $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'original value']);
+
+        $this->actingAs($user);
+        $setting->updateValue($this->file, $user);
+
+        $this->assertEquals($user->id, $setting->updated_by);
+    }
 }
