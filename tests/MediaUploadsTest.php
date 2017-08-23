@@ -42,6 +42,19 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
+    public function it_can_register_with_a_file_upload_with_a_scope()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $user = factory(User::class)->create();
+
+        $setting = Setting::register('scope.name', $this->file, $user);
+
+        $this->assertEquals('name', $setting->name);
+        $this->assertEquals('scope', $setting->scope);
+        $this->assertEquals('test_file.txt', $setting->value);
+    }
+
+    /** @test */
     public function it_can_update_the_setting_with_a_file_upload()
     {
         $user = factory(User::class)->create();
@@ -50,6 +63,19 @@ class MediaUploadsTest extends TestCase
         $setting->updateValue($this->file, $user);
 
         $this->assertEquals('test_file.txt', $setting->value);
+    }
+
+    /** @test */
+    public function it_can_update_with_a_scope_with_a_file_upload()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        $user = factory(User::class)->create();
+        $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'value', 'scope' => 'scope']);
+
+        $setting->updateValue($this->file, $user);
+
+        $this->assertEquals('test_file.txt', $setting->value);
+        $this->assertEquals('scope', $setting->scope);
     }
 
     /** @test */
@@ -62,5 +88,40 @@ class MediaUploadsTest extends TestCase
         $setting->updateValue($this->file, $user);
 
         $this->assertEquals($user->id, $setting->updated_by);
+    }
+
+    /** @test */
+    public function it_sets_the_user_id_when_registering_a_setting()
+    {
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+
+        $setting = Setting::register('name', $this->file, $user);
+
+        $this->assertEquals($user->id, $setting->updated_by);
+    }
+
+    /** @test */
+    public function it_can_get_the_updated_by_user_id_after_being_updated()
+    {
+        $user = factory(User::class)->create(['id' => 1]);
+        $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'value']);
+
+        $setting->updateValue($this->file, $user);
+
+        $user_id = Setting::getUpdatedBy('name');
+        $this->assertEquals(1, $user_id);
+    }
+
+    /** @test */
+    public function it_can_get_the_updated_at_timestamp_after_being_updated()
+    {
+        $user = factory(User::class)->create(['id' => 1]);
+        $setting = factory(Setting::class)->create(['name' => 'name']);
+
+        $setting->updateValue($this->file, $user);
+
+        $timestamp = Setting::getWhenUpdated('name');
+        $this->assertEquals($setting->updated_at, $timestamp);
     }
 }
