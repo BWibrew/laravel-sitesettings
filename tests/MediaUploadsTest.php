@@ -124,4 +124,62 @@ class MediaUploadsTest extends TestCase
         $timestamp = Setting::getWhenUpdated('name');
         $this->assertEquals($setting->updated_at, $timestamp);
     }
+
+    /** @test */
+    public function it_will_only_store_a_single_file_per_setting()
+    {
+        $user = factory(User::class)->create();
+        $another_file = new UploadedFile(
+            Faker::create()->file(__DIR__ . '/tmp/src', __DIR__ . '/tmp/dest'),
+            'test_file.txt',
+            null,
+            null,
+            null,
+            true
+        );
+
+        $setting = factory(Setting::class)->create()->updateValue($this->file, $user);
+
+        $this->assertCount(1, $setting->getMedia());
+
+        $setting->updateValue($another_file, $user);
+
+        $this->assertCount(1, $setting->getMedia());
+    }
+
+    /** @test */
+    public function it_will_get_the_filename_when_set_in_config()
+    {
+        $this->app['config']->set('sitesettings.media_value_type', 'file_name');
+        $user = factory(User::class)->create();
+
+        $setting = Setting::register('upload', $this->file, $user);
+
+        $this->assertEquals('test_file.txt', $setting->value);
+        $this->assertCount(1, $setting->getMedia());
+    }
+
+    /** @test */
+    public function it_will_get_the_url_when_set_in_config()
+    {
+        $this->app['config']->set('sitesettings.media_value_type', 'url');
+        $user = factory(User::class)->create();
+
+        $setting = Setting::register('upload', $this->file, $user);
+
+        $this->assertEquals($setting->getMedia()[0]->getPath(), $setting->value);
+        $this->assertCount(1, $setting->getMedia());
+    }
+
+    /** @test */
+    public function it_will_get_the_file_path_when_set_in_config()
+    {
+        $this->app['config']->set('sitesettings.media_value_type', 'path');
+        $user = factory(User::class)->create();
+
+        $setting = Setting::register('upload', $this->file, $user);
+
+        $this->assertEquals($setting->getMedia()[0]->getPath(), $setting->value);
+        $this->assertCount(1, $setting->getMedia());
+    }
 }

@@ -323,7 +323,18 @@ class Setting extends Model implements HasMedia
 
         $setting->addMedia($value)->usingName($setting->name)->toMediaCollection();
 
-        $setting->value = $setting->getMedia()->first()->file_name;
+        switch (config('sitesettings.media_value_type')) {
+            case 'path':
+                $setting->value = $setting->getMedia()->first()->getPath();
+                break;
+            case 'url':
+                die(var_dump($setting->getMedia()->first()->getUrl()));
+                $setting->value = $setting->getMedia()->first()->getUrl();
+                break;
+            case 'file_name':
+                $setting->value = $setting->getMedia()->first()->file_name;
+                break;
+        }
         $setting->updated_by = $user->id;
         $setting->save();
 
