@@ -27,9 +27,11 @@ class Setting extends Model implements HasMedia
     /**
      * Set the settings name after checking for naming styles.
      *
-     * @param  string $name
-     * @return void
+     * @param string $name
+     *
      * @throws \Exception
+     *
+     * @return void
      */
     public function setNameAttribute($name)
     {
@@ -45,6 +47,7 @@ class Setting extends Model implements HasMedia
      *
      * @param $name
      * @param null $user
+     *
      * @return $this
      */
     public function updateName($name, $user = null)
@@ -71,6 +74,7 @@ class Setting extends Model implements HasMedia
      *
      * @param null $value
      * @param null $user
+     *
      * @return $this
      */
     public function updateValue($value = null, $user = null)
@@ -94,6 +98,7 @@ class Setting extends Model implements HasMedia
      * Update a scope.
      *
      * @param $scope
+     *
      * @return $this
      */
     public function updateScope($scope)
@@ -121,6 +126,7 @@ class Setting extends Model implements HasMedia
      * @param $name
      * @param null $value
      * @param null $user
+     *
      * @return $this|Model
      */
     public static function register($name, $value = null, $user = null)
@@ -130,17 +136,17 @@ class Setting extends Model implements HasMedia
         }
 
         if ($value instanceof UploadedFile) {
-            return (new Setting)->syncWithMediaLibrary($name, $value, $user);
+            return (new self())->syncWithMediaLibrary($name, $value, $user);
         } else {
-            if ($parts = (new Setting)->parseScopeName($name)) {
+            if ($parts = (new self())->parseScopeName($name)) {
                 $name = $parts['name'];
                 $scope = $parts['scope'];
             }
 
             return self::create([
-                'name' => $name,
-                'scope' => isset($scope) ? $scope : 'default',
-                'value' => $value,
+                'name'       => $name,
+                'scope'      => isset($scope) ? $scope : 'default',
+                'value'      => $value,
                 'updated_by' => $user->id,
             ]);
         }
@@ -150,13 +156,14 @@ class Setting extends Model implements HasMedia
      * Get a setting value.
      *
      * @param $name
+     *
      * @return mixed
      */
     public static function getValue($name)
     {
         $scope = 'default';
 
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = (new self())->parseScopeName($name)) {
             $name = $parts['name'];
             $scope = $parts['scope'];
         }
@@ -168,12 +175,13 @@ class Setting extends Model implements HasMedia
      * Get all values in a scope.
      *
      * @param $scope
+     *
      * @return \Illuminate\Support\Collection|null
      */
     public static function getScopeValues($scope = 'default')
     {
         if (!config('sitesettings.use_scopes')) {
-            return null;
+            return;
         }
 
         return self::where('scope', $scope)->pluck('value');
@@ -183,13 +191,14 @@ class Setting extends Model implements HasMedia
      * Get the 'updated_by' user ID.
      *
      * @param $name
+     *
      * @return mixed
      */
     public static function getUpdatedBy($name)
     {
         $scope = 'default';
 
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = (new self())->parseScopeName($name)) {
             $name = $parts['name'];
             $scope = $parts['scope'];
         }
@@ -201,12 +210,13 @@ class Setting extends Model implements HasMedia
      * Get the 'updated_by' user ID for a scope.
      *
      * @param $scope
+     *
      * @return mixed|null
      */
     public static function getScopeUpdatedBy($scope = 'default')
     {
         if (!config('sitesettings.use_scopes')) {
-            return null;
+            return;
         }
 
         return self::where('scope', $scope)
@@ -219,11 +229,12 @@ class Setting extends Model implements HasMedia
      * Get the updated_at timestamp.
      *
      * @param $name
+     *
      * @return mixed
      */
     public static function getWhenUpdated($name)
     {
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = (new self())->parseScopeName($name)) {
             $name = $parts['name'];
         }
 
@@ -234,12 +245,13 @@ class Setting extends Model implements HasMedia
      * Get the updated_at timestamp for a scope.
      *
      * @param $scope
+     *
      * @return mixed|null
      */
     public static function getWhenScopeUpdated($scope = 'default')
     {
         if (!config('sitesettings.use_scopes')) {
-            return null;
+            return;
         }
 
         return self::where('scope', $scope)
@@ -252,6 +264,7 @@ class Setting extends Model implements HasMedia
      * Assert the setting name follows the naming style.
      *
      * @param $name
+     *
      * @return bool
      */
     protected function followsNamingStyle($name)
@@ -280,9 +293,10 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * Parses scope name dot syntax. e.g. 'scope.name'
+     * Parses scope name dot syntax. e.g. 'scope.name'.
      *
      * @param $name
+     *
      * @return array|null
      */
     protected function parseScopeName($name)
@@ -290,11 +304,11 @@ class Setting extends Model implements HasMedia
         $name_parts = explode('.', $name);
 
         if (!config('sitesettings.use_scopes') || count($name_parts) < 2) {
-            return null;
+            return;
         } else {
             return [
                 'scope' => array_shift($name_parts),
-                'name' => implode('.', $name_parts),
+                'name'  => implode('.', $name_parts),
             ];
         }
     }
@@ -309,11 +323,11 @@ class Setting extends Model implements HasMedia
 
             $setting = self::updateOrCreate(
                 [
-                    'name' => $name,
+                    'name'  => $name,
                     'scope' => isset($scope) ? $scope : 'default',
                 ],
                 [
-                    'value' => null,
+                    'value'      => null,
                     'updated_by' => $user->id,
                 ]
             );
