@@ -23,16 +23,17 @@ class TestCase extends Orchestra
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
+     *
      * @return void
      */
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => '',
+            'prefix'   => '',
         ]);
         $app['config']->set('auth.providers.users.model', User::class);
         $app['config']->set('sitesettings.force_naming_style', true);
@@ -46,14 +47,14 @@ class TestCase extends Orchestra
             'root'   => public_path('media'),
         ]);
 
-        include_once __DIR__ . '/migrations/create_media_table.php.stub';
+        include_once __DIR__.'/migrations/create_media_table.php.stub';
         (new \CreateMediaTable())->up();
     }
 
     /**
      * Get package providers.
      *
-     * @param  \Illuminate\Foundation\Application  $app
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return array
      */
@@ -72,8 +73,8 @@ class TestCase extends Orchestra
     public function test_migrations_run()
     {
         $setting = Setting::create([
-            'name' => 'setting_name',
-            'value' => 'a setting value'
+            'name'  => 'setting_name',
+            'value' => 'a setting value',
         ]);
 
         $this->assertEquals('setting_name', $setting->name);

@@ -119,7 +119,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create([
-            'name' => 'name', 'value' => 'original value', 'scope' => 'scope'
+            'name' => 'name', 'value' => 'original value', 'scope' => 'scope',
         ]);
 
         $setting->updateValue('new value', $user);
@@ -158,10 +158,10 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class)->create([
-            'name' => 'name', 'value' => 'value1', 'updated_by' => 1
+            'name' => 'name', 'value' => 'value1', 'updated_by' => 1,
         ]);
         factory(Setting::class)->create([
-            'name' => 'name', 'value' => 'value2', 'updated_by' => 2, 'scope' => 'scope'
+            'name' => 'name', 'value' => 'value2', 'updated_by' => 2, 'scope' => 'scope',
         ]);
 
         $user_id1 = Setting::getUpdatedBy('name');

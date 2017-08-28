@@ -63,7 +63,7 @@ class NamingStyleTest extends TestCase
     {
         $this->app['config']->set('sitesettings.force_naming_style', true);
         $this->app['config']->set('sitesettings.naming_styles', [
-            'snake_case', 'camel_case', 'kebab_case', 'studly_case'
+            'snake_case', 'camel_case', 'kebab_case', 'studly_case',
         ]);
 
         $setting = new Setting(['name' => 'setting_name']);
