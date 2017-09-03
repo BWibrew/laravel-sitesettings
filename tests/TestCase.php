@@ -41,6 +41,7 @@ class TestCase extends Orchestra
         ]);
         $app['config']->set('sitesettings.use_scopes', true);
         $app['config']->set('sitesettings.media_value_type', 'file_name');
+        $app['config']->set('medialibrary.custom_url_generator_class', TestUrlGenerator::class);
         $app['config']->set('filesystems.disks.media', [
             'driver' => 'local',
             'root'   => public_path('media'),

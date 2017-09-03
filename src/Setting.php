@@ -328,7 +328,6 @@ class Setting extends Model implements HasMedia
                 $setting->value = $setting->getMedia()->first()->getPath();
                 break;
             case 'url':
-                die(var_dump($setting->getMedia()->first()->getUrl()));
                 $setting->value = $setting->getMedia()->first()->getUrl();
                 break;
             case 'file_name':

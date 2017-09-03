@@ -167,7 +167,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('upload', $this->file, $user);
 
-        $this->assertEquals($setting->getMedia()[0]->getPath(), $setting->value);
+        $this->assertEquals($setting->getMedia()[0]->getUrl(), $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
 
