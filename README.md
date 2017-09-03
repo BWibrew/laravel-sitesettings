@@ -7,6 +7,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
 [![Build Status](https://img.shields.io/travis/BWibrew/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/BWibrew/laravel-sitesettings)
+[![StyleCI](https://styleci.io/repos/99725839/shield?branch=master)](https://styleci.io/repos/99725839)
 
 ## Installation
 Install using Composer by running:
