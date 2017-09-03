@@ -47,7 +47,7 @@ class TestCase extends Orchestra
             'root'   => public_path('media'),
         ]);
 
-        include_once __DIR__ . '/migrations/create_media_table.php.stub';
+        include_once __DIR__.'/migrations/create_media_table.php.stub';
         (new \CreateMediaTable())->up();
     }
 
@@ -74,7 +74,7 @@ class TestCase extends Orchestra
     {
         $setting = Setting::create([
             'name' => 'setting_name',
-            'value' => 'a setting value'
+            'value' => 'a setting value',
         ]);
 
         $this->assertEquals('setting_name', $setting->name);

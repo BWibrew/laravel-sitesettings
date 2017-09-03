@@ -2,10 +2,10 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use BWibrew\SiteSettings\Setting;
-use BWibrew\SiteSettings\Tests\Models\User;
-use Illuminate\Http\UploadedFile;
 use Faker\Factory as Faker;
+use BWibrew\SiteSettings\Setting;
+use Illuminate\Http\UploadedFile;
+use BWibrew\SiteSettings\Tests\Models\User;
 
 class MediaUploadsTest extends TestCase
 {
@@ -15,7 +15,7 @@ class MediaUploadsTest extends TestCase
     {
         parent::setUp();
 
-        $file_path = Faker::create()->file(__DIR__ . '/tmp/src', __DIR__ . '/tmp/dest');
+        $file_path = Faker::create()->file(__DIR__.'/tmp/src', __DIR__.'/tmp/dest');
 
         $this->file = new UploadedFile($file_path, 'test_file.txt', null, null, null, true);
     }
@@ -130,7 +130,7 @@ class MediaUploadsTest extends TestCase
     {
         $user = factory(User::class)->create();
         $another_file = new UploadedFile(
-            Faker::create()->file(__DIR__ . '/tmp/src', __DIR__ . '/tmp/dest'),
+            Faker::create()->file(__DIR__.'/tmp/src', __DIR__.'/tmp/dest'),
             'test_file.txt',
             null,
             null,
