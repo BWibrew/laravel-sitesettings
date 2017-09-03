@@ -2,9 +2,9 @@
 
 namespace BWibrew\SiteSettings;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
@@ -33,7 +33,7 @@ class Setting extends Model implements HasMedia
      */
     public function setNameAttribute($name)
     {
-        if (config('sitesettings.force_naming_style') && !$this->followsNamingStyle($name)) {
+        if (config('sitesettings.force_naming_style') && ! $this->followsNamingStyle($name)) {
             throw new \Exception('Setting name does not match naming style');
         } else {
             $this->attributes['name'] = $name;
@@ -49,7 +49,7 @@ class Setting extends Model implements HasMedia
      */
     public function updateName($name, $user = null)
     {
-        if (!$user) {
+        if (! $user) {
             $user = Auth::user();
         }
 
@@ -75,7 +75,7 @@ class Setting extends Model implements HasMedia
      */
     public function updateValue($value = null, $user = null)
     {
-        if (!$user) {
+        if (! $user) {
             $user = Auth::user();
         }
 
@@ -125,14 +125,14 @@ class Setting extends Model implements HasMedia
      */
     public static function register($name, $value = null, $user = null)
     {
-        if (!$user) {
+        if (! $user) {
             $user = Auth::user();
         }
 
         if ($value instanceof UploadedFile) {
-            return (new Setting)->syncWithMediaLibrary($name, $value, $user);
+            return (new self)->syncWithMediaLibrary($name, $value, $user);
         } else {
-            if ($parts = (new Setting)->parseScopeName($name)) {
+            if ($parts = (new self)->parseScopeName($name)) {
                 $name = $parts['name'];
                 $scope = $parts['scope'];
             }
@@ -156,7 +156,7 @@ class Setting extends Model implements HasMedia
     {
         $scope = 'default';
 
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = (new self)->parseScopeName($name)) {
             $name = $parts['name'];
             $scope = $parts['scope'];
         }
@@ -172,8 +172,8 @@ class Setting extends Model implements HasMedia
      */
     public static function getScopeValues($scope = 'default')
     {
-        if (!config('sitesettings.use_scopes')) {
-            return null;
+        if (! config('sitesettings.use_scopes')) {
+            return;
         }
 
         return self::where('scope', $scope)->pluck('value');
@@ -189,7 +189,7 @@ class Setting extends Model implements HasMedia
     {
         $scope = 'default';
 
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = (new self)->parseScopeName($name)) {
             $name = $parts['name'];
             $scope = $parts['scope'];
         }
@@ -205,8 +205,8 @@ class Setting extends Model implements HasMedia
      */
     public static function getScopeUpdatedBy($scope = 'default')
     {
-        if (!config('sitesettings.use_scopes')) {
-            return null;
+        if (! config('sitesettings.use_scopes')) {
+            return;
         }
 
         return self::where('scope', $scope)
@@ -223,7 +223,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getWhenUpdated($name)
     {
-        if ($parts = (new Setting)->parseScopeName($name)) {
+        if ($parts = (new self)->parseScopeName($name)) {
             $name = $parts['name'];
         }
 
@@ -238,8 +238,8 @@ class Setting extends Model implements HasMedia
      */
     public static function getWhenScopeUpdated($scope = 'default')
     {
-        if (!config('sitesettings.use_scopes')) {
-            return null;
+        if (! config('sitesettings.use_scopes')) {
+            return;
         }
 
         return self::where('scope', $scope)
@@ -280,7 +280,7 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * Parses scope name dot syntax. e.g. 'scope.name'
+     * Parses scope name dot syntax. e.g. 'scope.name'.
      *
      * @param $name
      * @return array|null
@@ -289,8 +289,8 @@ class Setting extends Model implements HasMedia
     {
         $name_parts = explode('.', $name);
 
-        if (!config('sitesettings.use_scopes') || count($name_parts) < 2) {
-            return null;
+        if (! config('sitesettings.use_scopes') || count($name_parts) < 2) {
+            return;
         } else {
             return [
                 'scope' => array_shift($name_parts),

@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(BWibrew\SiteSettings\Tests\Models\User::class, function (Faker\Generator $faker) {
     static $password;
+
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -20,7 +21,7 @@ $factory->define(BWibrew\SiteSettings\Setting::class, function (Faker\Generator 
             if (mt_rand(0, 1)) {
                 return factory(BWibrew\SiteSettings\Tests\Models\User::class)->create()->id;
             } else {
-                return null;
+                return;
             }
         },
     ];
