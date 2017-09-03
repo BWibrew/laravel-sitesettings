@@ -15,4 +15,12 @@ class TestUrlGenerator extends BaseUrlGenerator
     {
         return realpath(public_path('media').'/'.$this->getPathRelativeToRoot());
     }
+
+    /*
+     * Get the path for the profile of a media item.
+     */
+    public function getPath(): string
+    {
+        return realpath(public_path('media').'/'.$this->getPathRelativeToRoot());
+    }
 }
