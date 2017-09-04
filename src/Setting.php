@@ -44,7 +44,7 @@ class Setting extends Model implements HasMedia
      * Update current setting name.
      *
      * @param $name
-     * @param null $user
+     * @param $user
      * @return $this
      */
     public function updateName($name, $user = null)
@@ -69,8 +69,8 @@ class Setting extends Model implements HasMedia
     /**
      * Update current setting value.
      *
-     * @param null $value
-     * @param null $user
+     * @param $value
+     * @param $user
      * @return $this
      */
     public function updateValue($value = null, $user = null)
@@ -119,8 +119,8 @@ class Setting extends Model implements HasMedia
      * Authenticated user ID will be assigned to 'updated_by' column.
      *
      * @param $name
-     * @param null $value
-     * @param null $user
+     * @param $value
+     * @param $user
      * @return $this|Model
      */
     public static function register($name, $value = null, $user = null)
