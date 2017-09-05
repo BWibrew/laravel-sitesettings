@@ -189,8 +189,8 @@ class ScopeTest extends TestCase
         $setting1 = factory(Setting::class)->create(['name' => 'name']);
         $setting2 = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope']);
 
-        $timestamp1 = Setting::getWhenUpdated('name');
-        $timestamp2 = Setting::getWhenUpdated('scope.name');
+        $timestamp1 = Setting::getUpdatedAt('name');
+        $timestamp2 = Setting::getUpdatedAt('scope.name');
 
         $this->assertEquals($setting1->updated_at, $timestamp1);
         $this->assertEquals($setting2->updated_at, $timestamp2);
@@ -202,7 +202,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', false);
         $setting = factory(Setting::class)->create(['name' => 'setting.name']);
 
-        $timestamp = Setting::getWhenUpdated('setting.name');
+        $timestamp = Setting::getUpdatedAt('setting.name');
 
         $this->assertEquals($setting->updated_at, $timestamp);
     }
@@ -264,8 +264,8 @@ class ScopeTest extends TestCase
         $unscoped_settings = factory(Setting::class, 10)->create()->sortBy('updated_at')->first();
         $scoped_settings = factory(Setting::class, 10)->create(['scope' => 'scope'])->sortBy('updated_at')->first();
 
-        $unscoped_timestamp = Setting::getWhenScopeUpdated();
-        $scoped_timestamp = Setting::getWhenScopeUpdated('scope');
+        $unscoped_timestamp = Setting::getScopeUpdatedAt();
+        $scoped_timestamp = Setting::getScopeUpdatedAt('scope');
 
         $this->assertEquals($unscoped_settings->updated_at, $unscoped_timestamp);
         $this->assertEquals($scoped_settings->updated_at, $scoped_timestamp);
@@ -277,7 +277,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class, 10)->create(['scope' => 'scope']);
 
-        $timestamp = Setting::getWhenScopeUpdated('scope');
+        $timestamp = Setting::getScopeUpdatedAt('scope');
 
         $this->assertEquals(null, $timestamp);
     }

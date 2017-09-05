@@ -221,7 +221,7 @@ class Setting extends Model implements HasMedia
      * @param $name
      * @return mixed
      */
-    public static function getWhenUpdated($name)
+    public static function getUpdatedAt($name)
     {
         if ($parts = (new self)->parseScopeName($name)) {
             $name = $parts['name'];
@@ -236,7 +236,7 @@ class Setting extends Model implements HasMedia
      * @param $scope
      * @return mixed|null
      */
-    public static function getWhenScopeUpdated($scope = 'default')
+    public static function getScopeUpdatedAt($scope = 'default')
     {
         if (! config('sitesettings.use_scopes')) {
             return;

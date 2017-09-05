@@ -122,7 +122,7 @@ class SettingTest extends TestCase
     {
         $setting = factory(Setting::class)->create(['name' => 'setting_name']);
 
-        $timestamp = Setting::getWhenUpdated('setting_name');
+        $timestamp = Setting::getUpdatedAt('setting_name');
 
         $this->assertEquals($setting->updated_at, $timestamp);
     }

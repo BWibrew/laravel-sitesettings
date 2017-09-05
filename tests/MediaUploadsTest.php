@@ -121,7 +121,7 @@ class MediaUploadsTest extends TestCase
 
         $setting->updateValue($this->file, $user);
 
-        $timestamp = Setting::getWhenUpdated('name');
+        $timestamp = Setting::getUpdatedAt('name');
         $this->assertEquals($setting->updated_at, $timestamp);
     }
 

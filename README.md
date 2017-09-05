@@ -79,7 +79,7 @@ You can also retrieve the ID of the user whom last updated the setting and when 
 ```php
 Setting::getUpdatedBy($name); // Returns user ID
 
-Setting::getWhenUpdated($name); // Returns Carbon date object
+Setting::getUpdatedAt($name); // Returns Carbon date object
 ```
 
 ### Using scopes
@@ -98,7 +98,7 @@ Setting::getScopeValues();
 Setting::getScopeUpdatedBy();
 
 // Return when the most recent update was made in a scope
-Setting::whenScopeUpdated();
+Setting::getScopeUpdatedAt();
 ```
 
 To update or remove a scope:
