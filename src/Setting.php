@@ -299,6 +299,15 @@ class Setting extends Model implements HasMedia
         }
     }
 
+    /**
+     * Syncs associated media library item.
+     *
+     * @param $name
+     * @param $value
+     * @param $user
+     *
+     * @return Setting|Model
+     */
     protected function syncWithMediaLibrary($name = null, $value = null, $user = null)
     {
         if ($name) {
