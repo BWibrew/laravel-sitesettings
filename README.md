@@ -2,9 +2,6 @@
 
 *** **Currently under active development** ***
 
-**Todo:**
-- Add support for media uploads
-
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
 [![Build Status](https://img.shields.io/travis/BWibrew/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/BWibrew/laravel-sitesettings)
 [![StyleCI](https://styleci.io/repos/99725839/shield?branch=master)](https://styleci.io/repos/99725839)
@@ -110,6 +107,11 @@ $setting->updateScope('new_scope_name');
 $setting->removeScope(); // Sets scope to null.
 ```
 
+### Usage with media uploads
+This package makes use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to provide 
+the ability to associate settings with uploaded media.  
+
+To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.4/requests#files) as the setting value.
 
 ## Configuration
 To enforce a naming style for your settings make sure `force_naming_style` is set to true in the config file.
