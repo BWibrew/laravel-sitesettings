@@ -2,6 +2,9 @@
 
 Notable changes will be listed here
 
+## 0.4.0 - 2017-09-05
+- Add support for file uploads
+
 ## 0.3.0 - 2017-08-12
 - Add more naming styles
 - Add scopes
