@@ -17,7 +17,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_remove_a_scope()
+    public function it_removes_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $setting = factory(Setting::class)->create(['scope' => 'scope']);
@@ -28,7 +28,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_a_scope()
+    public function it_updates_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $setting = factory(Setting::class)->create(['scope' => 'original_scope']);
@@ -39,7 +39,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_a_new_setting_with_a_scope()
+    public function it_registers_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -51,7 +51,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_a_new_setting_with_a_value_with_a_scope()
+    public function it_registers_with_a_value_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -64,7 +64,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_with_a_scope_with_multiple_items_in_dot_syntax()
+    public function it_registers_with_a_scope_with_multiple_items_in_dot_syntax()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -76,7 +76,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_register_a_new_setting_with_a_scope_when_scopes_are_disabled()
+    public function it_cannot_register_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         $user = factory(User::class)->create();
@@ -88,7 +88,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_the_setting_name_with_a_scope()
+    public function it_updates_name_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -101,7 +101,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_update_the_setting_name_with_a_scope_when_scopes_are_disabled()
+    public function it_cannot_update_name_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         $user = factory(User::class)->create();
@@ -114,7 +114,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_the_setting_value_with_a_scope()
+    public function it_updates_value_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -129,7 +129,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_value_with_a_scope()
+    public function it_gets_value_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class)->create(['name' => 'name', 'value' => 'value1']);
@@ -143,7 +143,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_get_the_value_with_a_scope_when_scopes_are_disabled()
+    public function it_cannot_get_value_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class)->create(['name' => 'setting.name', 'value' => 'value']);
@@ -154,7 +154,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_updated_by_user_id_with_a_scope()
+    public function it_gets_updated_by_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class)->create([
@@ -172,7 +172,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_get_the_updated_by_user_id_with_a_scope_when_scopes_are_disabled()
+    public function it_cannot_get_updated_by_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class)->create(['name' => 'setting.name', 'value' => 'value', 'updated_by' => 1]);
@@ -183,7 +183,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_updated_timestamp_with_a_scope()
+    public function it_gets_updated_at_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $setting1 = factory(Setting::class)->create(['name' => 'name']);
@@ -197,7 +197,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_get_the_updated_timestamp_with_a_scope_when_scopes_are_disabled()
+    public function it_cannot_get_updated_at_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         $setting = factory(Setting::class)->create(['name' => 'setting.name']);
@@ -208,7 +208,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_all_the_values_from_a_scope()
+    public function it_gets_all_values_from_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class, 10)->create();
@@ -222,7 +222,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_get_all_the_values_from_a_scope_when_scopes_are_disabled()
+    public function it_cannot_get_all_values_from_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class, 10)->create(['scope' => 'scope']);
@@ -233,7 +233,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_scope_updated_by_user_id()
+    public function it_gets_scope_updated_by()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class, 10)->create(['updated_by' => 1]);
@@ -247,7 +247,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_get_the_scope_updated_by_user_id_when_scopes_are_disabled()
+    public function it_cannot_get_scope_updated_by_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class, 10)->create(['scope' => 'scope', 'updated_by' => 1]);
@@ -258,7 +258,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_scope_updated_timestamp()
+    public function it_gets_scope_updated_at()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $unscoped_settings = factory(Setting::class, 10)->create()->sortBy('updated_at')->first();
@@ -272,7 +272,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_get_the_scope_updated_timestamp_when_scopes_are_disabled()
+    public function it_cannot_get_scope_updated_at_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class, 10)->create(['scope' => 'scope']);
@@ -283,7 +283,7 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
-    public function it_can_have_multiple_matching_names_in_different_scopes()
+    public function it_has_multiple_identical_names_in_different_scopes()
     {
         $setting1 = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope1', 'value' => 'value1']);
         $setting2 = factory(Setting::class)->create(['name' => 'name', 'scope' => 'scope2', 'value' => 'value2']);

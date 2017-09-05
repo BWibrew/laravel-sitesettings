@@ -21,7 +21,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_add_media()
+    public function it_adds_media()
     {
         $setting = factory(Setting::class)->create();
 
@@ -31,7 +31,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_a_new_setting_file_upload()
+    public function it_registers_a_file_upload()
     {
         $user = factory(User::class)->create();
 
@@ -42,7 +42,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_register_with_a_file_upload_with_a_scope()
+    public function it_registers_a_file_upload_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -55,7 +55,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_the_setting_with_a_file_upload()
+    public function it_updates_with_a_file_upload()
     {
         $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create(['name' => 'name']);
@@ -66,7 +66,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_update_with_a_scope_with_a_file_upload()
+    public function it_updates_with_a_scope_with_a_file_upload()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
@@ -79,7 +79,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_the_user_id_when_updating_a_setting()
+    public function it_updates_updated_by_with_a_file_upload()
     {
         $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'original value']);
@@ -91,7 +91,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_sets_the_user_id_when_registering_a_setting()
+    public function it_sets_updated_by_when_registering()
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -102,7 +102,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_updated_by_user_id_after_being_updated()
+    public function it_gets_updated_by()
     {
         $user = factory(User::class)->create(['id' => 1]);
         $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'value']);
@@ -114,7 +114,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_the_updated_at_timestamp_after_being_updated()
+    public function it_gets_updated_at()
     {
         $user = factory(User::class)->create(['id' => 1]);
         $setting = factory(Setting::class)->create(['name' => 'name']);
@@ -126,7 +126,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_only_store_a_single_file_per_setting()
+    public function it_stores_single_file_per_setting()
     {
         $user = factory(User::class)->create();
         $another_file = new UploadedFile(
@@ -148,7 +148,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_get_the_filename_when_set_in_config()
+    public function it_gets_filename_when_set_in_config()
     {
         $this->app['config']->set('sitesettings.media_value_type', 'file_name');
         $user = factory(User::class)->create();
@@ -160,7 +160,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_get_the_url_when_set_in_config()
+    public function it_gets_url_when_set_in_config()
     {
         $this->app['config']->set('sitesettings.media_value_type', 'url');
         $user = factory(User::class)->create();
@@ -172,7 +172,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_will_get_the_file_path_when_set_in_config()
+    public function it_gets_file_path_when_set_in_config()
     {
         $this->app['config']->set('sitesettings.media_value_type', 'path');
         $user = factory(User::class)->create();

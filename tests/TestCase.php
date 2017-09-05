@@ -2,7 +2,6 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use BWibrew\SiteSettings\Setting;
 use BWibrew\SiteSettings\Tests\Models\User;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -63,25 +62,5 @@ class TestCase extends Orchestra
         return [
             \BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
         ];
-    }
-
-    /**
-     * Test running migration.
-     *
-     * @test
-     */
-    public function test_migrations_run()
-    {
-        $setting = Setting::create([
-            'name' => 'setting_name',
-            'value' => 'a setting value',
-        ]);
-
-        $this->assertEquals('setting_name', $setting->name);
-        $this->assertEquals('a setting value', $setting->value);
-
-        $settings = \DB::table('settings')->where('id', '=', 1)->first();
-        $this->assertEquals('setting_name', $settings->name);
-        $this->assertEquals('a setting value', $settings->value);
     }
 }
