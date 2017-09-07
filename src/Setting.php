@@ -35,9 +35,9 @@ class Setting extends Model implements HasMedia
     {
         if (config('sitesettings.force_naming_style') && ! $this->followsNamingStyle($name)) {
             throw new \Exception('Setting name does not match naming style');
-        } else {
-            $this->attributes['name'] = $name;
         }
+
+        $this->attributes['name'] = $name;
     }
 
     /**
@@ -49,9 +49,7 @@ class Setting extends Model implements HasMedia
      */
     public function updateName($name, $user = null)
     {
-        if (! $user) {
-            $user = Auth::user();
-        }
+        $user ?: $user = Auth::user();
 
         if ($parts = $this->parseScopeName($name)) {
             $this->name = $parts['name'];
@@ -75,9 +73,7 @@ class Setting extends Model implements HasMedia
      */
     public function updateValue($value = null, $user = null)
     {
-        if (! $user) {
-            $user = Auth::user();
-        }
+        $user ?: $user = Auth::user();
 
         if ($value instanceof UploadedFile) {
             return $this->syncWithMediaLibrary(null, $value, $user);
@@ -125,9 +121,7 @@ class Setting extends Model implements HasMedia
      */
     public static function register($name, $value = null, $user = null)
     {
-        if (! $user) {
-            $user = Auth::user();
-        }
+        $user ?: $user = Auth::user();
 
         if ($value instanceof UploadedFile) {
             return (new self)->syncWithMediaLibrary($name, $value, $user);
