@@ -14,7 +14,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__.'/../src/database/factories');
+        $this->withFactories(__DIR__.'/database/factories');
         $this->artisan('migrate', ['--database' => 'sqlite']);
         $this->loadLaravelMigrations(['--database' => 'sqlite']);
     }
@@ -46,7 +46,7 @@ class TestCase extends Orchestra
             'root'   => public_path('media'),
         ]);
 
-        include_once __DIR__.'/migrations/create_media_table.php.stub';
+        include_once __DIR__.'/database/migrations/create_media_table.php.stub';
         (new \CreateMediaTable())->up();
     }
 
