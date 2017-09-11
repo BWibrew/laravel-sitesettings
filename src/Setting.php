@@ -148,14 +148,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getValue($name)
     {
-        $scope = 'default';
-
-        if ($parts = (new self)->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
-
-        return self::where([['name', $name], ['scope', $scope]])->pluck('value')->first();
+        return (new self)->getProperty('value', $name);
     }
 
     /**
@@ -181,14 +174,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getUpdatedBy($name)
     {
-        $scope = 'default';
-
-        if ($parts = (new self)->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
-
-        return self::where([['name', $name], ['scope', $scope]])->pluck('updated_by')->first();
+        return (new self)->getProperty('updated_by', $name);
     }
 
     /**
@@ -199,14 +185,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getScopeUpdatedBy($scope = 'default')
     {
-        if (! config('sitesettings.use_scopes')) {
-            return;
-        }
-
-        return self::where('scope', $scope)
-            ->orderBy('updated_at')
-            ->pluck('updated_by')
-            ->first();
+        return (new self)->getScopeProperty('updated_by', $scope);
     }
 
     /**
@@ -217,11 +196,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getUpdatedAt($name)
     {
-        if ($parts = (new self)->parseScopeName($name)) {
-            $name = $parts['name'];
-        }
-
-        return self::where('name', $name)->pluck('updated_at')->first();
+        return (new self)->getProperty('updated_at', $name);
     }
 
     /**
@@ -232,14 +207,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getScopeUpdatedAt($scope = 'default')
     {
-        if (! config('sitesettings.use_scopes')) {
-            return;
-        }
-
-        return self::where('scope', $scope)
-            ->orderBy('updated_at')
-            ->pluck('updated_at')
-            ->first();
+        return (new self)->getScopeProperty('updated_at', $scope);
     }
 
     /**
@@ -341,5 +309,29 @@ class Setting extends Model implements HasMedia
         $setting->save();
 
         return $setting;
+    }
+
+    protected function getProperty($property, $name)
+    {
+        $scope = 'default';
+
+        if ($parts = $this->parseScopeName($name)) {
+            $name = $parts['name'];
+            $scope = $parts['scope'];
+        }
+
+        return $this->where([['name', $name], ['scope', $scope]])->pluck($property)->first();
+    }
+
+    protected function getScopeProperty($property, $scope)
+    {
+        if (! config('sitesettings.use_scopes')) {
+            return;
+        }
+
+        return self::where('scope', $scope)
+            ->orderBy('updated_at')
+            ->pluck($property)
+            ->first();
     }
 }
