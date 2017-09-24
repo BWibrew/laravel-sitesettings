@@ -2,32 +2,29 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use Faker\Factory as Faker;
 use BWibrew\SiteSettings\Setting;
 use Illuminate\Http\UploadedFile;
 use BWibrew\SiteSettings\Tests\Models\User;
 
 class MediaUploadsTest extends TestCase
 {
+    protected $setting;
     protected $file;
 
     public function setUp()
     {
         parent::setUp();
 
-        $file_path = Faker::create()->file(__DIR__.'/tmp/src', __DIR__.'/tmp/dest');
-
-        $this->file = new UploadedFile($file_path, 'test_file.txt', null, null, null, true);
+        $this->setting = factory(Setting::class)->create();
+        $this->file = UploadedFile::fake()->image('logo.png')->size(100);
     }
 
     /** @test */
     public function it_adds_media()
     {
-        $setting = factory(Setting::class)->create();
+        $this->setting->addMedia($this->file)->toMediaCollection();
 
-        $setting->addMedia($this->file)->toMediaCollection();
-
-        $this->assertCount(1, $setting->getMedia());
+        $this->assertCount(1, $this->setting->getMedia());
     }
 
     /** @test */
@@ -37,7 +34,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('upload', $this->file, $user);
 
-        $this->assertEquals('test_file.txt', $setting->value);
+        $this->assertEquals('logo.png', $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
 
@@ -51,18 +48,17 @@ class MediaUploadsTest extends TestCase
 
         $this->assertEquals('name', $setting->name);
         $this->assertEquals('scope', $setting->scope);
-        $this->assertEquals('test_file.txt', $setting->value);
+        $this->assertEquals('logo.png', $setting->value);
     }
 
     /** @test */
     public function it_updates_with_a_file_upload()
     {
         $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'name']);
 
-        $setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, $user);
 
-        $this->assertEquals('test_file.txt', $setting->value);
+        $this->assertEquals('logo.png', $this->setting->value);
     }
 
     /** @test */
@@ -70,24 +66,22 @@ class MediaUploadsTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'value', 'scope' => 'scope']);
 
-        $setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, $user);
 
-        $this->assertEquals('test_file.txt', $setting->value);
-        $this->assertEquals('scope', $setting->scope);
+        $this->assertEquals('logo.png', $this->setting->value);
+        $this->assertEquals($this->setting->scope, $this->setting->scope);
     }
 
     /** @test */
     public function it_updates_updated_by_with_a_file_upload()
     {
         $user = factory(User::class)->create();
-        $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'original value']);
 
         $this->actingAs($user);
-        $setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, $user);
 
-        $this->assertEquals($user->id, $setting->updated_by);
+        $this->assertEquals($user->id, $this->setting->updated_by);
     }
 
     /** @test */
@@ -104,47 +98,38 @@ class MediaUploadsTest extends TestCase
     /** @test */
     public function it_gets_updated_by()
     {
-        $user = factory(User::class)->create(['id' => 1]);
-        $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'value']);
+        $user = factory(User::class)->create();
 
-        $setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, $user);
 
-        $user_id = Setting::getUpdatedBy('name');
-        $this->assertEquals(1, $user_id);
+        $user_id = Setting::getUpdatedBy($this->setting->name);
+        $this->assertEquals($user->id, $user_id);
     }
 
     /** @test */
     public function it_gets_updated_at()
     {
-        $user = factory(User::class)->create(['id' => 1]);
-        $setting = factory(Setting::class)->create(['name' => 'name']);
+        $user = factory(User::class)->create();
 
-        $setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, $user);
 
-        $timestamp = Setting::getUpdatedAt('name');
-        $this->assertEquals($setting->updated_at, $timestamp);
+        $timestamp = Setting::getUpdatedAt($this->setting->name);
+        $this->assertEquals($this->setting->updated_at, $timestamp);
     }
 
     /** @test */
     public function it_stores_single_file_per_setting()
     {
         $user = factory(User::class)->create();
-        $another_file = new UploadedFile(
-            Faker::create()->file(__DIR__.'/tmp/src', __DIR__.'/tmp/dest'),
-            'test_file.txt',
-            null,
-            null,
-            null,
-            true
-        );
+        $updated = UploadedFile::fake()->image('logo2.png')->size(100);
 
-        $setting = factory(Setting::class)->create()->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, $user);
+        $this->assertCount(1, $this->setting->getMedia());
+        $this->assertEquals('logo.png', $this->setting->getMedia()->first()->file_name);
 
-        $this->assertCount(1, $setting->getMedia());
-
-        $setting->updateValue($another_file, $user);
-
-        $this->assertCount(1, $setting->getMedia());
+        $this->setting->updateValue($updated, $user);
+        $this->assertCount(1, $this->setting->getMedia());
+        $this->assertEquals('logo2.png', $this->setting->getMedia()->first()->file_name);
     }
 
     /** @test */
@@ -155,7 +140,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('upload', $this->file, $user);
 
-        $this->assertEquals('test_file.txt', $setting->value);
+        $this->assertEquals('logo.png', $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
 
@@ -167,7 +152,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('upload', $this->file, $user);
 
-        $this->assertEquals($setting->getMedia()[0]->getUrl(), $setting->value);
+        $this->assertEquals($setting->getMedia()->first()->getUrl(), $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
 
@@ -179,7 +164,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('upload', $this->file, $user);
 
-        $this->assertEquals($setting->getMedia()[0]->getPath(), $setting->value);
+        $this->assertEquals($setting->getMedia()->first()->getPath(), $setting->value);
         $this->assertCount(1, $setting->getMedia());
     }
 }
