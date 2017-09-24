@@ -75,15 +75,15 @@ class Setting extends Model implements HasMedia
     {
         $user ?: $user = Auth::user();
 
-        if ($value instanceof UploadedFile) {
-            return $this->syncWithMediaLibrary(null, $value, $user);
-        } else {
-            $this->value = $value;
-            $this->updated_by = $user->id;
-            $this->save();
+        $this->value = $value;
+        $this->updated_by = $user->id;
+        $this->save();
 
-            return $this;
+        if ($value instanceof UploadedFile) {
+            $this->syncWithMediaLibrary($this->name, $value, $user);
         }
+
+        return $this;
     }
 
     /**
@@ -122,22 +122,24 @@ class Setting extends Model implements HasMedia
     public static function register($name, $value = null, $user = null)
     {
         $user ?: $user = Auth::user();
+        $setting = new self;
+
+        if ($parts = $setting->parseScopeName($name)) {
+            $name = $parts['name'];
+            $scope = $parts['scope'];
+        }
+
+        $setting->name = $name;
+        $setting->value = $value;
+        $setting->scope = isset($scope) ? $scope : 'default';
+        $setting->updated_by = $user->id;
+        $setting->save();
 
         if ($value instanceof UploadedFile) {
-            return (new self)->syncWithMediaLibrary($name, $value, $user);
-        } else {
-            if ($parts = (new self)->parseScopeName($name)) {
-                $name = $parts['name'];
-                $scope = $parts['scope'];
-            }
-
-            return self::create([
-                'name' => $name,
-                'scope' => isset($scope) ? $scope : 'default',
-                'value' => $value,
-                'updated_by' => $user->id,
-            ]);
+            $setting->syncWithMediaLibrary($name, $value, $user);
         }
+
+        return $setting;
     }
 
     /**
@@ -266,49 +268,25 @@ class Setting extends Model implements HasMedia
      *
      * @param $name
      * @param $value
-     * @param $user
-     *
-     * @return Setting|Model
      */
-    protected function syncWithMediaLibrary($name = null, $value = null, $user = null)
+    protected function syncWithMediaLibrary($name, $value)
     {
-        if ($name) {
-            if ($parts = $this->parseScopeName($name)) {
-                $name = $parts['name'];
-                $scope = $parts['scope'];
-            }
-
-            $setting = self::updateOrCreate(
-                [
-                    'name' => $name,
-                    'scope' => isset($scope) ? $scope : 'default',
-                ],
-                [
-                    'value' => null,
-                    'updated_by' => $user->id,
-                ]
-            );
-        } else {
-            $setting = $this;
-        }
-
-        $setting->addMedia($value)->usingName($setting->name)->toMediaCollection();
+        $this->addMedia($value)->usingName($name)->toMediaCollection();
 
         switch (config('sitesettings.media_value_type')) {
             case 'path':
-                $setting->value = $setting->getMedia()->first()->getPath();
+                $this->value = $this->getMedia()->first()->getPath();
+                $this->save();
                 break;
             case 'url':
-                $setting->value = $setting->getMedia()->first()->getUrl();
+                $this->value = $this->getMedia()->first()->getUrl();
+                $this->save();
                 break;
             case 'file_name':
-                $setting->value = $setting->getMedia()->first()->file_name;
+                $this->value = $this->getMedia()->first()->file_name;
+                $this->save();
                 break;
         }
-        $setting->updated_by = $user->id;
-        $setting->save();
-
-        return $setting;
     }
 
     protected function getProperty($property, $name)
