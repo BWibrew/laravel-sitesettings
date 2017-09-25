@@ -157,7 +157,7 @@ class Setting extends Model implements HasMedia
      * Get all values in a scope.
      *
      * @param $scope
-     * @return \Illuminate\Support\Collection|null
+     * @return array|null
      */
     public static function getScopeValues($scope = 'default')
     {
@@ -165,7 +165,7 @@ class Setting extends Model implements HasMedia
             return;
         }
 
-        return self::where('scope', $scope)->pluck('value');
+        return self::where('scope', $scope)->get()->pluck('value', 'name')->toArray();
     }
 
     /**

@@ -222,6 +222,21 @@ class ScopeTest extends TestCase
     }
 
     /** @test */
+    public function it_gets_all_values_from_a_scope_in_an_associative_array()
+    {
+        $this->app['config']->set('sitesettings.use_scopes', true);
+        factory(Setting::class)->create(['name' => 'name1', 'value' => 'value1']);
+        factory(Setting::class)->create(['name' => 'name2', 'value' => 'value2']);
+
+        $values = Setting::getScopeValues();
+
+        $this->assertEquals([
+            'name1' => 'value1',
+            'name2' => 'value2',
+        ], $values);
+    }
+
+    /** @test */
     public function it_cannot_get_all_values_from_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
