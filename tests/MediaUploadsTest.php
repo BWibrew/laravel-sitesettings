@@ -124,12 +124,12 @@ class MediaUploadsTest extends TestCase
         $updated = UploadedFile::fake()->image('logo2.png')->size(100);
 
         $this->setting->updateValue($this->file, $user);
-        $this->assertCount(1, $this->setting->getMedia());
-        $this->assertEquals('logo.png', $this->setting->getMedia()->first()->file_name);
+        $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
+        $this->assertEquals('logo.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 
         $this->setting->updateValue($updated, $user);
-        $this->assertCount(1, $this->setting->getMedia());
-        $this->assertEquals('logo2.png', $this->setting->getMedia()->first()->file_name);
+        $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
+        $this->assertEquals('logo2.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
     }
 
     /** @test */

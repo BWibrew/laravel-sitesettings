@@ -271,6 +271,10 @@ class Setting extends Model implements HasMedia
      */
     protected function syncWithMediaLibrary($name, $value)
     {
+        if (count(self::find($this->id)->getMedia()) > 0) {
+            self::find($this->id)->getMedia()->first()->delete();
+        }
+
         $this->addMedia($value)->usingName($name)->toMediaCollection();
 
         switch (config('sitesettings.media_value_type')) {
