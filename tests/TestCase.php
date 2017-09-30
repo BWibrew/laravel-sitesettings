@@ -65,9 +65,9 @@ class TestCase extends Orchestra
         ];
     }
 
-    protected function getStoragePath(string $name)
+    protected function getStoragePath(int $id)
     {
-        $parts = explode('/', Setting::where(['name' => $name])->first()->getMedia()->first()->getPath());
+        $parts = explode('/', Setting::find($id)->getMedia()->first()->getPath());
 
         return implode('/', array_slice($parts, -2, 2));
     }
