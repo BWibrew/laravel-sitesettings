@@ -37,7 +37,7 @@ class MediaUploadsTest extends TestCase
         $this->setting->addMedia($this->file)->toMediaCollection();
         $path = $this->getStoragePath($this->setting->id);
 
-        $this->setting->updateValue('foobar', $user, true);
+        $this->setting->updateValue('foobar', true, $user);
 
         $this->setting = Setting::find($this->setting->id);
 
@@ -81,7 +81,7 @@ class MediaUploadsTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, false, $user);
 
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertCount(1, $this->setting->getMedia());
@@ -95,7 +95,7 @@ class MediaUploadsTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         $user = factory(User::class)->create();
 
-        $this->setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, false, $user);
 
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertEquals($this->setting->scope, $this->setting->scope);
@@ -130,7 +130,7 @@ class MediaUploadsTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, false, $user);
 
         $user_id = Setting::getUpdatedBy($this->setting->name);
         $this->assertEquals($user->id, $user_id);
@@ -141,7 +141,7 @@ class MediaUploadsTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, false, $user);
 
         $timestamp = Setting::getUpdatedAt($this->setting->name);
         $this->assertEquals($this->setting->updated_at, $timestamp);
@@ -153,13 +153,13 @@ class MediaUploadsTest extends TestCase
         $user = factory(User::class)->create();
         $updated = UploadedFile::fake()->image('logo2.png')->size(100);
 
-        $this->setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file, false, $user);
         $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
         $this->assertEquals('logo.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 
         Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
 
-        $this->setting->updateValue($updated, $user);
+        $this->setting->updateValue($updated, false, $user);
         $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
         $this->assertEquals('logo2.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 

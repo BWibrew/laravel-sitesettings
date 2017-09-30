@@ -71,7 +71,7 @@ class Setting extends Model implements HasMedia
      * @param $user
      * @return $this
      */
-    public function updateValue($value = null, $user = null, $delete_media = false)
+    public function updateValue($value = null, $delete_media = false, $user = null)
     {
         $user ?: $user = Auth::user();
 

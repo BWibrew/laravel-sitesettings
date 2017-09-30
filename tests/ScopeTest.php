@@ -122,7 +122,7 @@ class ScopeTest extends TestCase
             'name' => 'name', 'value' => 'original value', 'scope' => 'scope',
         ]);
 
-        $setting->updateValue('new value', $user);
+        $setting->updateValue('new value', false, $user);
 
         $this->assertEquals('new value', $setting->value);
         $this->assertEquals('scope', $setting->scope);

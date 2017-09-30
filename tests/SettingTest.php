@@ -62,7 +62,7 @@ class SettingTest extends TestCase
         $user = factory(User::class)->create();
         $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'original value']);
 
-        $setting->updateValue('new value', $user);
+        $setting->updateValue('new value', false, $user);
 
         $this->assertEquals('new value', $setting->value);
     }
@@ -85,7 +85,7 @@ class SettingTest extends TestCase
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'original value']);
         $this->actingAs($user1);
 
-        $setting->updateValue('new value', $user1);
+        $setting->updateValue('new value', false, $user1);
 
         $this->assertEquals($user1->id, $setting->updated_by);
 
