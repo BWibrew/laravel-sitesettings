@@ -71,7 +71,7 @@ class Setting extends Model implements HasMedia
      * @param $user
      * @return $this
      */
-    public function updateValue($value = null, $user = null)
+    public function updateValue($value = null, $user = null, $delete_media = false)
     {
         $user ?: $user = Auth::user();
 
@@ -81,6 +81,10 @@ class Setting extends Model implements HasMedia
 
         if ($value instanceof UploadedFile) {
             $this->syncWithMediaLibrary($this->name, $value, $user);
+        } elseif ($delete_media) {
+            $this->getMedia()->first()->delete();
+            $this->value = null;
+            $this->save();
         }
 
         return $this;

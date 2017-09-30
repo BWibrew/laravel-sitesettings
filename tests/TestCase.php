@@ -2,6 +2,7 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
+use BWibrew\SiteSettings\Setting;
 use BWibrew\SiteSettings\Tests\Models\User;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -62,5 +63,12 @@ class TestCase extends Orchestra
         return [
             \BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
         ];
+    }
+
+    protected function getStoragePath(string $name)
+    {
+        $parts = explode('/', Setting::where(['name' => $name])->first()->getMedia()->first()->getPath());
+
+        return implode('/', array_slice($parts, -2, 2));
     }
 }
