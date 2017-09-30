@@ -6,6 +6,7 @@
 [![Build Status](https://img.shields.io/travis/BWibrew/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/BWibrew/laravel-sitesettings)
 [![StyleCI](https://styleci.io/repos/99725839/shield?branch=master)](https://styleci.io/repos/99725839)
 [![Scrutinizer](https://img.shields.io/scrutinizer/g/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://scrutinizer-ci.com/g/BWibrew/laravel-sitesettings)
+[![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://scrutinizer-ci.com/g/BWibrew/laravel-sitesettings)
 
 ## Installation
 Install using Composer by running:
