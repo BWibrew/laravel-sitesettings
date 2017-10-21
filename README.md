@@ -152,10 +152,6 @@ To use a file upload as a setting simply set the [file upload](https://laravel.c
 setting value.
 
 ## Configuration
-To enforce a naming style for your settings make sure `force_naming_style` is set to true in the config file.
-Define which naming styles you wish to use in the `naming_styles` array. 
-Currently `'snake_case'`, `'camel_case'`, `'kebab_case'` and `'studly_case'` are available.
-
 Set `use_scopes` to `false` to disable the use of scopes.
 
 The `media_value_type` setting controls the value stored in the settings table. This can be set to `'file_name'`, 
