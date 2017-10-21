@@ -35,13 +35,8 @@ class Setting extends Model implements HasMedia
     {
         $user ?: $user = Auth::user();
 
-        if ($parts = $this->parseScopeName($name)) {
-            $this->name = $parts['name'];
-            $this->scope = $parts['scope'];
-        } else {
-            $this->name = $name;
-        }
-
+        $this->name = $this->parseScopeName($name)['name'];
+        $this->scope = $this->parseScopeName($name)['scope'];
         $this->updated_by = $user->id;
         $this->save();
 
@@ -112,14 +107,9 @@ class Setting extends Model implements HasMedia
         $user ?: $user = Auth::user();
         $setting = new self;
 
-        if ($parts = $setting->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
-
-        $setting->name = $name;
+        $setting->name = $setting->parseScopeName($name)['name'];
         $setting->value = $value;
-        $setting->scope = isset($scope) ? $scope : 'default';
+        $setting->scope = $setting->parseScopeName($name)['scope'];
         $setting->updated_by = $user->id;
         $setting->save();
 
@@ -201,23 +191,24 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * Parses scope name dot syntax. e.g. 'scope.name'.
+     * Parses scope name dot syntax.
      *
      * @param $name
-     * @return array|null
+     * @return array
      */
     protected function parseScopeName($name)
     {
         $name_parts = explode('.', $name);
 
-        if (! config('sitesettings.use_scopes') || count($name_parts) < 2) {
-            return;
-        } else {
-            return [
-                'scope' => array_shift($name_parts),
-                'name' => implode('.', $name_parts),
-            ];
+        if (config('sitesettings.use_scopes') && count($name_parts) >= 2) {
+            $scope = array_shift($name_parts);
+            $name = implode('.', $name_parts);
         }
+
+        return [
+            'scope' => isset($scope) ? $scope : 'default',
+            'name' => $name,
+        ];
     }
 
     /**
@@ -260,14 +251,10 @@ class Setting extends Model implements HasMedia
      */
     protected function getProperty($property, $name)
     {
-        $scope = 'default';
-
-        if ($parts = $this->parseScopeName($name)) {
-            $name = $parts['name'];
-            $scope = $parts['scope'];
-        }
-
-        return $this->where([['name', $name], ['scope', $scope]])->pluck($property)->first();
+        return $this->where([
+            ['name', $this->parseScopeName($name)['name']],
+            ['scope', $this->parseScopeName($name)['scope']]
+        ])->pluck($property)->first();
     }
 
     /**
