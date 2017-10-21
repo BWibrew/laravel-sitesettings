@@ -250,6 +250,14 @@ class Setting extends Model implements HasMedia
         }
     }
 
+    /**
+     * Gets the property from the setting.
+     *
+     * @param $property
+     * @param $name
+     *
+     * @return mixed
+     */
     protected function getProperty($property, $name)
     {
         $scope = 'default';
@@ -262,6 +270,14 @@ class Setting extends Model implements HasMedia
         return $this->where([['name', $name], ['scope', $scope]])->pluck($property)->first();
     }
 
+    /**
+     * Gets the property from the most recently updated setting in a scope.
+     *
+     * @param $property
+     * @param $scope
+     *
+     * @return mixed
+     */
     protected function getScopeProperty($property, $scope)
     {
         if (! config('sitesettings.use_scopes')) {
