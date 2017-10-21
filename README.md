@@ -1,7 +1,5 @@
 # Persistent CMS style site settings for Laravel
 
-*** **Currently under active development** ***
-
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
 [![Build Status](https://img.shields.io/travis/BWibrew/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/BWibrew/laravel-sitesettings)
 [![StyleCI](https://styleci.io/repos/99725839/shield?branch=master)](https://styleci.io/repos/99725839)
@@ -29,12 +27,49 @@ php artisan migrate
 
 Publish the config file with:
 ```
-php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" ==tag="config"
+php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" --tag="config"
 ```
 
 Publish the migrations with:
 ```
 php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" --tag="migrations"
+```
+
+### File Uploads
+To support the ability to save uploaded files as settings you also need to install the spatie/laravel-medialibrary package.
+Installation instructions can be found [here](https://github.com/spatie/laravel-medialibrary/tree/v5#installation).
+
+Here is the minimum set-up needed:
+
+Add the service provider to the providers array in `config/app.php`:
+```php
+'providers' => [
+    ...
+    Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
+];
+```
+
+Publish the migration with:
+```
+php artisan vendor:publish --provider="Spatie\MediaLibrary\MediaLibraryServiceProvider" --tag="migrations"
+```
+
+Then run table migrations with:
+```
+php artisan migrate
+```
+
+Add add a disk to `app/config/filesystems.php`. e.g:
+```php
+    ...
+    'disks' => [
+        ...
+
+        'media' => [
+            'driver' => 'local',
+            'root'   => public_path().'/media',
+        ],
+    ...
 ```
 
 ## Usage
@@ -81,9 +116,10 @@ Setting::getUpdatedAt($name); // Returns Carbon date object
 ```
 
 ### Using scopes
-You can categories your settings into 'scopes'. Scopes use a simple 'dot' syntax on the setting name.
+You can categories your settings into 'scopes'. Scopes use a simple dot syntax on the setting name.
 
-To assign or retrieve a setting in a scope, place the scope name in front of the setting name and separate them with a dot ('.'). e.g. `scope_name.setting_name`.
+To assign or retrieve a setting in a scope, place the scope name in front of the setting name and separate them with a 
+dot: `scope_name.setting_name`.
 This works the same way with all methods which take a setting name as a parameter.
 
 There are also a number of extra methods used with scopes:
@@ -110,16 +146,20 @@ $setting->removeScope(); // Sets scope to null.
 
 ### Usage with media uploads
 This package makes use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to provide 
-the ability to associate settings with uploaded media.  
+the ability to associate settings with uploaded media.
 
-To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.4/requests#files) as the setting value.
+To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.4/requests#files) as the 
+setting value.
 
 ## Configuration
 To enforce a naming style for your settings make sure `force_naming_style` is set to true in the config file.
 Define which naming styles you wish to use in the `naming_styles` array. 
 Currently `'snake_case'`, `'camel_case'`, `'kebab_case'` and `'studly_case'` are available.
 
-To use scopes ensure that `use_scopes` is set to `true`
+Set `use_scopes` to `false` to disable the use of scopes.
+
+The `media_value_type` setting controls the value stored in the settings table. This can be set to `'file_name'`, 
+`'path'` or `'url'`.
 
 ## Testing
 Run tests with:
