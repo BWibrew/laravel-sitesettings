@@ -3,6 +3,7 @@
 namespace BWibrew\SiteSettings\Tests;
 
 use BWibrew\SiteSettings\Setting;
+use Illuminate\Support\Facades\Auth;
 use BWibrew\SiteSettings\Tests\Models\User;
 
 class SettingTest extends TestCase
@@ -26,9 +27,9 @@ class SettingTest extends TestCase
     /** @test */
     public function it_registers()
     {
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_setting', null, $user);
+        $setting = Setting::register('registered_setting', null);
 
         $this->assertEquals('registered_setting', $setting->name);
     }
@@ -36,8 +37,8 @@ class SettingTest extends TestCase
     /** @test */
     public function it_registers_with_a_value()
     {
-        $user = factory(User::class)->create();
-        Setting::register('new_setting', 'setting value', $user);
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
+        Setting::register('new_setting', 'setting value');
 
         $setting = Setting::where('name', 'new_setting')->first();
 
@@ -48,10 +49,10 @@ class SettingTest extends TestCase
     /** @test */
     public function it_updates_the_name()
     {
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => '']);
 
-        $setting->updateName('new_name', $user);
+        $setting->updateName('new_name');
 
         $this->assertEquals('new_name', $setting->name);
     }
@@ -59,10 +60,10 @@ class SettingTest extends TestCase
     /** @test */
     public function it_updates_the_value()
     {
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'original value']);
 
-        $setting->updateValue('new value', false, $user);
+        $setting->updateValue('new value', false);
 
         $this->assertEquals('new value', $setting->value);
     }

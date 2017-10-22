@@ -28,16 +28,13 @@ class Setting extends Model implements HasMedia
      * Update current setting name.
      *
      * @param $name
-     * @param $user
      * @return $this
      */
-    public function updateName($name, $user = null)
+    public function updateName($name)
     {
-        $user ?: $user = Auth::user();
-
         $this->name = $this->parseScopeName($name)['name'];
         $this->scope = $this->parseScopeName($name)['scope'];
-        $this->updated_by = $user->id;
+        $this->updated_by = Auth::user()->id;
         $this->save();
 
         return $this;
@@ -47,19 +44,17 @@ class Setting extends Model implements HasMedia
      * Update current setting value.
      *
      * @param $value
-     * @param $user
+     * @param $delete_media
      * @return $this
      */
-    public function updateValue($value = null, $delete_media = false, $user = null)
+    public function updateValue($value = null, $delete_media = false)
     {
-        $user ?: $user = Auth::user();
-
         $this->value = $value;
-        $this->updated_by = $user->id;
+        $this->updated_by = Auth::user()->id;
         $this->save();
 
         if ($value instanceof UploadedFile) {
-            $this->syncWithMediaLibrary($this->name, $value, $user);
+            $this->syncWithMediaLibrary($this->name, $value, Auth::user());
         } elseif ($delete_media) {
             $this->getMedia()->first()->delete();
             $this->value = null;
@@ -99,22 +94,20 @@ class Setting extends Model implements HasMedia
      *
      * @param $name
      * @param $value
-     * @param $user
      * @return $this|Model
      */
-    public static function register($name, $value = null, $user = null)
+    public static function register($name, $value = null)
     {
-        $user ?: $user = Auth::user();
         $setting = new self;
 
         $setting->name = $setting->parseScopeName($name)['name'];
         $setting->value = $value;
         $setting->scope = $setting->parseScopeName($name)['scope'];
-        $setting->updated_by = $user->id;
+        $setting->updated_by = Auth::user()->id;
         $setting->save();
 
         if ($value instanceof UploadedFile) {
-            $setting->syncWithMediaLibrary($name, $value, $user);
+            $setting->syncWithMediaLibrary($name, $value, Auth::user());
         }
 
         return $setting;
@@ -253,7 +246,7 @@ class Setting extends Model implements HasMedia
     {
         return $this->where([
             ['name', $this->parseScopeName($name)['name']],
-            ['scope', $this->parseScopeName($name)['scope']]
+            ['scope', $this->parseScopeName($name)['scope']],
         ])->pluck($property)->first();
     }
 

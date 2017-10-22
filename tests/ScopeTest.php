@@ -3,6 +3,7 @@
 namespace BWibrew\SiteSettings\Tests;
 
 use BWibrew\SiteSettings\Setting;
+use Illuminate\Support\Facades\Auth;
 use BWibrew\SiteSettings\Tests\Models\User;
 
 class ScopeTest extends TestCase
@@ -42,9 +43,9 @@ class ScopeTest extends TestCase
     public function it_registers_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_scope.registered_setting', null, $user);
+        $setting = Setting::register('registered_scope.registered_setting', null);
 
         $this->assertEquals('registered_setting', $setting->name);
         $this->assertEquals('registered_scope', $setting->scope);
@@ -54,9 +55,9 @@ class ScopeTest extends TestCase
     public function it_registers_with_a_value_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_scope.registered_setting', 'registered_value', $user);
+        $setting = Setting::register('registered_scope.registered_setting', 'registered_value');
 
         $this->assertEquals('registered_setting', $setting->name);
         $this->assertEquals('registered_scope', $setting->scope);
@@ -67,9 +68,9 @@ class ScopeTest extends TestCase
     public function it_registers_with_a_scope_with_multiple_items_in_dot_syntax()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('scope.name.other.item', null, $user);
+        $setting = Setting::register('scope.name.other.item', null);
 
         $this->assertEquals('name.other.item', $setting->name);
         $this->assertEquals('scope', $setting->scope);
@@ -79,9 +80,9 @@ class ScopeTest extends TestCase
     public function it_cannot_register_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_scope.registered_setting', null, $user);
+        $setting = Setting::register('registered_scope.registered_setting', null);
 
         $this->assertEquals('registered_scope.registered_setting', $setting->name);
         $this->assertEquals('default', $setting->scope);
@@ -91,10 +92,10 @@ class ScopeTest extends TestCase
     public function it_updates_name_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'original_name']);
 
-        $setting->updateName('scope.new_name', $user);
+        $setting->updateName('scope.new_name');
 
         $this->assertEquals('new_name', $setting->name);
         $this->assertEquals('scope', $setting->scope);
@@ -104,10 +105,10 @@ class ScopeTest extends TestCase
     public function it_cannot_update_name_with_a_scope_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'original_name']);
 
-        $setting->updateName('scope.new_name', $user);
+        $setting->updateName('scope.new_name');
 
         $this->assertEquals('scope.new_name', $setting->name);
         $this->assertEquals('default', $setting->scope);
@@ -117,12 +118,12 @@ class ScopeTest extends TestCase
     public function it_updates_value_with_a_scope()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $user = factory(User::class)->create();
+        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create([
             'name' => 'name', 'value' => 'original value', 'scope' => 'scope',
         ]);
 
-        $setting->updateValue('new value', false, $user);
+        $setting->updateValue('new value', false);
 
         $this->assertEquals('new value', $setting->value);
         $this->assertEquals('scope', $setting->scope);
