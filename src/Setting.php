@@ -2,8 +2,9 @@
 
 namespace BWibrew\SiteSettings;
 
+use Auth;
+use Cache;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
@@ -36,6 +37,7 @@ class Setting extends Model implements HasMedia
         $this->scope = $this->parseScopeName($name)['scope'];
         $this->updated_by = Auth::user()->id;
         $this->save();
+        $this->refreshCache();
 
         return $this;
     }
@@ -60,6 +62,8 @@ class Setting extends Model implements HasMedia
             $this->value = null;
             $this->save();
         }
+
+        $this->refreshCache();
 
         return $this;
     }
@@ -109,6 +113,8 @@ class Setting extends Model implements HasMedia
         if ($value instanceof UploadedFile) {
             $setting->syncWithMediaLibrary($name, $value, Auth::user());
         }
+
+        $setting->refreshCache();
 
         return $setting;
     }
@@ -268,5 +274,13 @@ class Setting extends Model implements HasMedia
             ->orderBy('updated_at')
             ->pluck($property)
             ->first();
+    }
+
+    /**
+     * Cache all Setting objects.
+     */
+    protected function refreshCache()
+    {
+        Cache::forever('bwibrew.settings', self::get());
     }
 }

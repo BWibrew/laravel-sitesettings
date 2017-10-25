@@ -50,7 +50,7 @@ class SettingTest extends TestCase
     public function it_updates_the_name()
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
-        $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => '']);
+        $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => null]);
 
         $setting->updateName('new_name');
 
@@ -63,7 +63,7 @@ class SettingTest extends TestCase
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'original value']);
 
-        $setting->updateValue('new value', false);
+        $setting->updateValue('new value');
 
         $this->assertEquals('new value', $setting->value);
     }
