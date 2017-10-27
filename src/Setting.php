@@ -250,10 +250,11 @@ class Setting extends Model implements HasMedia
      */
     protected function getProperty($property, $name)
     {
-        return $this->where([
-            ['name', $this->parseScopeName($name)['name']],
-            ['scope', $this->parseScopeName($name)['scope']],
-        ])->pluck($property)->first();
+        return $this->getSettings()
+            ->where('name', $this->parseScopeName($name)['name'])
+            ->where('scope', $this->parseScopeName($name)['scope'])
+            ->pluck($property)
+            ->first();
     }
 
     /**
@@ -282,5 +283,12 @@ class Setting extends Model implements HasMedia
     protected function refreshCache()
     {
         Cache::forever('bwibrew.settings', self::get());
+    }
+
+    protected function getSettings()
+    {
+        return Cache::rememberForever('bwibrew.settings', function () {
+            return self::get();
+        });
     }
 }
