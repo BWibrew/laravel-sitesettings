@@ -1,6 +1,15 @@
 # Changelog
-
 Notable changes will be listed here
+
+## 0.6.0 - 2017-10-28
+- Add caching
+- Remove naming style feature
+- Fix updating and removing scopes
+
+## 0.5.0 - 2017-09-30
+- Add ability to delete file uploads
+- Fix media library storing multiple files for a single setting
+- Fix getScopeValues return type
 
 ## 0.4.0 - 2017-09-05
 - Add support for file uploads
