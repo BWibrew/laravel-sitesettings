@@ -154,22 +154,22 @@ class Setting extends Model implements HasMedia
      * Get the 'updated_by' user ID.
      *
      * @param $name
-     * @return mixed
+     * @return int|null
      */
     public static function getUpdatedBy($name)
     {
-        return (new self)->getProperty('updated_by', $name);
+        return (int)(new self)->getProperty('updated_by', $name);
     }
 
     /**
      * Get the 'updated_by' user ID for a scope.
      *
      * @param $scope
-     * @return mixed|null
+     * @return int|null
      */
     public static function getScopeUpdatedBy($scope = 'default')
     {
-        return (new self)->getScopeProperty('updated_by', $scope);
+        return (int)(new self)->getScopeProperty('updated_by', $scope);
     }
 
     /**
@@ -219,7 +219,7 @@ class Setting extends Model implements HasMedia
      * Syncs associated media library item.
      *
      * @param $name
-     * @param $value
+     * @param UploadedFile $value
      */
     protected function syncWithMediaLibrary($name, $value)
     {
@@ -248,7 +248,7 @@ class Setting extends Model implements HasMedia
     /**
      * Gets the property from the setting.
      *
-     * @param $property
+     * @param string $property
      * @param $name
      *
      * @return mixed
@@ -265,8 +265,8 @@ class Setting extends Model implements HasMedia
     /**
      * Gets the property from the most recently updated setting in a scope.
      *
-     * @param $property
-     * @param $scope
+     * @param string $property
+     * @param string $scope
      *
      * @return mixed
      */

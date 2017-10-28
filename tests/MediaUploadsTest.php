@@ -82,7 +82,7 @@ class MediaUploadsTest extends TestCase
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $this->setting->updateValue($this->file, false);
+        $this->setting->updateValue($this->file);
 
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertCount(1, $this->setting->getMedia());
@@ -96,7 +96,7 @@ class MediaUploadsTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $this->setting->updateValue($this->file, false);
+        $this->setting->updateValue($this->file);
 
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertEquals($this->setting->scope, $this->setting->scope);
@@ -110,8 +110,9 @@ class MediaUploadsTest extends TestCase
         $user = factory(User::class)->create();
 
         $this->actingAs($user);
-        $this->setting->updateValue($this->file, $user);
+        $this->setting->updateValue($this->file);
 
+        $this->assertInternalType('int', $this->setting->updated_by);
         $this->assertEquals($user->id, $this->setting->updated_by);
     }
 
@@ -121,8 +122,9 @@ class MediaUploadsTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $setting = Setting::register('name', $this->file, $user);
+        $setting = Setting::register('name', $this->file);
 
+        $this->assertInternalType('int', $setting->updated_by);
         $this->assertEquals($user->id, $setting->updated_by);
     }
 
@@ -132,9 +134,10 @@ class MediaUploadsTest extends TestCase
         $user = factory(User::class)->create();
         Auth::shouldReceive('user')->andReturn($user);
 
-        $this->setting->updateValue($this->file, false);
+        $this->setting->updateValue($this->file);
 
         $user_id = Setting::getUpdatedBy($this->setting->name);
+        $this->assertInternalType('int', $user_id);
         $this->assertEquals($user->id, $user_id);
     }
 
@@ -143,7 +146,7 @@ class MediaUploadsTest extends TestCase
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $this->setting->updateValue($this->file, false);
+        $this->setting->updateValue($this->file);
 
         $timestamp = Setting::getUpdatedAt($this->setting->name);
         $this->assertEquals($this->setting->updated_at, $timestamp);
@@ -155,13 +158,13 @@ class MediaUploadsTest extends TestCase
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $updated = UploadedFile::fake()->image('logo2.png')->size(100);
 
-        $this->setting->updateValue($this->file, false);
+        $this->setting->updateValue($this->file);
         $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
         $this->assertEquals('logo.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 
         Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
 
-        $this->setting->updateValue($updated, false);
+        $this->setting->updateValue($updated);
         $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
         $this->assertEquals('logo2.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 

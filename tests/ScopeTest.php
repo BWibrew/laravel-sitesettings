@@ -45,7 +45,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_scope.registered_setting', null);
+        $setting = Setting::register('registered_scope.registered_setting');
 
         $this->assertEquals('registered_setting', $setting->name);
         $this->assertEquals('registered_scope', $setting->scope);
@@ -70,7 +70,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('scope.name.other.item', null);
+        $setting = Setting::register('scope.name.other.item');
 
         $this->assertEquals('name.other.item', $setting->name);
         $this->assertEquals('scope', $setting->scope);
@@ -82,7 +82,7 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', false);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_scope.registered_setting', null);
+        $setting = Setting::register('registered_scope.registered_setting');
 
         $this->assertEquals('registered_scope.registered_setting', $setting->name);
         $this->assertEquals('default', $setting->scope);
@@ -123,7 +123,7 @@ class ScopeTest extends TestCase
             'name' => 'name', 'value' => 'original value', 'scope' => 'scope',
         ]);
 
-        $setting->updateValue('new value', false);
+        $setting->updateValue('new value');
 
         $this->assertEquals('new value', $setting->value);
         $this->assertEquals('scope', $setting->scope);

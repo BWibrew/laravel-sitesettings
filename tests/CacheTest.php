@@ -109,12 +109,13 @@ class CacheTest extends TestCase
     /** @test */
     public function it_gets_cached_updated_by()
     {
-        factory(Setting::class)->create(['name' => 'setting_name']);
+        factory(Setting::class)->create(['name' => 'setting_name', 'updated_by' => 1]);
 
         $this->logDBQueries();
         $user_id = Setting::getUpdatedBy('setting_name');
 
         $this->assertCached();
+        $this->assertInternalType('int', $user_id);
         $this->assertEquals($user_id, Cache::get('bwibrew.settings')->first()->updated_by);
         $this->assertCount(1, DB::getQueryLog());
     }
@@ -123,12 +124,13 @@ class CacheTest extends TestCase
     public function it_gets_cached_scope_updated_by()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class, 10)->create(['scope' => 'scope']);
+        factory(Setting::class, 10)->create(['scope' => 'scope', 'updated_by' => 1]);
 
         $this->logDBQueries();
         $user_id = Setting::getScopeUpdatedBy('scope');
 
         $this->assertCached();
+        $this->assertInternalType('int', $user_id);
         $this->assertEquals($user_id, Cache::get('bwibrew.settings')->sortBy('updated_at')->first()->updated_by);
         $this->assertCount(1, DB::getQueryLog());
     }

@@ -29,7 +29,7 @@ class SettingTest extends TestCase
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
-        $setting = Setting::register('registered_setting', null);
+        $setting = Setting::register('registered_setting');
 
         $this->assertEquals('registered_setting', $setting->name);
     }
@@ -86,14 +86,16 @@ class SettingTest extends TestCase
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'original value']);
         $this->actingAs($user1);
 
-        $setting->updateValue('new value', false, $user1);
+        $setting->updateValue('new value');
 
+        $this->assertInternalType('int', $setting->updated_by);
         $this->assertEquals($user1->id, $setting->updated_by);
 
         $this->actingAs($user2);
 
-        $setting->updateName('new_name', $user2);
+        $setting->updateName('new_name');
 
+        $this->assertInternalType('int', $setting->updated_by);
         $this->assertEquals($user2->id, $setting->updated_by);
     }
 
@@ -103,7 +105,7 @@ class SettingTest extends TestCase
         $user = factory(User::class)->create();
         $this->actingAs($user);
 
-        $setting = Setting::register('setting_name', null, $user);
+        $setting = Setting::register('setting_name');
 
         $this->assertEquals($user->id, $setting->updated_by);
     }
