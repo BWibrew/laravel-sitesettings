@@ -77,6 +77,7 @@ class Setting extends Model implements HasMedia
     public function updateScope($scope)
     {
         $this->scope = $scope;
+        $this->save();
 
         return $this;
     }
@@ -88,7 +89,7 @@ class Setting extends Model implements HasMedia
      */
     public function removeScope()
     {
-        return $this->updateScope(null);
+        return $this->updateScope('default');
     }
 
     /**

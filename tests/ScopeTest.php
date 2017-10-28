@@ -25,7 +25,7 @@ class ScopeTest extends TestCase
 
         $setting->removeScope();
 
-        $this->assertEquals(null, $setting->scope);
+        $this->assertDatabaseHas('settings', ['scope' => 'default']);
     }
 
     /** @test */
@@ -36,7 +36,7 @@ class ScopeTest extends TestCase
 
         $setting->updateScope('new_scope');
 
-        $this->assertEquals('new_scope', $setting->scope);
+        $this->assertDatabaseHas('settings', ['scope' => 'new_scope']);
     }
 
     /** @test */
