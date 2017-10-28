@@ -158,7 +158,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getUpdatedBy($name)
     {
-        return (int)(new self)->getProperty('updated_by', $name);
+        return (int) (new self)->getProperty('updated_by', $name);
     }
 
     /**
@@ -169,7 +169,7 @@ class Setting extends Model implements HasMedia
      */
     public static function getScopeUpdatedBy($scope = 'default')
     {
-        return (int)(new self)->getScopeProperty('updated_by', $scope);
+        return (int) (new self)->getScopeProperty('updated_by', $scope);
     }
 
     /**
