@@ -78,6 +78,7 @@ class Setting extends Model implements HasMedia
     {
         $this->scope = $scope;
         $this->save();
+        $this->refreshCache();
 
         return $this;
     }
@@ -143,7 +144,10 @@ class Setting extends Model implements HasMedia
             return;
         }
 
-        return self::where('scope', $scope)->get()->pluck('value', 'name')->toArray();
+        return (new self)->getSettings()
+            ->where('scope', $scope)
+            ->pluck('value', 'name')
+            ->toArray();
     }
 
     /**
@@ -272,8 +276,9 @@ class Setting extends Model implements HasMedia
             return;
         }
 
-        return self::where('scope', $scope)
-            ->orderBy('updated_at')
+        return $this->getSettings()
+            ->where('scope', $scope)
+            ->sortBy('updated_at')
             ->pluck($property)
             ->first();
     }
