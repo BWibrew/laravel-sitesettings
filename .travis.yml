@@ -17,6 +17,10 @@ matrix:
     - php: 7.2
       env: setup=lowest
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_install:
   - travis_retry composer self-update
 
