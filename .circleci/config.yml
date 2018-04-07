@@ -1,0 +1,83 @@
+version: 2
+
+default_steps: &default_steps
+  steps:
+    - checkout
+
+    # System
+    - run:
+        name: Install system dependencies
+        command: |
+          sudo apt update -yq
+          sudo apt install libpng-dev libfreetype6-dev libjpeg62-turbo-dev -yq
+          sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+          sudo docker-php-ext-install -j$(nproc) gd
+
+    # Composer
+    - restore_cache:
+        name: Restore Composer package cache
+        keys:
+          - composer-packages-{{ .Branch }}-{{ checksum "composer.json" }}
+          - composer-packages-{{ .Branch }}
+          - composer-packages-master
+          - composer-packages-
+    - run:
+        name: Run Composer
+        command: |
+          if [[ $SETUP = 'stable' ]]; then  composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
+          if [[ $SETUP = 'lowest' ]]; then  composer update --prefer-dist --no-interaction --prefer-stable --no-suggest --prefer-lowest; fi
+    - save_cache:
+        name: Save Composer package cache
+        key: composer-packages-{{ .Branch }}-{{ checksum "composer.json" }}
+        paths:
+          - vendor
+
+    # Tests
+    - run:
+        name: Run tests
+        command: |
+          vendor/bin/phpunit --coverage-clover coverage_clover.xml
+          php vendor/bin/codacycoverage clover coverage_clover.xml
+
+
+jobs:
+  php-7.1:
+    docker:
+      - image: circleci/php:7.1
+    environment:
+      SETUP: stable
+
+    <<: *default_steps
+
+  php-7.1-lowest:
+    docker:
+      - image: circleci/php:7.1
+    environment:
+      SETUP: lowest
+
+    <<: *default_steps
+
+  php-7.2:
+    docker:
+      - image: circleci/php:7.2
+    environment:
+      SETUP: stable
+
+    <<: *default_steps
+
+  php-7.2-lowest:
+    docker:
+      - image: circleci/php:7.2
+    environment:
+      SETUP: lowest
+
+    <<: *default_steps
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - php-7.1
+      - php-7.1-lowest
+      - php-7.2
+      - php-7.2-lowest

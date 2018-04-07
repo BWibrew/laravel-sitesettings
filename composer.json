@@ -23,6 +23,7 @@
     "spatie/laravel-medialibrary": "^5.13"
   },
   "require-dev": {
+    "codacy/coverage": "^1.4",
     "fzaninotto/faker": "^1.6",
     "mockery/mockery": "^0.9.9",
     "orchestra/database": "^3.4",

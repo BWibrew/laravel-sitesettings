@@ -1,10 +1,10 @@
 # Persistent CMS style site settings for Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
-[![Build Status](https://img.shields.io/travis/BWibrew/laravel-sitesettings.svg?branch=master&style=flat-square)](https://travis-ci.org/BWibrew/laravel-sitesettings)
+[![CircleCI](https://img.shields.io/circleci/project/github/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://circleci.com/gh/BWibrew/laravel-sitesettings)
 [![StyleCI](https://styleci.io/repos/99725839/shield?branch=master)](https://styleci.io/repos/99725839)
-[![Scrutinizer](https://img.shields.io/scrutinizer/g/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://scrutinizer-ci.com/g/BWibrew/laravel-sitesettings)
-[![Scrutinizer Coverage](https://img.shields.io/scrutinizer/coverage/g/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://scrutinizer-ci.com/g/BWibrew/laravel-sitesettings)
+[![Codacy grade](https://img.shields.io/codacy/grade/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
+[![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
 ## Installation
 Install using Composer by running:
