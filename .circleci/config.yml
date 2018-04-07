@@ -36,9 +36,13 @@ default_steps: &default_steps
     - run:
         name: Run tests
         command: |
-          vendor/bin/phpunit --coverage-clover coverage_clover.xml
+          mkdir -p phpunit
+          vendor/bin/phpunit --coverage-clover coverage_clover.xml --log-junit phpunit/junit.xml
           php vendor/bin/codacycoverage clover coverage_clover.xml
-
+    - store_test_results:
+        path: phpunit
+    - store_artifacts:
+        path: phpunit
 
 jobs:
   php-7.1:
