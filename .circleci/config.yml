@@ -36,15 +36,29 @@ default_steps: &default_steps
     - run:
         name: Run tests
         command: |
-          mkdir -p phpunit
-          vendor/bin/phpunit --coverage-clover coverage_clover.xml --log-junit phpunit/junit.xml
-          php vendor/bin/codacycoverage clover coverage_clover.xml
+          mkdir -p tests/phpunit
+          vendor/bin/phpunit --coverage-clover tests/coverage_clover.xml --log-junit tests/phpunit/junit.xml
+          php vendor/bin/codacycoverage clover tests/coverage_clover.xml
     - store_test_results:
-        path: phpunit
-    - store_artifacts:
-        path: phpunit
+        path: tests/phpunit
 
 jobs:
+  php-7.0:
+    docker:
+      - image: circleci/php:7.0
+    environment:
+      SETUP: stable
+
+    <<: *default_steps
+
+  php-7.0-lowest:
+    docker:
+      - image: circleci/php:7.0
+    environment:
+      SETUP: lowest
+
+    <<: *default_steps
+
   php-7.1:
     docker:
       - image: circleci/php:7.1

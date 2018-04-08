@@ -21,6 +21,6 @@ class TestUrlGenerator extends BaseUrlGenerator
      */
     public function getPath(): string
     {
-        return realpath(public_path('media').'/'.$this->getPathRelativeToRoot());
+        return realpath(public_path('media')).'/'.$this->getPathRelativeToRoot();
     }
 }

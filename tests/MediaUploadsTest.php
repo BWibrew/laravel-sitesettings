@@ -2,10 +2,10 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use Storage;
 use BWibrew\SiteSettings\Setting;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use BWibrew\SiteSettings\Tests\Models\User;
 
 class MediaUploadsTest extends TestCase
