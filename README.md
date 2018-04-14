@@ -6,18 +6,13 @@
 [![Codacy grade](https://img.shields.io/codacy/grade/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 [![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
+## Support
+This version supports Laravel 5.5 and above. Use [version  0.6.0](https://github.com/BWibrew/laravel-sitesettings/releases/tag/0.6.0) for Laravel 5.4.
+
 ## Installation
 Install using Composer by running:
 ```
 composer require BWibrew/laravel-sitesettings
-```
-
-Then add the service provider to the providers array in `config/app.php`:
-```php
-'providers' => [
-    ...
-    BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
-];
 ```
 
 Then run table migrations with:
