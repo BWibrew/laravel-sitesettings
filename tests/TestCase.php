@@ -35,17 +35,9 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
         $app['config']->set('auth.providers.users.model', User::class);
-        $app['config']->set('sitesettings.force_naming_style', true);
-        $app['config']->set('sitesettings.naming_styles', [
-            'snake_case',
-        ]);
         $app['config']->set('sitesettings.use_scopes', true);
         $app['config']->set('sitesettings.media_value_type', 'file_name');
         $app['config']->set('medialibrary.custom_url_generator_class', TestUrlGenerator::class);
-        $app['config']->set('filesystems.disks.media', [
-            'driver' => 'local',
-            'root'   => public_path('media'),
-        ]);
 
         include_once __DIR__.'/database/migrations/create_media_table.php.stub';
         (new \CreateMediaTable())->up();

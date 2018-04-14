@@ -28,7 +28,7 @@ class MediaUploadsTest extends TestCase
 
         $this->assertCount(1, $this->setting->getMedia());
 
-        Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
     }
 
     /** @test */
@@ -45,7 +45,7 @@ class MediaUploadsTest extends TestCase
         $this->assertEquals(null, $this->setting->value);
         $this->assertCount(0, $this->setting->getMedia());
 
-        Storage::disk('media')->assertMissing($path);
+        Storage::disk('public')->assertMissing($path);
     }
 
     /** @test */
@@ -58,7 +58,7 @@ class MediaUploadsTest extends TestCase
         $this->assertEquals('logo.png', $setting->value);
         $this->assertCount(1, $setting->getMedia());
 
-        Storage::disk('media')->assertExists($this->getStoragePath($setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($setting->id));
     }
 
     /** @test */
@@ -74,7 +74,7 @@ class MediaUploadsTest extends TestCase
         $this->assertEquals('logo.png', $setting->value);
         $this->assertCount(1, $setting->getMedia());
 
-        Storage::disk('media')->assertExists($this->getStoragePath($setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($setting->id));
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class MediaUploadsTest extends TestCase
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertCount(1, $this->setting->getMedia());
 
-        Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
     }
 
     /** @test */
@@ -101,7 +101,7 @@ class MediaUploadsTest extends TestCase
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertEquals($this->setting->scope, $this->setting->scope);
 
-        Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
     }
 
     /** @test */
@@ -162,13 +162,13 @@ class MediaUploadsTest extends TestCase
         $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
         $this->assertEquals('logo.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 
-        Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
 
         $this->setting->updateValue($updated);
         $this->assertCount(1, Setting::find($this->setting->id)->getMedia());
         $this->assertEquals('logo2.png', Setting::find($this->setting->id)->getMedia()->first()->file_name);
 
-        Storage::disk('media')->assertExists($this->getStoragePath($this->setting->id));
+        Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
     }
 
     /** @test */
