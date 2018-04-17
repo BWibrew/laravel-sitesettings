@@ -14,13 +14,6 @@ default_steps: &default_steps
           sudo docker-php-ext-install -j$(nproc) gd
 
     # Composer
-    - run:
-        name: Set Illuminate version
-        command: |
-          composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update
-          composer require "illuminate/database:${ILLUMINATE_VERSION}" --no-update
-          composer require "orchestra/testbench:${TESTBENCH_VERSION}" --no-update --dev
-          composer require "orchestra/database:${TESTBENCH_VERSION}" --no-update --dev
     - restore_cache:
         name: Restore Composer package cache
         keys:
@@ -50,123 +43,51 @@ default_steps: &default_steps
         path: tests/phpunit
 
 jobs:
-  php-7.0-l-5.4:
+  php-7.0:
     docker:
       - image: circleci/php:7.0
     environment:
       SETUP: stable
-      ILLUMINATE_VERSION: 5.4
-      TESTBENCH_VERSION: 3.4
 
     <<: *default_steps
 
-  php-7.0-lowest-l-5.4:
+  php-7.0-lowest:
     docker:
       - image: circleci/php:7.0
     environment:
       SETUP: lowest
-      ILLUMINATE_VERSION: 5.4
-      TESTBENCH_VERSION: 3.4
 
     <<: *default_steps
 
-  php-7.0-l-5.5:
-    docker:
-      - image: circleci/php:7.0
-    environment:
-      SETUP: stable
-      ILLUMINATE_VERSION: 5.5
-      TESTBENCH_VERSION: 3.5
-
-    <<: *default_steps
-
-  php-7.0-lowest-l-5.5:
-    docker:
-      - image: circleci/php:7.0
-    environment:
-      SETUP: lowest
-      ILLUMINATE_VERSION: 5.5
-      TESTBENCH_VERSION: 3.5
-
-    <<: *default_steps
-
-  php-7.1-l-5.6:
+  php-7.1:
     docker:
       - image: circleci/php:7.1
     environment:
       SETUP: stable
-      ILLUMINATE_VERSION: 5.6
-      TESTBENCH_VERSION: 3.6
 
     <<: *default_steps
 
-  php-7.1-lowest-l-5.6:
+  php-7.1-lowest:
     docker:
       - image: circleci/php:7.1
     environment:
       SETUP: lowest
-      ILLUMINATE_VERSION: 5.6
-      TESTBENCH_VERSION: 3.6
 
     <<: *default_steps
 
-  php-7.2-l-5.4:
+  php-7.2:
     docker:
       - image: circleci/php:7.2
     environment:
       SETUP: stable
-      ILLUMINATE_VERSION: 5.4
-      TESTBENCH_VERSION: 3.4
 
     <<: *default_steps
 
-  php-7.2-lowest-l-5.4:
+  php-7.2-lowest:
     docker:
       - image: circleci/php:7.2
     environment:
       SETUP: lowest
-      ILLUMINATE_VERSION: 5.4
-      TESTBENCH_VERSION: 3.4
-
-    <<: *default_steps
-
-  php-7.2-l-5.5:
-    docker:
-      - image: circleci/php:7.2
-    environment:
-      SETUP: stable
-      ILLUMINATE_VERSION: 5.5
-      TESTBENCH_VERSION: 3.5
-
-    <<: *default_steps
-
-  php-7.2-lowest-l-5.5:
-    docker:
-      - image: circleci/php:7.2
-    environment:
-      SETUP: lowest
-      ILLUMINATE_VERSION: 5.5
-      TESTBENCH_VERSION: 3.5
-
-    <<: *default_steps
-
-  php-7.2-l-5.6:
-    docker:
-      - image: circleci/php:7.2
-    environment:
-      SETUP: stable
-      ILLUMINATE_VERSION: 5.6
-      TESTBENCH_VERSION: 3.6
-
-    <<: *default_steps
-
-  php-7.2-lowest-l-5.6:
-    docker:
-      - image: circleci/php:7.2
-    environment:
-      SETUP: lowest
-      ILLUMINATE_VERSION: 5.6
-      TESTBENCH_VERSION: 3.6
 
     <<: *default_steps
 
@@ -174,15 +95,9 @@ workflows:
   version: 2
   build:
     jobs:
-      - php-7.0-l-5.4
-      - php-7.0-lowest-l-5.4
-      - php-7.0-l-5.5
-      - php-7.0-lowest-l-5.5
-      - php-7.1-l-5.6
-      - php-7.1-lowest-l-5.6
-      - php-7.2-l-5.4
-      - php-7.2-lowest-l-5.4
-      - php-7.2-l-5.5
-      - php-7.2-lowest-l-5.5
-      - php-7.2-l-5.6
-      - php-7.2-lowest-l-5.6
+      - php-7.0
+      - php-7.0-lowest
+      - php-7.1
+      - php-7.1-lowest
+      - php-7.2
+      - php-7.2-lowest
