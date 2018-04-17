@@ -1,6 +1,10 @@
 # Changelog
 Notable changes will be listed here
 
+## master
+- Add support for Laravel 5.5 and newer
+- Drop support for Laravel 5.4
+
 ## 0.6.0 - 2017-10-28
 - Add caching
 - Remove naming style feature
