@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
@@ -227,7 +228,7 @@ class Setting extends Model implements HasMedia
             self::find($this->id)->getMedia()->first()->delete();
         }
 
-        $this->addMedia($value)->usingName($name)->toMediaCollection();
+        $this->addFileToMediaCollection($this->addMedia($value)->usingName($name));
 
         switch (config('sitesettings.media_value_type')) {
             case 'path':
@@ -296,5 +297,23 @@ class Setting extends Model implements HasMedia
         return Cache::rememberForever('bwibrew.settings', function () {
             return self::get();
         });
+    }
+
+    /**
+     * Ensure compatibility with multiple versions of Spatie Media Library.
+     *
+     * @param FileAdder $fileAdder
+     *
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     */
+    protected function addFileToMediaCollection(FileAdder $fileAdder)
+    {
+        if (method_exists($fileAdder, 'toMediaCollection')) {
+            // spatie/laravel-medialibrary v6
+            $fileAdder->toMediaCollection();
+        } elseif (method_exists($fileAdder, 'toMediaLibrary')) {
+            // spatie/laravel-medialibrary v5
+            $fileAdder->toMediaLibrary();
+        }
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use BWibrew\SiteSettings\Tests\Models\User;
+use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class MediaUploadsTest extends TestCase
 {
@@ -24,7 +25,7 @@ class MediaUploadsTest extends TestCase
     /** @test */
     public function it_adds_media()
     {
-        $this->setting->addMedia($this->file)->toMediaCollection();
+        $this->addFileToMediaCollection($this->setting->addMedia($this->file));
 
         $this->assertCount(1, $this->setting->getMedia());
 
@@ -35,7 +36,7 @@ class MediaUploadsTest extends TestCase
     public function it_deletes_media()
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
-        $this->setting->addMedia($this->file)->toMediaCollection();
+        $this->addFileToMediaCollection($this->setting->addMedia($this->file));
         $path = $this->getStoragePath($this->setting->id);
 
         $this->setting->updateValue('foobar', true);
@@ -205,5 +206,23 @@ class MediaUploadsTest extends TestCase
 
         $this->assertEquals($setting->getMedia()->first()->getPath(), $setting->value);
         $this->assertCount(1, $setting->getMedia());
+    }
+
+    /**
+     * Ensure compatibility with multiple versions of Spatie Media Library.
+     *
+     * @param FileAdder $fileAdder
+     *
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     */
+    protected function addFileToMediaCollection(FileAdder $fileAdder)
+    {
+        if (method_exists($fileAdder, 'toMediaCollection')) {
+            // spatie/laravel-medialibrary v6
+            $fileAdder->toMediaCollection();
+        } elseif (method_exists($fileAdder, 'toMediaLibrary')) {
+            // spatie/laravel-medialibrary v5
+            $fileAdder->toMediaLibrary();
+        }
     }
 }
