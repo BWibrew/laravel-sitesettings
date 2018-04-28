@@ -3,9 +3,9 @@
 namespace BWibrew\SiteSettings;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Cache\CacheManager as Cache;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
 class Setting extends Model implements HasMedia
