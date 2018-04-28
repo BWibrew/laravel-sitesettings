@@ -6,8 +6,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
 class Setting extends Model implements HasMedia
@@ -49,6 +47,7 @@ class Setting extends Model implements HasMedia
      * @param $value
      * @param $delete_media
      * @return $this
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
     public function updateValue($value = null, $delete_media = false)
     {
@@ -57,7 +56,7 @@ class Setting extends Model implements HasMedia
         $this->save();
 
         if ($value instanceof UploadedFile) {
-            $this->syncWithMediaLibrary($this->name, $value, Auth::user());
+            $this->syncWithMediaLibrary($this->name, $value);
         } elseif ($delete_media) {
             $this->getMedia()->first()->delete();
             $this->value = null;
@@ -102,6 +101,7 @@ class Setting extends Model implements HasMedia
      * @param $name
      * @param $value
      * @return $this|Model
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
     public static function register($name, $value = null)
     {
@@ -114,7 +114,7 @@ class Setting extends Model implements HasMedia
         $setting->save();
 
         if ($value instanceof UploadedFile) {
-            $setting->syncWithMediaLibrary($name, $value, Auth::user());
+            $setting->syncWithMediaLibrary($name, $value);
         }
 
         $setting->refreshCache();
@@ -217,36 +217,6 @@ class Setting extends Model implements HasMedia
     }
 
     /**
-     * Syncs associated media library item.
-     *
-     * @param $name
-     * @param UploadedFile $value
-     */
-    protected function syncWithMediaLibrary($name, $value)
-    {
-        if (count(self::find($this->id)->getMedia()) > 0) {
-            self::find($this->id)->getMedia()->first()->delete();
-        }
-
-        $this->addFileToMediaCollection($this->addMedia($value)->usingName($name));
-
-        switch (config('sitesettings.media_value_type')) {
-            case 'path':
-                $this->value = $this->getMedia()->first()->getPath();
-                $this->save();
-                break;
-            case 'url':
-                $this->value = $this->getMedia()->first()->getUrl();
-                $this->save();
-                break;
-            case 'file_name':
-                $this->value = $this->getMedia()->first()->file_name;
-                $this->save();
-                break;
-        }
-    }
-
-    /**
      * Gets the property from the setting.
      *
      * @param string $property
@@ -292,28 +262,17 @@ class Setting extends Model implements HasMedia
         Cache::forever('bwibrew.settings', self::get());
     }
 
+    /**
+     * Retrieve Setting models from the cache.
+     * If the models aren't already in the cache then this
+     * method will cache and then return them.
+     *
+     * @return Setting
+     */
     protected function getSettings()
     {
         return Cache::rememberForever('bwibrew.settings', function () {
             return self::get();
         });
-    }
-
-    /**
-     * Ensure compatibility with multiple versions of Spatie Media Library.
-     *
-     * @param FileAdder $fileAdder
-     *
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
-     */
-    protected function addFileToMediaCollection(FileAdder $fileAdder)
-    {
-        if (method_exists($fileAdder, 'toMediaCollection')) {
-            // spatie/laravel-medialibrary v6
-            $fileAdder->toMediaCollection();
-        } elseif (method_exists($fileAdder, 'toMediaLibrary')) {
-            // spatie/laravel-medialibrary v5
-            $fileAdder->toMediaLibrary();
-        }
     }
 }
