@@ -3,8 +3,8 @@
 namespace BWibrew\SiteSettings;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Auth\AuthManager as Auth;
+use Illuminate\Cache\CacheManager as Cache;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
@@ -34,7 +34,7 @@ class Setting extends Model implements HasMedia
     {
         $this->name = $this->parseScopeName($name)['name'];
         $this->scope = $this->parseScopeName($name)['scope'];
-        $this->updated_by = Auth::user()->id;
+        $this->updated_by = app(Auth::class)->user()->id;
         $this->save();
         $this->refreshCache();
 
@@ -52,7 +52,7 @@ class Setting extends Model implements HasMedia
     public function updateValue($value = null, $delete_media = false)
     {
         $this->value = $value;
-        $this->updated_by = Auth::user()->id;
+        $this->updated_by = app(Auth::class)->user()->id;
         $this->save();
 
         if ($value instanceof UploadedFile) {
@@ -110,7 +110,7 @@ class Setting extends Model implements HasMedia
         $setting->name = $setting->parseScopeName($name)['name'];
         $setting->value = $value;
         $setting->scope = $setting->parseScopeName($name)['scope'];
-        $setting->updated_by = Auth::user()->id;
+        $setting->updated_by = app(Auth::class)->user()->id;
         $setting->save();
 
         if ($value instanceof UploadedFile) {
@@ -259,7 +259,7 @@ class Setting extends Model implements HasMedia
      */
     protected function refreshCache()
     {
-        Cache::forever('bwibrew.settings', self::get());
+        app(Cache::class)->forever('bwibrew.settings', self::get());
     }
 
     /**
@@ -271,7 +271,7 @@ class Setting extends Model implements HasMedia
      */
     protected function getSettings()
     {
-        return Cache::rememberForever('bwibrew.settings', function () {
+        return app(Cache::class)->rememberForever('bwibrew.settings', function () {
             return self::get();
         });
     }

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Builder as Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -13,7 +13,7 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
+        app(Schema::class)->create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('scope')->default('default');
@@ -31,6 +31,6 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('settings');
+        app(Schema::class)->drop('settings');
     }
 }
