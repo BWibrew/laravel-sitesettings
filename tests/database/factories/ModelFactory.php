@@ -26,3 +26,18 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\Setting::class, function (Fak
         },
     ];
 });
+
+$factory->define(BWibrew\SiteSettings\Tests\Models\SettingWithMedia::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->unique()->word,
+        'scope' => 'default',
+        'value' => $faker->optional(0.9)->sentence(),
+        'updated_by' => function () {
+            if (mt_rand(0, 1)) {
+                return factory(BWibrew\SiteSettings\Tests\Models\User::class)->create()->id;
+            } else {
+                return;
+            }
+        },
+    ];
+});

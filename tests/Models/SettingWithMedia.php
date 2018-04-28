@@ -3,12 +3,12 @@
 namespace BWibrew\SiteSettings\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use BWibrew\SiteSettings\Traits\ManagesSettings;
-use BWibrew\SiteSettings\Interfaces\Setting as SettingInterface;
+use BWibrew\SiteSettings\Traits\ManagesSettingsWithMedia;
+use BWibrew\SiteSettings\Interfaces\SettingWithMedia as SettingInterface;
 
-class Setting extends Model implements SettingInterface
+class SettingWithMedia extends Model implements SettingInterface
 {
-    use ManagesSettings;
+    use ManagesSettingsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -21,4 +21,6 @@ class Setting extends Model implements SettingInterface
         'scope',
         'updated_by',
     ];
+
+    protected $table = 'settings';
 }

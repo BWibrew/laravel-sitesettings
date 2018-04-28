@@ -3,8 +3,8 @@
 namespace BWibrew\SiteSettings\Tests;
 
 use BWibrew\SiteSettings\Tests\Models\User;
-use BWibrew\SiteSettings\Tests\Models\Setting;
 use Orchestra\Testbench\TestCase as Orchestra;
+use BWibrew\SiteSettings\Tests\Models\SettingWithMedia;
 
 class TestCase extends Orchestra
 {
@@ -60,7 +60,7 @@ class TestCase extends Orchestra
 
     protected function getStoragePath(int $id)
     {
-        $parts = explode('/', Setting::find($id)->getMedia()->first()->getPath());
+        $parts = explode('/', SettingWithMedia::find($id)->getMedia()->first()->getPath());
 
         return implode('/', array_slice($parts, -2, 2));
     }

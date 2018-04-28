@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use BWibrew\SiteSettings\Tests\Models\User;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
-use BWibrew\SiteSettings\Tests\Models\Setting;
+use BWibrew\SiteSettings\Tests\Models\SettingWithMedia as Setting;
 
 class MediaUploadsTest extends TestCase
 {
