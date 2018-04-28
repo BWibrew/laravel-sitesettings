@@ -2,9 +2,9 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use BWibrew\SiteSettings\Setting;
 use Illuminate\Support\Facades\Auth;
 use BWibrew\SiteSettings\Tests\Models\User;
+use BWibrew\SiteSettings\Tests\Models\Setting;
 
 class SettingTest extends TestCase
 {

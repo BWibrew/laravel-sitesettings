@@ -1,29 +1,13 @@
 <?php
 
-namespace BWibrew\SiteSettings;
+namespace BWibrew\SiteSettings\Traits;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Cache\CacheManager as Cache;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
-class Setting extends Model implements HasMedia
+trait ManagesSettings
 {
-    use HasMediaTrait;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'value',
-        'scope',
-        'updated_by',
-    ];
-
     /**
      * Update current setting name.
      *
@@ -47,7 +31,6 @@ class Setting extends Model implements HasMedia
      * @param $value
      * @param $delete_media
      * @return $this
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
     public function updateValue($value = null, $delete_media = false)
     {
@@ -100,8 +83,7 @@ class Setting extends Model implements HasMedia
      *
      * @param $name
      * @param $value
-     * @return $this|Model
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     * @return $this
      */
     public static function register($name, $value = null)
     {
@@ -146,9 +128,9 @@ class Setting extends Model implements HasMedia
         }
 
         return (new self)->getSettings()
-            ->where('scope', $scope)
-            ->pluck('value', 'name')
-            ->toArray();
+                         ->where('scope', $scope)
+                         ->pluck('value', 'name')
+                         ->toArray();
     }
 
     /**
@@ -224,13 +206,13 @@ class Setting extends Model implements HasMedia
      *
      * @return mixed
      */
-    protected function getProperty($property, $name)
+    public function getProperty($property, $name)
     {
         return $this->getSettings()
-            ->where('name', $this->parseScopeName($name)['name'])
-            ->where('scope', $this->parseScopeName($name)['scope'])
-            ->pluck($property)
-            ->first();
+                    ->where('name', $this->parseScopeName($name)['name'])
+                    ->where('scope', $this->parseScopeName($name)['scope'])
+                    ->pluck($property)
+                    ->first();
     }
 
     /**
@@ -241,23 +223,23 @@ class Setting extends Model implements HasMedia
      *
      * @return mixed
      */
-    protected function getScopeProperty($property, $scope)
+    public function getScopeProperty($property, $scope)
     {
         if (! config('sitesettings.use_scopes')) {
             return;
         }
 
         return $this->getSettings()
-            ->where('scope', $scope)
-            ->sortBy('updated_at')
-            ->pluck($property)
-            ->first();
+                    ->where('scope', $scope)
+                    ->sortBy('updated_at')
+                    ->pluck($property)
+                    ->first();
     }
 
     /**
      * Cache all Setting objects.
      */
-    protected function refreshCache()
+    public function refreshCache()
     {
         app(Cache::class)->forever('bwibrew.settings', self::get());
     }
@@ -267,9 +249,9 @@ class Setting extends Model implements HasMedia
      * If the models aren't already in the cache then this
      * method will cache and then return them.
      *
-     * @return Setting
+     * @return $this
      */
-    protected function getSettings()
+    public function getSettings()
     {
         return app(Cache::class)->rememberForever('bwibrew.settings', function () {
             return self::get();

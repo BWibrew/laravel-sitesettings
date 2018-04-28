@@ -1,12 +1,12 @@
 <?php
 
-namespace BWibrew\SiteSettings;
+namespace BWibrew\SiteSettings\Traits;
 
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait as SpatieMedia;
 
-trait HasMediaTrait
+trait HasMedia
 {
     use SpatieMedia;
 

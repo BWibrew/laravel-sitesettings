@@ -12,7 +12,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\User::class, function (Faker\
     ];
 });
 
-$factory->define(BWibrew\SiteSettings\Setting::class, function (Faker\Generator $faker) {
+$factory->define(BWibrew\SiteSettings\Tests\Models\Setting::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
         'scope' => 'default',

@@ -2,8 +2,8 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use BWibrew\SiteSettings\Setting;
 use BWibrew\SiteSettings\Tests\Models\User;
+use BWibrew\SiteSettings\Tests\Models\Setting;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
