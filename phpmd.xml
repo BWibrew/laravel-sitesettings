@@ -31,7 +31,7 @@
     <rule ref="rulesets/cleancode.xml/ElseExpression"/>
     <rule ref="rulesets/cleancode.xml/StaticAccess">
         <properties>
-            <property name="exceptions" value="\BWibrew\SiteSettings\Setting"/>
+            <property name="exceptions" value="\Illuminate\Support\Facades\Schema"/>
         </properties>
     </rule>
 

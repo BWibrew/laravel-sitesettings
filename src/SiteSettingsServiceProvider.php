@@ -3,6 +3,7 @@
 namespace BWibrew\SiteSettings;
 
 use Illuminate\Support\ServiceProvider;
+use Spatie\MediaLibrary\MediaLibraryServiceProvider;
 
 class SiteSettingsServiceProvider extends ServiceProvider
 {
@@ -13,8 +14,6 @@ class SiteSettingsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadMigrationsFrom(realpath(__DIR__.'/../database/migrations'));
-
         $this->publishes([
             realpath(__DIR__.'/../config/sitesettings.php') => config_path('sitesettings.php'),
         ], 'config');
@@ -31,6 +30,8 @@ class SiteSettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(\Spatie\MediaLibrary\MediaLibraryServiceProvider::class);
+        $this->app->register(MediaLibraryServiceProvider::class);
+
+        $this->mergeConfigFrom(__DIR__.'/../config/sitesettings.php', 'sitesettings');
     }
 }

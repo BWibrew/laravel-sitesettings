@@ -3,11 +3,14 @@
 namespace BWibrew\SiteSettings\Tests;
 
 use BWibrew\SiteSettings\Tests\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\TestCase as Orchestra;
 use BWibrew\SiteSettings\Tests\Models\SettingWithMedia;
 
 class TestCase extends Orchestra
 {
+    use RefreshDatabase;
+
     /**
      * Setup the test environment.
      */
