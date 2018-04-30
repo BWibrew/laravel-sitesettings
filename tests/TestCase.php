@@ -19,7 +19,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->withFactories(__DIR__.'/database/factories');
-        $this->artisan('migrate', ['--database' => 'sqlite']);
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadLaravelMigrations(['--database' => 'sqlite']);
     }
 
