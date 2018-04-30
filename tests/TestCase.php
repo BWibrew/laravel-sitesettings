@@ -30,6 +30,7 @@ class TestCase extends Orchestra
      */
     protected function getEnvironmentSetUp($app)
     {
+        // Env config
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite', [
             'driver' => 'sqlite',
@@ -37,15 +38,18 @@ class TestCase extends Orchestra
             'prefix' => '',
         ]);
         $app['config']->set('auth.providers.users.model', User::class);
+
+        // Site Settings config
         $app['config']->set('sitesettings.use_scopes', true);
         $app['config']->set('sitesettings.media_value_type', 'file_name');
+
+        // Media Library config
         $app['config']->set('medialibrary.custom_url_generator_class', TestUrlGenerator::class);
         $app['config']->set('medialibrary.defaultFilesystem', 'public');
 
-        include_once __DIR__.'/database/migrations/create_media_table.php.stub';
-        include_once __DIR__.'/../database/migrations/create_settings_table.php.stub';
-        (new \CreateMediaTable())->up();
-        (new \CreateSettingsTable())->up();
+        // Migrations
+        $this->migrateSettingsTable();
+        $this->migrateMediaTable();
     }
 
     /**
@@ -62,10 +66,29 @@ class TestCase extends Orchestra
         ];
     }
 
+    /**
+     * Returns the relative path of a setting file.
+     *
+     * @param int $id
+     *
+     * @return string
+     */
     protected function getStoragePath(int $id)
     {
         $parts = explode('/', SettingWithMedia::find($id)->getMedia()->first()->getPath());
 
         return implode('/', array_slice($parts, -2, 2));
+    }
+
+    protected function migrateSettingsTable()
+    {
+        include_once __DIR__.'/../database/migrations/create_settings_table.php.stub';
+        (new \CreateSettingsTable())->up();
+    }
+
+    protected function migrateMediaTable()
+    {
+        include_once __DIR__ . '/database/migrations/create_media_table.php.stub';
+        (new \CreateMediaTable())->up();
     }
 }
