@@ -19,7 +19,6 @@ class TestCase extends Orchestra
         parent::setUp();
 
         $this->withFactories(__DIR__.'/database/factories');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadLaravelMigrations(['--database' => 'sqlite']);
     }
 
@@ -44,7 +43,9 @@ class TestCase extends Orchestra
         $app['config']->set('medialibrary.defaultFilesystem', 'public');
 
         include_once __DIR__.'/database/migrations/create_media_table.php.stub';
+        include_once __DIR__.'/../database/migrations/create_settings_table.php.stub';
         (new \CreateMediaTable())->up();
+        (new \CreateSettingsTable())->up();
     }
 
     /**
