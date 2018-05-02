@@ -13,12 +13,12 @@ trait HasMedia
     /**
      * Syncs associated media library item.
      *
-     * @param $name
-     * @param UploadedFile $value
+     * @param string $name
+     * @param \Illuminate\Http\UploadedFile $value
      *
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
-    protected function syncWithMediaLibrary($name, $value)
+    public function syncWithMediaLibrary(string $name, UploadedFile $value)
     {
         if (count(self::find($this->id)->getMedia()) > 0) {
             self::find($this->id)->getMedia()->first()->delete();
@@ -45,10 +45,10 @@ trait HasMedia
     /**
      * Ensure compatibility with multiple versions of Spatie Media Library.
      *
-     * @param FileAdder $fileAdder
+     * @param \Spatie\MediaLibrary\FileAdder\FileAdder $fileAdder
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
-    protected function addFileToMediaCollection(FileAdder $fileAdder)
+    public function addFileToMediaCollection(FileAdder $fileAdder)
     {
         if (method_exists($fileAdder, 'toMediaCollection')) {
             // spatie/laravel-medialibrary v6

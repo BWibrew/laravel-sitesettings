@@ -7,10 +7,10 @@ interface Setting
     /**
      * Update current setting name.
      *
-     * @param $name
+     * @param string $name
      * @return $this
      */
-    public function updateName($name);
+    public function updateName(string $name);
 
     /**
      * Update current setting value.
@@ -20,15 +20,15 @@ interface Setting
      * @return $this
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
-    public function updateValue($value = null, $delete_media = false);
+    public function updateValue($value = null, bool $delete_media = false);
 
     /**
      * Update a scope.
      *
-     * @param $scope
+     * @param string $scope
      * @return $this
      */
-    public function updateScope($scope);
+    public function updateScope(string $scope);
 
     /**
      * Remove scope from setting.
@@ -42,70 +42,70 @@ interface Setting
      *
      * Authenticated user ID will be assigned to 'updated_by' column.
      *
-     * @param $name
+     * @param string $name
      * @param $value
-     * @return $this|Model
+     * @return $this|\Illuminate\Database\Eloquent\Model
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
-    public static function register($name, $value = null);
+    public static function register(string $name, $value = null);
 
     /**
      * Get a setting value.
      *
-     * @param $name
+     * @param string $name
      * @return mixed
      */
-    public static function getValue($name);
+    public static function getValue(string $name);
 
     /**
      * Get all values in a scope.
      *
-     * @param $scope
+     * @param string $scope
      * @return array|null
      */
-    public static function getScopeValues($scope = 'default');
+    public static function getScopeValues(string $scope = 'default');
 
     /**
      * Get the 'updated_by' user ID.
      *
-     * @param $name
+     * @param string $name
      * @return int|null
      */
-    public static function getUpdatedBy($name);
+    public static function getUpdatedBy(string $name);
 
     /**
      * Get the 'updated_by' user ID for a scope.
      *
-     * @param $scope
+     * @param string $scope
      * @return int|null
      */
-    public static function getScopeUpdatedBy($scope = 'default');
+    public static function getScopeUpdatedBy(string $scope = 'default');
 
     /**
      * Get the updated_at timestamp.
      *
-     * @param $name
+     * @param string $name
      * @return mixed
      */
-    public static function getUpdatedAt($name);
+    public static function getUpdatedAt(string $name);
 
     /**
      * Get the updated_at timestamp for a scope.
      *
-     * @param $scope
+     * @param string $scope
      * @return mixed|null
      */
-    public static function getScopeUpdatedAt($scope = 'default');
+    public static function getScopeUpdatedAt(string $scope = 'default');
 
     /**
      * Gets the property from the setting.
      *
      * @param string $property
-     * @param $name
+     * @param string $name
      *
      * @return mixed
      */
-    public function getProperty($property, $name);
+    public function getProperty(string $property, string $name);
 
     /**
      * Gets the property from the most recently updated setting in a scope.
@@ -115,7 +115,7 @@ interface Setting
      *
      * @return mixed
      */
-    public function getScopeProperty($property, $scope);
+    public function getScopeProperty(string $property, string $scope);
 
     /**
      * Cache all Setting objects.
