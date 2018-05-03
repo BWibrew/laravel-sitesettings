@@ -2,6 +2,8 @@
 
 namespace BWibrew\SiteSettings\Traits;
 
+use BWibrew\SiteSettings\Interfaces\Setting;
+use BWibrew\SiteSettings\Tests\Models\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Auth\AuthManager as Auth;
@@ -19,7 +21,7 @@ trait ManagesSettings
     public function updateName(string $name)
     {
         $this->name = $this->parseScopeName($name)['name'];
-        $this->scope = $this->parseScopeName($name)['scope'];
+        $this->scope_id = $this->parseScopeName($name)['scope_id'];
         $this->updated_by = app(Auth::class)->user()->id;
         $this->save();
         $this->refreshCache();
@@ -56,12 +58,12 @@ trait ManagesSettings
     /**
      * Update a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return $this
      */
-    public function updateScope(string $scope)
+    public function updateScope($scope = null)
     {
-        $this->scope = $scope;
+        $this->scope_id = is_null($scope) ? 0 : Scope::firstOrCreate(['name' => $scope])->id;
         $this->save();
         $this->refreshCache();
 
@@ -75,7 +77,7 @@ trait ManagesSettings
      */
     public function removeScope()
     {
-        return $this->updateScope('default');
+        return $this->updateScope();
     }
 
     /**
@@ -93,7 +95,7 @@ trait ManagesSettings
 
         $setting->name = $setting->parseScopeName($name)['name'];
         $setting->value = $value;
-        $setting->scope = $setting->parseScopeName($name)['scope'];
+        $setting->scope_id = $setting->parseScopeName($name)['scope_id'];
         $setting->updated_by = app(Auth::class)->user()->id;
         $setting->save();
 
@@ -120,17 +122,20 @@ trait ManagesSettings
     /**
      * Get all values in a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
+     *
      * @return array|null
      */
-    public static function getScopeValues(string $scope = 'default')
+    public static function getScopeValues($scope = null)
     {
         if (! config('sitesettings.use_scopes')) {
             return;
         }
 
+        $scope_id = is_null($scope) ? 0 : Scope::where('name', $scope)->first()->id;
+
         return (new self)->getSettings()
-                         ->where('scope', $scope)
+                         ->where('scope_id', $scope_id)
                          ->pluck('value', 'name')
                          ->toArray();
     }
@@ -149,10 +154,10 @@ trait ManagesSettings
     /**
      * Get the 'updated_by' user ID for a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return int|null
      */
-    public static function getScopeUpdatedBy(string $scope = 'default')
+    public static function getScopeUpdatedBy($scope = null)
     {
         return (int) (new self)->getScopeProperty('updated_by', $scope);
     }
@@ -171,10 +176,10 @@ trait ManagesSettings
     /**
      * Get the updated_at timestamp for a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return mixed|null
      */
-    public static function getScopeUpdatedAt(string $scope = 'default')
+    public static function getScopeUpdatedAt($scope = null)
     {
         return (new self)->getScopeProperty('updated_at', $scope);
     }
@@ -195,7 +200,7 @@ trait ManagesSettings
         }
 
         return [
-            'scope' => isset($scope) ? $scope : 'default',
+            'scope_id' => isset($scope) ? Scope::firstOrCreate(['name' => $scope])->id : 0,
             'name' => $name,
         ];
     }
@@ -212,7 +217,7 @@ trait ManagesSettings
     {
         return $this->getSettings()
                     ->where('name', $this->parseScopeName($name)['name'])
-                    ->where('scope', $this->parseScopeName($name)['scope'])
+                    ->where('scope_id', $this->parseScopeName($name)['scope_id'])
                     ->pluck($property)
                     ->first();
     }
@@ -221,18 +226,31 @@ trait ManagesSettings
      * Gets the property from the most recently updated setting in a scope.
      *
      * @param string $property
-     * @param string $scope
+     * @param string|null $scope
      *
      * @return mixed
      */
-    public function getScopeProperty(string $property, string $scope)
+    public function getScopeProperty(string $property, $scope = null)
     {
         if (! config('sitesettings.use_scopes')) {
             return;
         }
 
+        if (is_null($scope)) {
+            return $this->getSettings()
+                        ->where('scope_id', 0)
+                        ->sortBy('updated_at')
+                        ->pluck($property)
+                        ->first();
+        }
+
         return $this->getSettings()
-                    ->where('scope', $scope)
+                    ->reject(function ($setting) use ($scope) {
+                        if (is_null($setting->scope)) {
+                            return true;
+                        }
+                        return $setting->scope->where('name', '<>', $scope)->first();
+                    })
                     ->sortBy('updated_at')
                     ->pluck($property)
                     ->first();
@@ -243,7 +261,7 @@ trait ManagesSettings
      */
     public function refreshCache()
     {
-        app(Cache::class)->forever('bwibrew.settings', self::get());
+        app(Cache::class)->forever('bwibrew.settings', self::with('scope')->get());
     }
 
     /**
@@ -256,7 +274,7 @@ trait ManagesSettings
     public function getSettings()
     {
         return app(Cache::class)->rememberForever('bwibrew.settings', function () {
-            return self::get();
+            return self::with('scope')->get();
         });
     }
 }

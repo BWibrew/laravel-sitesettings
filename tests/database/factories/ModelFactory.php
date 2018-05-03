@@ -15,7 +15,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\User::class, function (Faker\
 $factory->define(BWibrew\SiteSettings\Tests\Models\Setting::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
-        'scope' => 'default',
+        'scope_id' => 0,
         'value' => $faker->optional(0.9)->sentence(),
         'updated_by' => function () {
             if (mt_rand(0, 1)) {
@@ -30,7 +30,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\Setting::class, function (Fak
 $factory->define(BWibrew\SiteSettings\Tests\Models\SettingWithMedia::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
-        'scope' => 'default',
+        'scope_id' => 0,
         'value' => $faker->optional(0.9)->sentence(),
         'updated_by' => function () {
             if (mt_rand(0, 1)) {
@@ -39,5 +39,11 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\SettingWithMedia::class, func
                 return;
             }
         },
+    ];
+});
+
+$factory->define(BWibrew\SiteSettings\Tests\Models\Scope::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->unique()->word,
     ];
 });

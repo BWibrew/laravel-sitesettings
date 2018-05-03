@@ -16,9 +16,16 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('scope')->default('default');
-            $table->unique(['name', 'scope']);
+            $table->integer('scope_id')->unsigned()->nullable();
+            $table->unique(['name', 'scope_id']);
             $table->text('value')->nullable();
+            $table->integer('updated_by')->unsigned()->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('scopes', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->unique();
             $table->integer('updated_by')->unsigned()->nullable();
             $table->timestamps();
         });
@@ -32,5 +39,6 @@ class CreateSettingsTable extends Migration
     public function down()
     {
         Schema::drop('settings');
+        Schema::drop('scopes');
     }
 }

@@ -71,7 +71,7 @@ class MediaUploadsTest extends TestCase
         $setting = Setting::register('scope.name', $this->file);
 
         $this->assertEquals('name', $setting->name);
-        $this->assertEquals('scope', $setting->scope);
+        $this->assertEquals('scope', $setting->scope->name);
         $this->assertEquals('logo.png', $setting->value);
         $this->assertCount(1, $setting->getMedia());
 

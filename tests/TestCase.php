@@ -18,8 +18,11 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
-        if(! class_exists('CreateSettingsTable')) {
-            $this->artisan('vendor:publish', ['--provider' => 'BWibrew\SiteSettings\SiteSettingsServiceProvider', '--tag' => 'migrations']);
+        if (! class_exists('CreateSettingsTable')) {
+            $this->artisan(
+                'vendor:publish',
+                ['--provider' => 'BWibrew\SiteSettings\SiteSettingsServiceProvider', '--tag' => 'migrations']
+            );
         }
 
         $this->withFactories(__DIR__.'/database/factories');

@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use BWibrew\SiteSettings\Traits\ManagesSettings;
 use BWibrew\SiteSettings\Interfaces\Setting as SettingInterface;
 
-class Setting extends Model implements SettingInterface
+class Scope extends Model
 {
-    use ManagesSettings;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -17,15 +15,13 @@ class Setting extends Model implements SettingInterface
      */
     protected $fillable = [
         'name',
-        'value',
-        'updated_by',
     ];
 
     /**
-     * Get the scope that owns the setting.
+     * Get the settings for this scope.
      */
-    public function scope()
+    public function settings()
     {
-        return $this->belongsTo(Scope::class);
+        return $this->hasMany(Setting::class);
     }
 }

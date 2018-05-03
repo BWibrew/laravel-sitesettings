@@ -18,9 +18,16 @@ class SettingWithMedia extends Model implements SettingInterface
     protected $fillable = [
         'name',
         'value',
-        'scope',
         'updated_by',
     ];
 
     protected $table = 'settings';
+
+    /**
+     * Get the scope that owns the setting.
+     */
+    public function scope()
+    {
+        return $this->belongsTo(Scope::class);
+    }
 }

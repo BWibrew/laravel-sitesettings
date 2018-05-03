@@ -2,6 +2,7 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
+use BWibrew\SiteSettings\Tests\Models\Scope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -18,6 +19,7 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting = Setting::register('setting');
+        $setting->scope = null;
 
         $this->assertCached();
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
@@ -32,6 +34,7 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting->updateValue('new value');
+        $setting->scope = null;
 
         $this->assertCached();
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
@@ -46,6 +49,7 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting->updateName('new_name');
+        $setting->scope = null;
 
         $this->assertCached();
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
@@ -56,10 +60,11 @@ class CacheTest extends TestCase
     public function it_is_cached_when_scope_is_updated()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        $setting = factory(Setting::class)->create(['scope' => 'original_scope']);
+        $setting = factory(Setting::class)->create(['scope_id' => 'original_scope']);
 
         $this->logDBQueries();
         $setting->updateScope('new_scope');
+        $setting->scope = $setting->scope()->first()->toArray();
 
         $this->assertCached();
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
@@ -96,7 +101,7 @@ class CacheTest extends TestCase
     public function it_gets_cached_scope_updated_at()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class, 10)->create(['scope' => 'scope']);
+        factory(Setting::class, 10)->create(['scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id]);
 
         $this->logDBQueries();
         $timestamp = Setting::getScopeUpdatedAt('scope');
@@ -124,7 +129,7 @@ class CacheTest extends TestCase
     public function it_gets_cached_scope_updated_by()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class, 10)->create(['scope' => 'scope', 'updated_by' => 1]);
+        factory(Setting::class, 10)->create(['scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id, 'updated_by' => 1]);
 
         $this->logDBQueries();
         $user_id = Setting::getScopeUpdatedBy('scope');
@@ -139,7 +144,7 @@ class CacheTest extends TestCase
     public function it_gets_cached_scope_values()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class, 10)->create(['scope' => 'scope']);
+        factory(Setting::class, 10)->create(['scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id]);
 
         $this->logDBQueries();
         $values = Setting::getScopeValues('scope');

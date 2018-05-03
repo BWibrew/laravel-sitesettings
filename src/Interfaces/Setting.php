@@ -5,6 +5,11 @@ namespace BWibrew\SiteSettings\Interfaces;
 interface Setting
 {
     /**
+     * Get the scope that owns the setting.
+     */
+    public function scope();
+
+    /**
      * Update current setting name.
      *
      * @param string $name
@@ -25,10 +30,10 @@ interface Setting
     /**
      * Update a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return $this
      */
-    public function updateScope(string $scope);
+    public function updateScope($scope);
 
     /**
      * Remove scope from setting.
@@ -60,10 +65,10 @@ interface Setting
     /**
      * Get all values in a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return array|null
      */
-    public static function getScopeValues(string $scope = 'default');
+    public static function getScopeValues($scope = null);
 
     /**
      * Get the 'updated_by' user ID.
@@ -76,10 +81,10 @@ interface Setting
     /**
      * Get the 'updated_by' user ID for a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return int|null
      */
-    public static function getScopeUpdatedBy(string $scope = 'default');
+    public static function getScopeUpdatedBy($scope = null);
 
     /**
      * Get the updated_at timestamp.
@@ -92,10 +97,10 @@ interface Setting
     /**
      * Get the updated_at timestamp for a scope.
      *
-     * @param string $scope
+     * @param string|null $scope
      * @return mixed|null
      */
-    public static function getScopeUpdatedAt(string $scope = 'default');
+    public static function getScopeUpdatedAt($scope = null);
 
     /**
      * Gets the property from the setting.
@@ -111,11 +116,11 @@ interface Setting
      * Gets the property from the most recently updated setting in a scope.
      *
      * @param string $property
-     * @param string $scope
+     * @param string|null $scope
      *
      * @return mixed
      */
-    public function getScopeProperty(string $property, string $scope);
+    public function getScopeProperty(string $property, $scope);
 
     /**
      * Cache all Setting objects.
