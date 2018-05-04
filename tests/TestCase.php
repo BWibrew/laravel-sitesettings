@@ -4,8 +4,12 @@ namespace BWibrew\SiteSettings\Tests;
 
 use BWibrew\SiteSettings\Tests\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\TestCase as Orchestra;
 use BWibrew\SiteSettings\Tests\Models\SettingWithMedia;
+use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class TestCase extends Orchestra
 {
@@ -85,5 +89,34 @@ class TestCase extends Orchestra
         $parts = explode('/', SettingWithMedia::find($id)->getMedia()->first()->getPath());
 
         return implode('/', array_slice($parts, -2, 2));
+    }
+
+    protected function logDBQueries()
+    {
+        DB::connection()->enableQueryLog();
+    }
+
+    protected function assertCached()
+    {
+        $this->assertTrue(Cache::has('bwibrew.settings'));
+        $this->assertInstanceOf(Collection::class, Cache::get('bwibrew.settings'));
+    }
+
+    /**
+     * Ensure compatibility with multiple versions of Spatie Media Library.
+     *
+     * @param FileAdder $fileAdder
+     *
+     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
+     */
+    protected function addFileToMediaCollection(FileAdder $fileAdder)
+    {
+        if (method_exists($fileAdder, 'toMediaCollection')) {
+            // spatie/laravel-medialibrary v6
+            $fileAdder->toMediaCollection();
+        } elseif (method_exists($fileAdder, 'toMediaLibrary')) {
+            // spatie/laravel-medialibrary v5
+            $fileAdder->toMediaLibrary();
+        }
     }
 }

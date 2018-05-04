@@ -6,7 +6,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use BWibrew\SiteSettings\Tests\Models\User;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
 use BWibrew\SiteSettings\Tests\Models\SettingWithMedia as Setting;
 
 class MediaUploadsTest extends TestCase
@@ -63,22 +62,6 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_a_file_upload_with_a_scope()
-    {
-        $this->app['config']->set('sitesettings.use_scopes', true);
-        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
-
-        $setting = Setting::register('scope.name', $this->file);
-
-        $this->assertEquals('name', $setting->name);
-        $this->assertEquals('scope', $setting->scope->name);
-        $this->assertEquals('logo.png', $setting->value);
-        $this->assertCount(1, $setting->getMedia());
-
-        Storage::disk('public')->assertExists($this->getStoragePath($setting->id));
-    }
-
-    /** @test */
     public function it_updates_with_a_file_upload()
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
@@ -87,20 +70,6 @@ class MediaUploadsTest extends TestCase
 
         $this->assertEquals('logo.png', $this->setting->value);
         $this->assertCount(1, $this->setting->getMedia());
-
-        Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
-    }
-
-    /** @test */
-    public function it_updates_with_a_scope_with_a_file_upload()
-    {
-        $this->app['config']->set('sitesettings.use_scopes', true);
-        Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
-
-        $this->setting->updateValue($this->file);
-
-        $this->assertEquals('logo.png', $this->setting->value);
-        $this->assertEquals($this->setting->scope, $this->setting->scope);
 
         Storage::disk('public')->assertExists($this->getStoragePath($this->setting->id));
     }
@@ -206,23 +175,5 @@ class MediaUploadsTest extends TestCase
 
         $this->assertEquals($setting->getMedia()->first()->getPath(), $setting->value);
         $this->assertCount(1, $setting->getMedia());
-    }
-
-    /**
-     * Ensure compatibility with multiple versions of Spatie Media Library.
-     *
-     * @param FileAdder $fileAdder
-     *
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
-     */
-    protected function addFileToMediaCollection(FileAdder $fileAdder)
-    {
-        if (method_exists($fileAdder, 'toMediaCollection')) {
-            // spatie/laravel-medialibrary v6
-            $fileAdder->toMediaCollection();
-        } elseif (method_exists($fileAdder, 'toMediaLibrary')) {
-            // spatie/laravel-medialibrary v5
-            $fileAdder->toMediaLibrary();
-        }
     }
 }

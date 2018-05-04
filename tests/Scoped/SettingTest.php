@@ -1,13 +1,14 @@
 <?php
 
-namespace BWibrew\SiteSettings\Tests;
+namespace BWibrew\SiteSettings\Tests\Scoped;
 
 use BWibrew\SiteSettings\Tests\Models\Scope;
+use BWibrew\SiteSettings\Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 use BWibrew\SiteSettings\Tests\Models\User;
 use BWibrew\SiteSettings\Tests\Models\Setting;
 
-class ScopeTest extends TestCase
+class SettingTest extends TestCase
 {
     /** @test */
     public function it_has_a_scope()
