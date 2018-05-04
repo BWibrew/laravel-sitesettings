@@ -249,7 +249,7 @@ trait ManagesSettings
                         if (is_null($setting->scope)) {
                             return true;
                         }
-                        return $setting->scope->where('name', '<>', $scope)->first();
+                        return $setting->scope->name !== $scope;
                     })
                     ->sortBy('updated_at')
                     ->pluck($property)

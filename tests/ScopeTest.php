@@ -43,7 +43,9 @@ class ScopeTest extends TestCase
 
         $setting->updateScope('new_scope');
 
-        $this->assertDatabaseHas('settings', ['scope_id' => $setting->scope()->where('name', 'new_scope')->first()->id]);
+        $this->assertDatabaseHas('settings', [
+            'scope_id' => $setting->scope()->where('name', 'new_scope')->first()->id
+        ]);
     }
 
     /** @test */
@@ -127,7 +129,9 @@ class ScopeTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create([
-            'name' => 'name', 'value' => 'original value', 'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
+            'name' => 'name',
+            'value' => 'original value',
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
         ]);
 
         $setting->updateValue('new value');
@@ -141,7 +145,11 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class)->create(['name' => 'name', 'value' => 'value1']);
-        factory(Setting::class)->create(['name' => 'name', 'value' => 'value2', 'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id]);
+        factory(Setting::class)->create([
+            'name' => 'name',
+            'value' => 'value2',
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id
+        ]);
 
         $value1 = Setting::getValue('name');
         $value2 = Setting::getValue('scope.name');
@@ -169,7 +177,10 @@ class ScopeTest extends TestCase
             'name' => 'name', 'value' => 'value1', 'updated_by' => 1,
         ]);
         factory(Setting::class)->create([
-            'name' => 'name', 'value' => 'value2', 'updated_by' => 2, 'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
+            'name' => 'name',
+            'value' => 'value2',
+            'updated_by' => 2,
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
         ]);
 
         $user_id1 = Setting::getUpdatedBy('name');
@@ -195,7 +206,10 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $setting1 = factory(Setting::class)->create(['name' => 'name']);
-        $setting2 = factory(Setting::class)->create(['name' => 'name', 'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id]);
+        $setting2 = factory(Setting::class)->create([
+            'name' => 'name',
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id
+        ]);
 
         $timestamp1 = Setting::getUpdatedAt('name');
         $timestamp2 = Setting::getUpdatedAt('scope.name');
@@ -260,7 +274,10 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class, 10)->create(['updated_by' => 1]);
-        factory(Setting::class, 10)->create(['updated_by' => 2, 'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id]);
+        factory(Setting::class, 10)->create([
+            'updated_by' => 2,
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
+        ]);
 
         $unscoped_user_id = Setting::getScopeUpdatedBy();
         $scoped_user_id = Setting::getScopeUpdatedBy('scope');
@@ -273,7 +290,10 @@ class ScopeTest extends TestCase
     public function it_cannot_get_scope_updated_by_when_scopes_are_disabled()
     {
         $this->app['config']->set('sitesettings.use_scopes', false);
-        factory(Setting::class, 10)->create(['scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id, 'updated_by' => 1]);
+        factory(Setting::class, 10)->create([
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
+            'updated_by' => 1
+        ]);
 
         $user_id = Setting::getScopeUpdatedBy('scope');
 
@@ -285,7 +305,9 @@ class ScopeTest extends TestCase
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         $unscoped_settings = factory(Setting::class, 10)->create()->sortBy('updated_at')->first();
-        $scoped_settings = factory(Setting::class, 10)->create(['scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id])->sortBy('updated_at')->first();
+        $scoped_settings = factory(Setting::class, 10)->create([
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id
+        ])->sortBy('updated_at')->first();
 
         $unscoped_timestamp = Setting::getScopeUpdatedAt();
         $scoped_timestamp = Setting::getScopeUpdatedAt('scope');
@@ -308,8 +330,16 @@ class ScopeTest extends TestCase
     /** @test */
     public function it_has_multiple_identical_names_in_different_scopes()
     {
-        $setting1 = factory(Setting::class)->create(['name' => 'name', 'scope_id' => factory(Scope::class)->create(['name' => 'scope1'])->id, 'value' => 'value1']);
-        $setting2 = factory(Setting::class)->create(['name' => 'name', 'scope_id' => factory(Scope::class)->create(['name' => 'scope2'])->id, 'value' => 'value2']);
+        $setting1 = factory(Setting::class)->create([
+            'name' => 'name',
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope1'])->id,
+            'value' => 'value1'
+        ]);
+        $setting2 = factory(Setting::class)->create([
+            'name' => 'name',
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope2'])->id,
+            'value' => 'value2'
+        ]);
 
         $this->assertEquals('value1', $setting1->value);
         $this->assertEquals('value2', $setting2->value);

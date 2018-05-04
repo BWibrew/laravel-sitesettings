@@ -19,11 +19,12 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting = Setting::register('setting');
-        $setting->scope = null;
 
         $this->assertCached();
+        $this->assertCount(3, DB::getQueryLog());
+
+        $setting->scope = null;
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
-        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -34,11 +35,12 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting->updateValue('new value');
-        $setting->scope = null;
 
         $this->assertCached();
+        $this->assertCount(3, DB::getQueryLog());
+
+        $setting->scope = null;
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
-        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -49,11 +51,12 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting->updateName('new_name');
-        $setting->scope = null;
 
         $this->assertCached();
+        $this->assertCount(3, DB::getQueryLog());
+
+        $setting->scope = null;
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
-        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -64,11 +67,12 @@ class CacheTest extends TestCase
 
         $this->logDBQueries();
         $setting->updateScope('new_scope');
-        $setting->scope = $setting->scope()->first()->toArray();
 
+        $this->assertCount(5, DB::getQueryLog());
         $this->assertCached();
+
+        $setting->scope = $setting->scope()->first()->toArray();
         $this->assertEquals($setting->toArray(), Cache::get('bwibrew.settings')->first()->toArray());
-        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -81,7 +85,7 @@ class CacheTest extends TestCase
 
         $this->assertCached();
         $this->assertEquals($value, Cache::get('bwibrew.settings')->first()->value);
-        $this->assertCount(1, DB::getQueryLog());
+        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -94,7 +98,7 @@ class CacheTest extends TestCase
 
         $this->assertCached();
         $this->assertEquals($time, Cache::get('bwibrew.settings')->first()->updated_at);
-        $this->assertCount(1, DB::getQueryLog());
+        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -108,7 +112,7 @@ class CacheTest extends TestCase
 
         $this->assertCached();
         $this->assertEquals($timestamp, Cache::get('bwibrew.settings')->sortBy('updated_at')->first()->updated_at);
-        $this->assertCount(1, DB::getQueryLog());
+        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -122,14 +126,17 @@ class CacheTest extends TestCase
         $this->assertCached();
         $this->assertInternalType('int', $user_id);
         $this->assertEquals($user_id, Cache::get('bwibrew.settings')->first()->updated_by);
-        $this->assertCount(1, DB::getQueryLog());
+        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
     public function it_gets_cached_scope_updated_by()
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
-        factory(Setting::class, 10)->create(['scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id, 'updated_by' => 1]);
+        factory(Setting::class, 10)->create([
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
+            'updated_by' => 1
+        ]);
 
         $this->logDBQueries();
         $user_id = Setting::getScopeUpdatedBy('scope');
@@ -137,7 +144,7 @@ class CacheTest extends TestCase
         $this->assertCached();
         $this->assertInternalType('int', $user_id);
         $this->assertEquals($user_id, Cache::get('bwibrew.settings')->sortBy('updated_at')->first()->updated_by);
-        $this->assertCount(1, DB::getQueryLog());
+        $this->assertCount(2, DB::getQueryLog());
     }
 
     /** @test */
@@ -150,8 +157,8 @@ class CacheTest extends TestCase
         $values = Setting::getScopeValues('scope');
 
         $this->assertCached();
+        $this->assertCount(3, DB::getQueryLog());
         $this->assertCount(count($values), Cache::get('bwibrew.settings'));
-        $this->assertCount(1, DB::getQueryLog());
     }
 
     protected function logDBQueries()
