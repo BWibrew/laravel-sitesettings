@@ -20,12 +20,4 @@ class Setting extends Model implements SettingInterface
         'value',
         'updated_by',
     ];
-
-    /**
-     * Get the scope that owns the setting.
-     */
-    public function scope()
-    {
-        return $this->belongsTo(Scope::class);
-    }
 }

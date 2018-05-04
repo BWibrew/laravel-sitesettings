@@ -2,15 +2,20 @@
 
 namespace BWibrew\SiteSettings\Traits;
 
-use BWibrew\SiteSettings\Interfaces\Setting;
-use BWibrew\SiteSettings\Tests\Models\Scope;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Cache\CacheManager as Cache;
 
 trait ManagesSettings
 {
+    /**
+     * Get the scope that owns the setting.
+     */
+    public function scope()
+    {
+        return $this->belongsTo(Scope::class);
+    }
+
     /**
      * Update current setting name.
      *

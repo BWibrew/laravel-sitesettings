@@ -2,12 +2,14 @@
 
 namespace BWibrew\SiteSettings\Tests\Models;
 
+use BWibrew\SiteSettings\Traits\ManagesSettingScopes;
 use Illuminate\Database\Eloquent\Model;
-use BWibrew\SiteSettings\Traits\ManagesSettings;
-use BWibrew\SiteSettings\Interfaces\Setting as SettingInterface;
+use BWibrew\SiteSettings\Interfaces\Scope as ScopeInterface;
 
-class Scope extends Model
+class Scope extends Model implements ScopeInterface
 {
+    use ManagesSettingScopes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -16,12 +18,4 @@ class Scope extends Model
     protected $fillable = [
         'name',
     ];
-
-    /**
-     * Get the settings for this scope.
-     */
-    public function settings()
-    {
-        return $this->hasMany(Setting::class);
-    }
 }

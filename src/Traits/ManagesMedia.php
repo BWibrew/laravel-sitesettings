@@ -6,7 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait as SpatieMedia;
 
-trait HasMedia
+trait ManagesMedia
 {
     use SpatieMedia;
 

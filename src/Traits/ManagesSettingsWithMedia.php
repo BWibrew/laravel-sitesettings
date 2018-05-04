@@ -4,5 +4,5 @@ namespace BWibrew\SiteSettings\Traits;
 
 trait ManagesSettingsWithMedia
 {
-    use ManagesSettings, HasMedia;
+    use ManagesSettings, ManagesMedia;
 }
