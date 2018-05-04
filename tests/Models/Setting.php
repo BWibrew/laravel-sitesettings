@@ -4,7 +4,7 @@ namespace BWibrew\SiteSettings\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use BWibrew\SiteSettings\Traits\ManagesSettings;
-use BWibrew\SiteSettings\Interfaces\Setting as SettingInterface;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
 
 class Setting extends Model implements SettingInterface
 {

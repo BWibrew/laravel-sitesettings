@@ -2,7 +2,7 @@
 
 namespace BWibrew\SiteSettings\Interfaces;
 
-interface Setting
+interface SettingInterface
 {
     /**
      * Get the scope that owns the setting.

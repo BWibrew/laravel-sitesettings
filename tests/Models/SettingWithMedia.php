@@ -4,9 +4,9 @@ namespace BWibrew\SiteSettings\Tests\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use BWibrew\SiteSettings\Traits\ManagesSettingsWithMedia;
-use BWibrew\SiteSettings\Interfaces\SettingWithMedia as SettingInterface;
+use BWibrew\SiteSettings\Interfaces\SettingWithMediaInterface;
 
-class SettingWithMedia extends Model implements SettingInterface
+class SettingWithMedia extends Model implements SettingWithMediaInterface
 {
     use ManagesSettingsWithMedia;
 

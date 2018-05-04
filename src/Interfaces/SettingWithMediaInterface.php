@@ -6,7 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
-interface SettingWithMedia extends Setting, HasMedia
+interface SettingWithMediaInterface extends SettingInterface, HasMedia
 {
     /**
      * Syncs associated media library item.
