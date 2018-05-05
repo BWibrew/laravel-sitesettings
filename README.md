@@ -7,7 +7,7 @@
 [![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
 ## Support
-This version supports Laravel 5.4 / PHP 5.6 and above.
+This version supports Laravel 5.4 / PHP 7.0 and above.
 
 ## Installation
 Install using Composer by running:
