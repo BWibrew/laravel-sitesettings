@@ -2,6 +2,11 @@
 
 namespace BWibrew\SiteSettings;
 
+use BWibrew\SiteSettings\Interfaces\ScopeInterface;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
+use BWibrew\SiteSettings\Models\Scope;
+use BWibrew\SiteSettings\Models\Setting;
+use BWibrew\SiteSettings\Models\SettingWithMedia;
 use Illuminate\Support\ServiceProvider;
 use Spatie\MediaLibrary\MediaLibraryServiceProvider;
 
@@ -34,8 +39,19 @@ class SiteSettingsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(MediaLibraryServiceProvider::class);
+        if (class_exists(MediaLibraryServiceProvider::class)) {
+            $this->app->register(MediaLibraryServiceProvider::class);
+        }
 
         $this->mergeConfigFrom(__DIR__.'/../config/sitesettings.php', 'sitesettings');
+
+        $this->app->bind(ScopeInterface::class, Scope::class);
+
+        $this->app->bind(SettingInterface::class, $this->getSettingModel());
+    }
+
+    protected function getSettingModel()
+    {
+        return class_exists(MediaLibraryServiceProvider::class) ? SettingWithMedia::class : Setting::class;
     }
 }

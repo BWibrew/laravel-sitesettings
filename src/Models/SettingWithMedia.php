@@ -1,6 +1,6 @@
 <?php
 
-namespace BWibrew\SiteSettings\Tests\Models;
+namespace BWibrew\SiteSettings\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use BWibrew\SiteSettings\Traits\ManagesSettingsWithMedia;

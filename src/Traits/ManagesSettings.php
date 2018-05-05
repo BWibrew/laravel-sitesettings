@@ -2,6 +2,7 @@
 
 namespace BWibrew\SiteSettings\Traits;
 
+use BWibrew\SiteSettings\Interfaces\ScopeInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Cache\CacheManager as Cache;
@@ -13,7 +14,7 @@ trait ManagesSettings
      */
     public function scope()
     {
-        return $this->belongsTo(Scope::class);
+        return $this->belongsTo(app(ScopeInterface::class));
     }
 
     /**
@@ -68,7 +69,7 @@ trait ManagesSettings
      */
     public function updateScope($scope = null)
     {
-        $this->scope_id = is_null($scope) ? 0 : Scope::firstOrCreate(['name' => $scope])->id;
+        $this->scope_id = is_null($scope) ? 0 : app(ScopeInterface::class)->firstOrCreate(['name' => $scope])->id;
         $this->save();
         $this->refreshCache();
 
@@ -137,7 +138,7 @@ trait ManagesSettings
             return;
         }
 
-        $scope_id = is_null($scope) ? 0 : Scope::where('name', $scope)->first()->id;
+        $scope_id = is_null($scope) ? 0 : app(ScopeInterface::class)->where('name', $scope)->first()->id;
 
         return (new self)->getSettings()
                          ->where('scope_id', $scope_id)
@@ -205,7 +206,7 @@ trait ManagesSettings
         }
 
         return [
-            'scope_id' => isset($scope) ? Scope::firstOrCreate(['name' => $scope])->id : 0,
+            'scope_id' => isset($scope) ? app(ScopeInterface::class)->firstOrCreate(['name' => $scope])->id : 0,
             'name' => $name,
         ];
     }

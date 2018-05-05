@@ -2,6 +2,8 @@
 
 namespace BWibrew\SiteSettings\Traits;
 
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
+
 trait ManagesSettingScopes
 {
     /**
@@ -9,6 +11,6 @@ trait ManagesSettingScopes
      */
     public function settings()
     {
-        return $this->hasMany(Setting::class);
+        return $this->hasMany(app(SettingInterface::class));
     }
 }
