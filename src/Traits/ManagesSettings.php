@@ -3,6 +3,7 @@
 namespace BWibrew\SiteSettings\Traits;
 
 use BWibrew\SiteSettings\Interfaces\ScopeInterface;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Cache\CacheManager as Cache;
@@ -165,7 +166,7 @@ trait ManagesSettings
      */
     public static function getScopeUpdatedBy($scope = null)
     {
-        return (int) (new self)->getScopeProperty('updated_by', $scope);
+        return (new self)->getScopeProperty('updated_by', $scope);
     }
 
     /**
@@ -251,7 +252,7 @@ trait ManagesSettings
         }
 
         return $this->getSettings()
-                    ->reject(function ($setting) use ($scope) {
+                    ->reject(function (SettingInterface $setting) use ($scope) {
                         if (is_null($setting->scope)) {
                             return true;
                         }

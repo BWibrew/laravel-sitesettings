@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\TestCase as Orchestra;
-use BWibrew\SiteSettings\Tests\Models\SettingWithMedia;
+use BWibrew\SiteSettings\Models\SettingWithMedia;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 class TestCase extends Orchestra

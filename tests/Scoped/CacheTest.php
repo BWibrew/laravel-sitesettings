@@ -1,12 +1,12 @@
 <?php
 
-namespace BWibrew\SiteSettings\Scoped\Tests;
+namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use BWibrew\SiteSettings\Tests\Models\Scope;
+use BWibrew\SiteSettings\Models\Scope;
 use BWibrew\SiteSettings\Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use BWibrew\SiteSettings\Tests\Models\Setting;
+use BWibrew\SiteSettings\Models\Setting;
 
 class CacheTest extends TestCase
 {
@@ -53,7 +53,7 @@ class CacheTest extends TestCase
         $user_id = Setting::getScopeUpdatedBy('scope');
 
         $this->assertCached();
-        $this->assertInternalType('int', $user_id);
+        $this->assertTrue(is_numeric($user_id));
         $this->assertEquals($user_id, Cache::get('bwibrew.settings')->sortBy('updated_at')->first()->updated_by);
         $this->assertCount(2, DB::getQueryLog());
     }

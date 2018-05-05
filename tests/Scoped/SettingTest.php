@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use BWibrew\SiteSettings\Tests\Models\Scope;
+use BWibrew\SiteSettings\Models\Scope;
 use BWibrew\SiteSettings\Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
 use BWibrew\SiteSettings\Tests\Models\User;
-use BWibrew\SiteSettings\Tests\Models\Setting;
+use BWibrew\SiteSettings\Models\Setting;
 
 class SettingTest extends TestCase
 {
@@ -18,7 +18,7 @@ class SettingTest extends TestCase
             'scope_id' => factory(Scope::class)->create(['name' => 'scope_name'])->id,
         ]);
 
-        $this->assertEquals('scope_name', $setting->scope()->first()->name);
+        $this->assertEquals('scope_name', $setting->scope->name);
     }
 
     /** @test */
@@ -31,7 +31,10 @@ class SettingTest extends TestCase
 
         $setting->removeScope();
 
-        $this->assertDatabaseHas('settings', ['scope_id' => 0]);
+        $this->assertDatabaseHas('settings', [
+            'id' => $setting->id,
+            'scope_id' => 0,
+        ]);
     }
 
     /** @test */
@@ -44,9 +47,7 @@ class SettingTest extends TestCase
 
         $setting->updateScope('new_scope');
 
-        $this->assertDatabaseHas('settings', [
-            'scope_id' => $setting->scope()->where('name', 'new_scope')->first()->id
-        ]);
+        $this->assertEquals('new_scope', $setting->scope->name);
     }
 
     /** @test */
@@ -58,7 +59,7 @@ class SettingTest extends TestCase
         $setting = Setting::register('registered_scope.registered_setting');
 
         $this->assertEquals('registered_setting', $setting->name);
-        $this->assertEquals('registered_scope', $setting->scope()->first()->name);
+        $this->assertEquals('registered_scope', $setting->scope->name);
     }
 
     /** @test */
@@ -70,7 +71,7 @@ class SettingTest extends TestCase
         $setting = Setting::register('registered_scope.registered_setting', 'registered_value');
 
         $this->assertEquals('registered_setting', $setting->name);
-        $this->assertEquals('registered_scope', $setting->scope()->first()->name);
+        $this->assertEquals('registered_scope', $setting->scope->name);
         $this->assertEquals('registered_value', $setting->value);
     }
 
@@ -83,7 +84,7 @@ class SettingTest extends TestCase
         $setting = Setting::register('scope.name.other.item');
 
         $this->assertEquals('name.other.item', $setting->name);
-        $this->assertEquals('scope', $setting->scope()->first()->name);
+        $this->assertEquals('scope', $setting->scope->name);
     }
 
     /** @test */
@@ -108,7 +109,7 @@ class SettingTest extends TestCase
         $setting->updateName('scope.new_name');
 
         $this->assertEquals('new_name', $setting->name);
-        $this->assertEquals('scope', $setting->scope()->first()->name);
+        $this->assertEquals('scope', $setting->scope->name);
     }
 
     /** @test */
@@ -138,7 +139,7 @@ class SettingTest extends TestCase
         $setting->updateValue('new value');
 
         $this->assertEquals('new value', $setting->value);
-        $this->assertEquals('scope', $setting->scope()->first()->name);
+        $this->assertEquals('scope', $setting->scope->name);
     }
 
     /** @test */
@@ -267,7 +268,7 @@ class SettingTest extends TestCase
 
         $values = Setting::getScopeValues('scope');
 
-        $this->assertEquals(null, $values);
+        $this->assertNull($values);
     }
 
     /** @test */
@@ -298,7 +299,7 @@ class SettingTest extends TestCase
 
         $user_id = Setting::getScopeUpdatedBy('scope');
 
-        $this->assertEquals(null, $user_id);
+        $this->assertNull($user_id);
     }
 
     /** @test */
@@ -325,7 +326,7 @@ class SettingTest extends TestCase
 
         $timestamp = Setting::getScopeUpdatedAt('scope');
 
-        $this->assertEquals(null, $timestamp);
+        $this->assertNull($timestamp);
     }
 
     /** @test */

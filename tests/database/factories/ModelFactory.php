@@ -12,7 +12,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\User::class, function (Faker\
     ];
 });
 
-$factory->define(BWibrew\SiteSettings\Tests\Models\Setting::class, function (Faker\Generator $faker) {
+$factory->define(BWibrew\SiteSettings\Models\Setting::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
         'scope_id' => 0,
@@ -27,7 +27,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\Setting::class, function (Fak
     ];
 });
 
-$factory->define(BWibrew\SiteSettings\Tests\Models\SettingWithMedia::class, function (Faker\Generator $faker) {
+$factory->define(BWibrew\SiteSettings\Models\SettingWithMedia::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
         'scope_id' => 0,
@@ -42,7 +42,7 @@ $factory->define(BWibrew\SiteSettings\Tests\Models\SettingWithMedia::class, func
     ];
 });
 
-$factory->define(BWibrew\SiteSettings\Tests\Models\Scope::class, function (Faker\Generator $faker) {
+$factory->define(BWibrew\SiteSettings\Models\Scope::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->unique()->word,
     ];
