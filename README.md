@@ -7,13 +7,23 @@
 [![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
 ## Support
-This version supports Laravel 5.5 and above. Use [version  0.6.0](https://github.com/BWibrew/laravel-sitesettings/releases/tag/0.6.0) for Laravel 5.4.
+This version supports Laravel 5.4 / PHP 5.6 and above.
 
 ## Installation
 Install using Composer by running:
 ```
 composer require BWibrew/laravel-sitesettings
 ```
+
+**Only for Laravel 5.4:** Add the service provider to the providers array in `config/app.php`:
+```php
+'providers' => [
+    ...
+    BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
+];
+```
+
+Laravel 5.5 and above will automatically register the service provider.
 
 Then run table migrations with:
 ```
@@ -30,19 +40,64 @@ Publish the migrations with:
 php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" --tag="migrations"
 ```
 
+### Configuring your models
+Add the following interface and trait to your `Setting` model:
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use BWibrew\SiteSettings\Traits\ManagesSettings;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
+
+class Setting extends Model implements SettingInterface
+{
+    use ManagesSettings;
+    
+    //
+}
+```
+
+If using scopes then also add the following interface and trait to your `Scope` model:
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use BWibrew\SiteSettings\Interfaces\ScopeInterface;
+use BWibrew\SiteSettings\Traits\ManagesSettingScopes;
+
+class Scope extends Model implements ScopeInterface
+{
+    use ManagesSettingScopes;
+    
+    //
+}
+```
+
 ### File Uploads
-To support the ability to save uploaded files as settings you also need to install the spatie/laravel-medialibrary package.
-Installation instructions can be found [here](https://github.com/spatie/laravel-medialibrary/tree/v5#installation).
+**Note:** PHP 7.0 and above is required to use file uploads.
+
+To support the ability to save uploaded files as settings you also need to install the `spatie/laravel-medialibrary` 
+package.
+```
+composer require spatie/laravel-medialibrary
+```
+Full installation instructions can be found [here](https://github.com/spatie/laravel-medialibrary/tree/v5#installation).
 
 Here is the minimum set-up needed:
 
-Add the service provider to the providers array in `config/app.php`:
+**Only for Laravel 5.4:** Add the service provider to the providers array in `config/app.php`:
 ```php
 'providers' => [
     ...
     Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 ];
 ```
+
+Laravel 5.5 and above will automatically register the service provider.
 
 Publish the migration with:
 ```
@@ -54,7 +109,7 @@ Then run table migrations with:
 php artisan migrate
 ```
 
-Add add a disk to `app/config/filesystems.php`. e.g:
+Add a disk to `app/config/filesystems.php`. e.g:
 ```php
     ...
     'disks' => [
@@ -67,8 +122,11 @@ Add add a disk to `app/config/filesystems.php`. e.g:
     ...
 ```
 
+Lastly, you will need to use `SettingWithMediaInterface` and `ManagesSettingsWithMedia` instead 
+of `SettingInterface` and `ManagesSettings` on your `Setting` model.
+
 ## Usage
-This package provides access to the `Setting` eloquent model with the following methods:
+This package provides a convenient API for using the settings with an existing Eloquent Model.
 
 ### Registering a new setting
 A setting is created like this:
@@ -136,15 +194,24 @@ $setting = Setting::where('name', 'setting_name')->first();
 
 $setting->updateScope('new_scope_name');
 
-$setting->removeScope(); // Sets scope to null.
+$setting->removeScope();
 ```
 
-### Usage with media uploads
-This package makes use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to provide 
-the ability to associate settings with uploaded media.
+### Usage with file uploads
+This package can make use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to 
+provide the ability to associate settings with uploaded media.
 
 To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.4/requests#files) as the 
 setting value.
+
+Example:
+```php
+$file = $request->file('avatar');
+
+$setting = Setting::register('avatar', $file);
+```
+
+The value returned on a file upload setting is a string controlled by the `media_value_type` config value.
 
 ## Configuration
 Set `use_scopes` to `false` to disable the use of scopes.
