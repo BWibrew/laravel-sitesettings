@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use BWibrew\SiteSettings\Models\Scope;
-use BWibrew\SiteSettings\Tests\TestCase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use BWibrew\SiteSettings\Models\Scope;
 use BWibrew\SiteSettings\Models\Setting;
+use BWibrew\SiteSettings\Tests\TestCase;
 
 class CacheTest extends TestCase
 {
@@ -46,7 +46,7 @@ class CacheTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         factory(Setting::class, 10)->create([
             'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
-            'updated_by' => 1
+            'updated_by' => 1,
         ]);
 
         $this->logDBQueries();

@@ -2,12 +2,11 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use BWibrew\SiteSettings\Models\Scope;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use BWibrew\SiteSettings\Tests\Models\User;
 use BWibrew\SiteSettings\Models\Setting;
+use BWibrew\SiteSettings\Tests\Models\User;
 
 class CacheTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Traits;
 
-use BWibrew\SiteSettings\Interfaces\ScopeInterface;
-use BWibrew\SiteSettings\Interfaces\SettingInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Auth\AuthManager as Auth;
 use Illuminate\Cache\CacheManager as Cache;
+use BWibrew\SiteSettings\Interfaces\ScopeInterface;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
 
 trait ManagesSettings
 {
@@ -256,6 +256,7 @@ trait ManagesSettings
                         if (is_null($setting->scope)) {
                             return true;
                         }
+
                         return $setting->scope->name !== $scope;
                     })
                     ->sortBy('updated_at')

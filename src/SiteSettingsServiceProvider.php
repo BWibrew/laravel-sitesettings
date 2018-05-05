@@ -2,13 +2,13 @@
 
 namespace BWibrew\SiteSettings;
 
-use BWibrew\SiteSettings\Interfaces\ScopeInterface;
-use BWibrew\SiteSettings\Interfaces\SettingInterface;
 use BWibrew\SiteSettings\Models\Scope;
+use Illuminate\Support\ServiceProvider;
 use BWibrew\SiteSettings\Models\Setting;
 use BWibrew\SiteSettings\Models\SettingWithMedia;
-use Illuminate\Support\ServiceProvider;
+use BWibrew\SiteSettings\Interfaces\ScopeInterface;
 use Spatie\MediaLibrary\MediaLibraryServiceProvider;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
 
 class SiteSettingsServiceProvider extends ServiceProvider
 {
@@ -26,8 +26,7 @@ class SiteSettingsServiceProvider extends ServiceProvider
         // Hat tip: https://github.com/spatie/laravel-medialibrary/blob/cfc60632369eb18b9585ac7eff33f59b5f7d2507/src/MediaLibraryServiceProvider.php#L21
         if (! class_exists('CreateSettingsTable')) {
             $this->publishes([
-                realpath(__DIR__ . '/../database/migrations/create_settings_tables.php.stub')
-                => database_path('migrations/'.date('Y_m_d_His', time()).'_create_settings_table.php'),
+                realpath(__DIR__.'/../database/migrations/create_settings_tables.php.stub') => database_path('migrations/'.date('Y_m_d_His', time()).'_create_settings_table.php'),
             ], 'migrations');
         }
     }

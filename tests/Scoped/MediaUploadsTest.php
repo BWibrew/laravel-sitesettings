@@ -2,10 +2,10 @@
 
 namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use BWibrew\SiteSettings\Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use BWibrew\SiteSettings\Tests\TestCase;
 use BWibrew\SiteSettings\Tests\Models\User;
 use BWibrew\SiteSettings\Models\SettingWithMedia as Setting;
 

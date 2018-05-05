@@ -3,8 +3,8 @@
 namespace BWibrew\SiteSettings\Interfaces;
 
 use Illuminate\Http\UploadedFile;
-use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 use Spatie\MediaLibrary\FileAdder\FileAdder;
+use Spatie\MediaLibrary\HasMedia\Interfaces\HasMedia;
 
 interface SettingWithMediaInterface extends SettingInterface, HasMedia
 {

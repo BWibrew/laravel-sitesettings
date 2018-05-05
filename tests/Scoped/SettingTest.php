@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use BWibrew\SiteSettings\Models\Scope;
-use BWibrew\SiteSettings\Tests\TestCase;
 use Illuminate\Support\Facades\Auth;
-use BWibrew\SiteSettings\Tests\Models\User;
+use BWibrew\SiteSettings\Models\Scope;
 use BWibrew\SiteSettings\Models\Setting;
+use BWibrew\SiteSettings\Tests\TestCase;
+use BWibrew\SiteSettings\Tests\Models\User;
 
 class SettingTest extends TestCase
 {
@@ -150,7 +150,7 @@ class SettingTest extends TestCase
         factory(Setting::class)->create([
             'name' => 'name',
             'value' => 'value2',
-            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
         ]);
 
         $value1 = Setting::getValue('name');
@@ -210,7 +210,7 @@ class SettingTest extends TestCase
         $setting1 = factory(Setting::class)->create(['name' => 'name']);
         $setting2 = factory(Setting::class)->create([
             'name' => 'name',
-            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
         ]);
 
         $timestamp1 = Setting::getUpdatedAt('name');
@@ -294,7 +294,7 @@ class SettingTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', false);
         factory(Setting::class, 10)->create([
             'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
-            'updated_by' => 1
+            'updated_by' => 1,
         ]);
 
         $user_id = Setting::getScopeUpdatedBy('scope');
@@ -308,7 +308,7 @@ class SettingTest extends TestCase
         $this->app['config']->set('sitesettings.use_scopes', true);
         $unscoped_settings = factory(Setting::class, 10)->create()->sortBy('updated_at')->first();
         $scoped_settings = factory(Setting::class, 10)->create([
-            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id
+            'scope_id' => factory(Scope::class)->create(['name' => 'scope'])->id,
         ])->sortBy('updated_at')->first();
 
         $unscoped_timestamp = Setting::getScopeUpdatedAt();
@@ -335,12 +335,12 @@ class SettingTest extends TestCase
         $setting1 = factory(Setting::class)->create([
             'name' => 'name',
             'scope_id' => factory(Scope::class)->create(['name' => 'scope1'])->id,
-            'value' => 'value1'
+            'value' => 'value1',
         ]);
         $setting2 = factory(Setting::class)->create([
             'name' => 'name',
             'scope_id' => factory(Scope::class)->create(['name' => 'scope2'])->id,
-            'value' => 'value2'
+            'value' => 'value2',
         ]);
 
         $this->assertEquals('value1', $setting1->value);

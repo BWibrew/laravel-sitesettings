@@ -2,14 +2,14 @@
 
 namespace BWibrew\SiteSettings\Tests;
 
-use BWibrew\SiteSettings\Tests\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use BWibrew\SiteSettings\Tests\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Orchestra\Testbench\TestCase as Orchestra;
 use BWibrew\SiteSettings\Models\SettingWithMedia;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class TestCase extends Orchestra
 {

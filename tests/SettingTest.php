@@ -3,8 +3,8 @@
 namespace BWibrew\SiteSettings\Tests;
 
 use Illuminate\Support\Facades\Auth;
-use BWibrew\SiteSettings\Tests\Models\User;
 use BWibrew\SiteSettings\Models\Setting;
+use BWibrew\SiteSettings\Tests\Models\User;
 
 class SettingTest extends TestCase
 {
