@@ -1,9 +1,12 @@
 # Changelog
 Notable changes will be listed here
 
-## master
-- Add support for Laravel 5.5 and newer
-- Drop support for Laravel 5.4
+## 1.0.0 - 2018-05-05
+- Added support for Laravel 5.5 and above.
+- Improved package implementation with new interfaces and traits.
+- Improved vendor migrations and config usage.
+- Added a separate table for scopes.
+- Make Spatie Media Library an optional dependency.
 
 ## 0.6.0 - 2017-10-28
 - Add caching
