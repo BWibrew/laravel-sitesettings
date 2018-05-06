@@ -41,7 +41,7 @@ php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceP
 ```
 
 ### Configuring your models
-Add the following interface and trait to your `Setting` model:
+Add the following interface, trait and `$fillable` attribute to your `Setting` model:
 ```php
 <?php
 
@@ -55,11 +55,17 @@ class Setting extends Model implements SettingInterface
 {
     use ManagesSettings;
     
+    protected $fillable = [
+        'name',
+        'value',
+        'updated_by',
+    ];
+    
     //
 }
 ```
 
-If using scopes then also add the following interface and trait to your `Scope` model:
+If using scopes then also add the following interface, trait and `$fillable` attribute to your `Scope` model:
 ```php
 <?php
 
@@ -72,6 +78,10 @@ use BWibrew\SiteSettings\Traits\ManagesSettingScopes;
 class Scope extends Model implements ScopeInterface
 {
     use ManagesSettingScopes;
+    
+    protected $fillable = [
+        'name',
+    ];
     
     //
 }
