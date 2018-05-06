@@ -25,8 +25,11 @@ class SiteSettingsServiceProvider extends ServiceProvider
 
         // Hat tip: https://github.com/spatie/laravel-medialibrary/blob/cfc60632369eb18b9585ac7eff33f59b5f7d2507/src/MediaLibraryServiceProvider.php#L21
         if (! class_exists('CreateSettingTables')) {
+            $migrationStub = realpath(__DIR__.'/../database/migrations/create_setting_tables.php.stub');
+            $migration = database_path('migrations/'.date('Y_m_d_His', time()).'_create_setting_tables.php');
+
             $this->publishes([
-                realpath(__DIR__.'/../database/migrations/create_setting_tables.php.stub') => database_path('migrations/'.date('Y_m_d_His', time()).'_create_setting_tables.php'),
+                $migrationStub => $migration,
             ], 'migrations');
         }
     }
