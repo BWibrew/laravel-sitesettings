@@ -1,6 +1,6 @@
 {
   "name": "bwibrew/laravel-sitesettings",
-  "description": "Persistent site settings for Laravel 5.4",
+  "description": "Persistent site settings for Laravel",
   "keywords": [
     "laravel",
     "cms",
