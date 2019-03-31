@@ -1,6 +1,9 @@
 # Changelog
 Notable changes will be listed here
 
+## Head
+- Renamed config value `media_value_type` to `file_value_type`
+
 ## 1.0.0 - 2018-05-05
 - Added support for Laravel 5.5 and above.
 - Improved package implementation with new interfaces and traits.

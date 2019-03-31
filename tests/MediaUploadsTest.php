@@ -144,7 +144,7 @@ class MediaUploadsTest extends TestCase
     /** @test */
     public function it_gets_filename_when_set_in_config()
     {
-        $this->app['config']->set('sitesettings.media_value_type', 'file_name');
+        $this->app['config']->set('sitesettings.file_value_type', 'file_name');
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
         $setting = Setting::register('upload', $this->file);
@@ -156,7 +156,7 @@ class MediaUploadsTest extends TestCase
     /** @test */
     public function it_gets_url_when_set_in_config()
     {
-        $this->app['config']->set('sitesettings.media_value_type', 'url');
+        $this->app['config']->set('sitesettings.file_value_type', 'url');
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
         $setting = Setting::register('upload', $this->file);
@@ -168,7 +168,7 @@ class MediaUploadsTest extends TestCase
     /** @test */
     public function it_gets_file_path_when_set_in_config()
     {
-        $this->app['config']->set('sitesettings.media_value_type', 'path');
+        $this->app['config']->set('sitesettings.file_value_type', 'path');
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
         $setting = Setting::register('upload', $this->file);

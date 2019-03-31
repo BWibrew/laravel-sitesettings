@@ -26,7 +26,7 @@ trait ManagesMedia
 
         $this->addFileToMediaCollection($this->addMedia($value)->usingName($name));
 
-        switch (config('sitesettings.media_value_type')) {
+        switch (config('sitesettings.file_value_type')) {
             case 'path':
                 $this->value = $this->getMedia()->first()->getPath();
                 $this->save();

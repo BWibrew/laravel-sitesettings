@@ -12,6 +12,6 @@ return [
      *
      * Choose from: file_name, path, url
      */
-    'media_value_type' => 'file_name',
+    'file_value_type' => 'file_name',
 
 ];

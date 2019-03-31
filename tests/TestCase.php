@@ -55,7 +55,7 @@ class TestCase extends Orchestra
 
         // Site Settings config
         $app['config']->set('sitesettings.use_scopes', true);
-        $app['config']->set('sitesettings.media_value_type', 'file_name');
+        $app['config']->set('sitesettings.file_value_type', 'file_name');
 
         // Media Library config
         $app['config']->set('medialibrary.custom_url_generator_class', TestUrlGenerator::class);

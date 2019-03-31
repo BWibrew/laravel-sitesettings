@@ -221,12 +221,12 @@ $file = $request->file('avatar');
 $setting = Setting::register('avatar', $file);
 ```
 
-The value returned on a file upload setting is a string controlled by the `media_value_type` config value.
+The value returned on a file upload setting is a string controlled by the `file_value_type` config value.
 
 ## Configuration
 Set `use_scopes` to `false` to disable the use of scopes.
 
-The `media_value_type` setting controls the value stored in the settings table. This can be set to `'file_name'`, 
+The `file_value_type` setting controls the value stored in the settings table. This can be set to `'file_name'`, 
 `'path'` or `'url'`.
 
 ## Testing
