@@ -2,6 +2,9 @@
 Notable changes will be listed here
 
 ## Head
+- Dropped support for PHP 7.0
+- Dropped support for Laravel 5.4
+- Dropped support for Spatie Laravel Media Library v5 & v6
 - Renamed config value `media_value_type` to `file_value_type`
 
 ## 1.0.0 - 2018-05-05
