@@ -17,10 +17,7 @@ default_steps: &default_steps
     -   restore_cache:
           name: Restore Composer package cache
           keys:
-            - composer-packages-{{ .Branch }}-{{ checksum "composer.json" }}
-            - composer-packages-{{ .Branch }}
-            - composer-packages-master
-            - composer-packages-
+            - composer-v1-packages-{{ .Branch }}-{{ checksum "composer.json" }}
     -   run:
           name: Run Composer
           command: |
@@ -28,7 +25,7 @@ default_steps: &default_steps
             if [[ $SETUP = 'lowest' ]]; then  composer update --prefer-dist --no-interaction --prefer-stable --no-suggest --prefer-lowest; fi
     -   save_cache:
           name: Save Composer package cache
-          key: composer-packages-{{ .Branch }}-{{ checksum "composer.json" }}
+          key: composer-v1-packages-{{ .Branch }}-{{ checksum "composer.json" }}
           paths:
             - vendor
 
