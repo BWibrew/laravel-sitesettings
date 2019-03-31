@@ -45,13 +45,6 @@
       "BWibrew\\SiteSettings\\Tests\\": "tests/"
     }
   },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "BWibrew\\SiteSettings\\SiteSettingsServiceProvider"
-      ]
-    }
-  },
   "scripts": {
     "test" : [
       "vendor/bin/phpcs",
