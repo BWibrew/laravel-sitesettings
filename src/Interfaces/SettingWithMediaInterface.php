@@ -4,7 +4,6 @@ namespace BWibrew\SiteSettings\Interfaces;
 
 use Illuminate\Http\UploadedFile;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
 
 interface SettingWithMediaInterface extends SettingInterface, HasMedia
 {
@@ -17,12 +16,4 @@ interface SettingWithMediaInterface extends SettingInterface, HasMedia
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
     public function syncWithMediaLibrary(string $name, UploadedFile $value);
-
-    /**
-     * Ensure compatibility with multiple versions of Spatie Media Library.
-     *
-     * @param FileAdder $fileAdder
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
-     */
-    public function addFileToMediaCollection(FileAdder $fileAdder);
 }
