@@ -13,7 +13,7 @@ class MediaUploadsTest extends TestCase
     protected $setting;
     protected $file;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -18,11 +18,11 @@ class TestCase extends Orchestra
     /**
      * Setup the test environment.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
-        if (! class_exists('CreateSettingsTable')) {
+        if (! class_exists('CreateSettingTables')) {
             $this->artisan(
                 'vendor:publish',
                 ['--provider' => 'BWibrew\SiteSettings\SiteSettingsServiceProvider', '--tag' => 'migrations']

@@ -3,7 +3,6 @@
 namespace BWibrew\SiteSettings\Traits;
 
 use Illuminate\Http\UploadedFile;
-use Spatie\MediaLibrary\FileAdder\FileAdder;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait as SpatieMedia;
 
 trait ManagesMedia
@@ -24,7 +23,7 @@ trait ManagesMedia
             self::find($this->id)->getMedia()->first()->delete();
         }
 
-        $this->addFileToMediaCollection($this->addMedia($value)->usingName($name));
+        $this->addMedia($value)->usingName($name)->toMediaCollection();
 
         switch (config('sitesettings.file_value_type')) {
             case 'path':
@@ -39,23 +38,6 @@ trait ManagesMedia
                 $this->value = $this->getMedia()->first()->file_name;
                 $this->save();
                 break;
-        }
-    }
-
-    /**
-     * Ensure compatibility with multiple versions of Spatie Media Library.
-     *
-     * @param \Spatie\MediaLibrary\FileAdder\FileAdder $fileAdder
-     * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
-     */
-    public function addFileToMediaCollection(FileAdder $fileAdder)
-    {
-        if (method_exists($fileAdder, 'toMediaCollection')) {
-            // spatie/laravel-medialibrary v6
-            $fileAdder->toMediaCollection();
-        } elseif (method_exists($fileAdder, 'toMediaLibrary')) {
-            // spatie/laravel-medialibrary v5
-            $fileAdder->toMediaLibrary();
         }
     }
 }

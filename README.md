@@ -7,23 +7,13 @@
 [![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
 ## Support
-This version supports Laravel 5.4 / PHP 7.0 and above.
+This version supports Laravel 5.5 / PHP 7.1 and above.
 
 ## Installation
 Install using Composer by running:
 ```
 composer require BWibrew/laravel-sitesettings
 ```
-
-**Only for Laravel 5.4:** Add the service provider to the providers array in `config/app.php`:
-```php
-'providers' => [
-    ...
-    BWibrew\SiteSettings\SiteSettingsServiceProvider::class,
-];
-```
-
-Laravel 5.5 and above will automatically register the service provider.
 
 Then run table migrations with:
 ```
@@ -88,26 +78,15 @@ class Scope extends Model implements ScopeInterface
 ```
 
 ### File Uploads
-**Note:** PHP 7.0 and above is required to use file uploads.
 
 To support the ability to save uploaded files as settings you also need to install the `spatie/laravel-medialibrary` 
 package.
 ```
 composer require spatie/laravel-medialibrary
 ```
-Full installation instructions can be found [here](https://github.com/spatie/laravel-medialibrary/tree/v5#installation).
+Full installation instructions can be found [here](https://github.com/spatie/laravel-medialibrary/tree/v7#installation).
 
-Here is the minimum set-up needed:
-
-**Only for Laravel 5.4:** Add the service provider to the providers array in `config/app.php`:
-```php
-'providers' => [
-    ...
-    Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
-];
-```
-
-Laravel 5.5 and above will automatically register the service provider.
+**Here is the minimum set-up needed:**
 
 Publish the migration with:
 ```
@@ -211,7 +190,7 @@ $setting->removeScope();
 This package can make use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to 
 provide the ability to associate settings with uploaded media.
 
-To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.4/requests#files) as the 
+To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.5/requests#files) as the 
 setting value.
 
 Example:
