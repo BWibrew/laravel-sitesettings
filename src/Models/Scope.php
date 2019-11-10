@@ -2,9 +2,9 @@
 
 namespace BWibrew\SiteSettings\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use BWibrew\SiteSettings\Interfaces\ScopeInterface;
 use BWibrew\SiteSettings\Traits\ManagesSettingScopes;
+use Illuminate\Database\Eloquent\Model;
 
 class Scope extends Model implements ScopeInterface
 {

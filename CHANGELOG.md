@@ -1,7 +1,7 @@
 # Changelog
 Notable changes will be listed here
 
-## Head
+## 1.1.0 - 2019-11-10
 - Dropped support for PHP 7.0
 - Dropped support for Laravel 5.4
 - Dropped support for Spatie Laravel Media Library v5 & v6

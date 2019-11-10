@@ -2,9 +2,9 @@
 
 namespace BWibrew\SiteSettings\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use BWibrew\SiteSettings\Traits\ManagesSettingsWithMedia;
 use BWibrew\SiteSettings\Interfaces\SettingWithMediaInterface;
+use BWibrew\SiteSettings\Traits\ManagesSettingsWithMedia;
+use Illuminate\Database\Eloquent\Model;
 
 class SettingWithMedia extends Model implements SettingWithMediaInterface
 {

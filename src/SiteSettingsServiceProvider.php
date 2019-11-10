@@ -2,13 +2,13 @@
 
 namespace BWibrew\SiteSettings;
 
+use BWibrew\SiteSettings\Interfaces\ScopeInterface;
+use BWibrew\SiteSettings\Interfaces\SettingInterface;
 use BWibrew\SiteSettings\Models\Scope;
-use Illuminate\Support\ServiceProvider;
 use BWibrew\SiteSettings\Models\Setting;
 use BWibrew\SiteSettings\Models\SettingWithMedia;
-use BWibrew\SiteSettings\Interfaces\ScopeInterface;
+use Illuminate\Support\ServiceProvider;
 use Spatie\MediaLibrary\MediaLibraryServiceProvider;
-use BWibrew\SiteSettings\Interfaces\SettingInterface;
 
 class SiteSettingsServiceProvider extends ServiceProvider
 {

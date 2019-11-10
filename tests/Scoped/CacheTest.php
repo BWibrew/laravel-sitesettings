@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cache;
 use BWibrew\SiteSettings\Models\Scope;
 use BWibrew\SiteSettings\Models\Setting;
 use BWibrew\SiteSettings\Tests\TestCase;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class CacheTest extends TestCase
 {

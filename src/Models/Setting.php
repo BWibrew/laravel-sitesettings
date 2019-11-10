@@ -2,9 +2,9 @@
 
 namespace BWibrew\SiteSettings\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use BWibrew\SiteSettings\Traits\ManagesSettings;
 use BWibrew\SiteSettings\Interfaces\SettingInterface;
+use BWibrew\SiteSettings\Traits\ManagesSettings;
+use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model implements SettingInterface
 {

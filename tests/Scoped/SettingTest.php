@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Tests\Scoped;
 
-use Illuminate\Support\Facades\Auth;
 use BWibrew\SiteSettings\Models\Scope;
 use BWibrew\SiteSettings\Models\Setting;
-use BWibrew\SiteSettings\Tests\TestCase;
 use BWibrew\SiteSettings\Tests\Models\User;
+use BWibrew\SiteSettings\Tests\TestCase;
+use Illuminate\Support\Facades\Auth;
 
 class SettingTest extends TestCase
 {

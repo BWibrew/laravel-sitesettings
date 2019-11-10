@@ -2,11 +2,11 @@
 
 namespace BWibrew\SiteSettings\Traits;
 
-use Illuminate\Http\UploadedFile;
-use Illuminate\Auth\AuthManager as Auth;
-use Illuminate\Cache\CacheManager as Cache;
 use BWibrew\SiteSettings\Interfaces\ScopeInterface;
 use BWibrew\SiteSettings\Interfaces\SettingInterface;
+use Illuminate\Auth\AuthManager as Auth;
+use Illuminate\Cache\CacheManager as Cache;
+use Illuminate\Http\UploadedFile;
 
 trait ManagesSettings
 {
