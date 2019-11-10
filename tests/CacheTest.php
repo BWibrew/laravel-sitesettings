@@ -92,7 +92,7 @@ class CacheTest extends TestCase
         $user_id = Setting::getUpdatedBy('setting_name');
 
         $this->assertCached();
-        $this->assertInternalType('int', $user_id);
+        $this->assertIsInt($user_id);
         $this->assertEquals($user_id, Cache::get('bwibrew.settings')->first()->updated_by);
         $this->assertCount(2, DB::getQueryLog());
     }

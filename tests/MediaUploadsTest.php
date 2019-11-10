@@ -82,7 +82,7 @@ class MediaUploadsTest extends TestCase
         $this->actingAs($user);
         $this->setting->updateValue($this->file);
 
-        $this->assertInternalType('int', $this->setting->updated_by);
+        $this->assertIsInt($this->setting->updated_by);
         $this->assertEquals($user->id, $this->setting->updated_by);
     }
 
@@ -94,7 +94,7 @@ class MediaUploadsTest extends TestCase
 
         $setting = Setting::register('name', $this->file);
 
-        $this->assertInternalType('int', $setting->updated_by);
+        $this->assertIsInt($setting->updated_by);
         $this->assertEquals($user->id, $setting->updated_by);
     }
 
@@ -107,7 +107,7 @@ class MediaUploadsTest extends TestCase
         $this->setting->updateValue($this->file);
 
         $user_id = Setting::getUpdatedBy($this->setting->name);
-        $this->assertInternalType('int', $user_id);
+        $this->assertIsInt($user_id);
         $this->assertEquals($user->id, $user_id);
     }
 

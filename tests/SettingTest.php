@@ -88,14 +88,14 @@ class SettingTest extends TestCase
 
         $setting->updateValue('new value');
 
-        $this->assertInternalType('int', $setting->updated_by);
+        $this->assertIsInt($setting->updated_by);
         $this->assertEquals($user1->id, $setting->updated_by);
 
         $this->actingAs($user2);
 
         $setting->updateName('new_name');
 
-        $this->assertInternalType('int', $setting->updated_by);
+        $this->assertIsInt($setting->updated_by);
         $this->assertEquals($user2->id, $setting->updated_by);
     }
 
