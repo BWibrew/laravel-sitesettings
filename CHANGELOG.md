@@ -1,7 +1,7 @@
 # Changelog
 Notable changes will be listed here
 
-## HEAD
+## 1.1.1 - 2019-11-24
 - Added support for PHP 7.4
 - Added support for Laravel 6
 - Dropped support for PHP 7.1
