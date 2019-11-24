@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class CacheTest extends TestCase
 {
     /** @test */
-    public function it_is_cached_when_registered()
+    public function it_is_cached_when_registered(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
@@ -26,7 +26,7 @@ class CacheTest extends TestCase
     }
 
     /** @test */
-    public function it_is_cached_when_value_is_updated()
+    public function it_is_cached_when_value_is_updated(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'original value']);
@@ -42,7 +42,7 @@ class CacheTest extends TestCase
     }
 
     /** @test */
-    public function it_is_cached_when_name_is_updated()
+    public function it_is_cached_when_name_is_updated(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => 'value']);
@@ -58,7 +58,7 @@ class CacheTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_cached_value()
+    public function it_gets_cached_value(): void
     {
         factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'setting value']);
 
@@ -71,7 +71,7 @@ class CacheTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_cached_updated_at()
+    public function it_gets_cached_updated_at(): void
     {
         factory(Setting::class)->create(['name' => 'setting_name']);
 
@@ -84,7 +84,7 @@ class CacheTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_cached_updated_by()
+    public function it_gets_cached_updated_by(): void
     {
         factory(Setting::class)->create(['name' => 'setting_name', 'updated_by' => 1]);
 

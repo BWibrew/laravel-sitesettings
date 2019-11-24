@@ -52,6 +52,13 @@
       "vendor/bin/phpunit"
     ]
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "BWibrew\\SiteSettings\\SiteSettingsServiceProvider"
+      ]
+    }
+  },
   "config": {
     "preferred-install": "dist",
     "sort-packages": true,

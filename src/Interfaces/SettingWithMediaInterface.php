@@ -12,7 +12,7 @@ interface SettingWithMediaInterface extends SettingInterface, HasMedia
      *
      * @param string $name
      * @param \Illuminate\Http\UploadedFile $value
-     *
+     * @return void
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
     public function syncWithMediaLibrary(string $name, UploadedFile $value);

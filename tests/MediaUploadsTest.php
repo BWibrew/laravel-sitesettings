@@ -22,7 +22,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_adds_media()
+    public function it_adds_media(): void
     {
         $this->addFileToMediaCollection($this->setting->addMedia($this->file));
 
@@ -32,7 +32,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_deletes_media()
+    public function it_deletes_media(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $this->addFileToMediaCollection($this->setting->addMedia($this->file));
@@ -49,7 +49,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_a_file_upload()
+    public function it_registers_a_file_upload(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
@@ -62,7 +62,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_with_a_file_upload()
+    public function it_updates_with_a_file_upload(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
@@ -75,7 +75,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_updated_by_with_a_file_upload()
+    public function it_updates_updated_by_with_a_file_upload(): void
     {
         $user = factory(User::class)->create();
 
@@ -87,7 +87,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_sets_updated_by_when_registering()
+    public function it_sets_updated_by_when_registering(): void
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -99,7 +99,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_updated_by()
+    public function it_gets_updated_by(): void
     {
         $user = factory(User::class)->create();
         Auth::shouldReceive('user')->andReturn($user);
@@ -112,7 +112,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_updated_at()
+    public function it_gets_updated_at(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
@@ -123,7 +123,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_stores_single_file_per_setting()
+    public function it_stores_single_file_per_setting(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $updated = UploadedFile::fake()->image('logo2.png')->size(100);
@@ -142,7 +142,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_filename_when_set_in_config()
+    public function it_gets_filename_when_set_in_config(): void
     {
         $this->app['config']->set('sitesettings.file_value_type', 'file_name');
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
@@ -154,7 +154,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_url_when_set_in_config()
+    public function it_gets_url_when_set_in_config(): void
     {
         $this->app['config']->set('sitesettings.file_value_type', 'url');
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
@@ -166,7 +166,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_file_path_when_set_in_config()
+    public function it_gets_file_path_when_set_in_config(): void
     {
         $this->app['config']->set('sitesettings.file_value_type', 'path');
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());

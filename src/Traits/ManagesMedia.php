@@ -14,10 +14,10 @@ trait ManagesMedia
      *
      * @param string $name
      * @param \Illuminate\Http\UploadedFile $value
-     *
+     * @return void
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
-    public function syncWithMediaLibrary(string $name, UploadedFile $value)
+    public function syncWithMediaLibrary(string $name, UploadedFile $value): void
     {
         if (count(self::find($this->id)->getMedia()) > 0) {
             self::find($this->id)->getMedia()->first()->delete();

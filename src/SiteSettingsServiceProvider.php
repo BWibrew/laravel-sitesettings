@@ -20,13 +20,13 @@ class SiteSettingsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            realpath(__DIR__.'/../config/sitesettings.php') => config_path('sitesettings.php'),
+            realpath(__DIR__ . '/../config/sitesettings.php') => config_path('sitesettings.php'),
         ], 'config');
 
         // Hat tip: https://github.com/spatie/laravel-medialibrary/blob/cfc60632369eb18b9585ac7eff33f59b5f7d2507/src/MediaLibraryServiceProvider.php#L21
         if (! class_exists('CreateSettingTables')) {
-            $migrationStub = realpath(__DIR__.'/../database/migrations/create_setting_tables.php.stub');
-            $migration = database_path('migrations/'.date('Y_m_d_His', time()).'_create_setting_tables.php');
+            $migrationStub = realpath(__DIR__ . '/../database/migrations/create_setting_tables.php.stub');
+            $migration = database_path('migrations/' . date('Y_m_d_His') . '_create_setting_tables.php');
 
             $this->publishes([
                 $migrationStub => $migration,
@@ -45,7 +45,7 @@ class SiteSettingsServiceProvider extends ServiceProvider
             $this->app->register(MediaLibraryServiceProvider::class);
         }
 
-        $this->mergeConfigFrom(__DIR__.'/../config/sitesettings.php', 'sitesettings');
+        $this->mergeConfigFrom(__DIR__ . '/../config/sitesettings.php', 'sitesettings');
 
         $this->app->bind(ScopeInterface::class, Scope::class);
 
