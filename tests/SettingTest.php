@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class SettingTest extends TestCase
 {
     /** @test */
-    public function it_has_a_name()
+    public function it_has_a_name(): void
     {
         $setting = factory(Setting::class)->create(['name' => 'a_setting_name']);
 
@@ -17,7 +17,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_has_a_value()
+    public function it_has_a_value(): void
     {
         $setting = factory(Setting::class)->create(['value' => 'Hello World!']);
 
@@ -25,7 +25,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_registers()
+    public function it_registers(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
 
@@ -35,7 +35,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_with_a_value()
+    public function it_registers_with_a_value(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         Setting::register('new_setting', 'setting value');
@@ -47,7 +47,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_the_name()
+    public function it_updates_the_name(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'original_name', 'value' => null]);
@@ -58,7 +58,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_the_value()
+    public function it_updates_the_value(): void
     {
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
         $setting = factory(Setting::class)->create(['name' => 'name', 'value' => 'original value']);
@@ -69,7 +69,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_value()
+    public function it_gets_the_value(): void
     {
         factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'setting value']);
 
@@ -79,7 +79,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_the_user_id()
+    public function it_updates_the_user_id(): void
     {
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
@@ -88,19 +88,19 @@ class SettingTest extends TestCase
 
         $setting->updateValue('new value');
 
-        $this->assertInternalType('int', $setting->updated_by);
+        $this->assertIsInt($setting->updated_by);
         $this->assertEquals($user1->id, $setting->updated_by);
 
         $this->actingAs($user2);
 
         $setting->updateName('new_name');
 
-        $this->assertInternalType('int', $setting->updated_by);
+        $this->assertIsInt($setting->updated_by);
         $this->assertEquals($user2->id, $setting->updated_by);
     }
 
     /** @test */
-    public function it_registers_the_user_id()
+    public function it_registers_the_user_id(): void
     {
         $user = factory(User::class)->create();
         $this->actingAs($user);
@@ -111,7 +111,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_updater_id()
+    public function it_gets_the_updater_id(): void
     {
         factory(Setting::class)->create(['name' => 'setting_name', 'value' => 'value name', 'updated_by' => 1]);
 
@@ -121,7 +121,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_the_updated_timestamp()
+    public function it_gets_the_updated_timestamp(): void
     {
         $setting = factory(Setting::class)->create(['name' => 'setting_name']);
 
@@ -131,7 +131,7 @@ class SettingTest extends TestCase
     }
 
     /** @test */
-    public function it_cannot_set_multiple_with_identical_names()
+    public function it_cannot_set_multiple_with_identical_names(): void
     {
         $this->expectException('Exception');
         $setting1 = factory(Setting::class)->create(['name' => 'name', 'value' => 'value1']);

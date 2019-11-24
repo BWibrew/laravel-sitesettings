@@ -23,7 +23,7 @@ trait ManagesSettings
      *
      * @param string $name
      *
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function updateName(string $name)
     {
@@ -41,7 +41,7 @@ trait ManagesSettings
      *
      * @param $value
      * @param bool $delete_media
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function updateValue($value = null, bool $delete_media = false)
     {
@@ -66,11 +66,11 @@ trait ManagesSettings
      * Update a scope.
      *
      * @param string|null $scope
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function updateScope($scope = null)
     {
-        $this->scope_id = is_null($scope) ? 0 : app(ScopeInterface::class)->firstOrCreate(['name' => $scope])->id;
+        $this->scope_id = $scope === null ? 0 : app(ScopeInterface::class)->firstOrCreate(['name' => $scope])->id;
         $this->save();
         $this->refreshCache();
 
@@ -80,7 +80,7 @@ trait ManagesSettings
     /**
      * Remove scope from setting.
      *
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function removeScope()
     {
@@ -94,11 +94,11 @@ trait ManagesSettings
      *
      * @param string $name
      * @param $value
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public static function register(string $name, $value = null)
     {
-        $setting = new self;
+        $setting = new self();
 
         $setting->name = $setting->parseScopeName($name)['name'];
         $setting->value = $value;
@@ -123,7 +123,7 @@ trait ManagesSettings
      */
     public static function getValue(string $name)
     {
-        return (new self)->getProperty('value', $name);
+        return (new self())->getProperty('value', $name);
     }
 
     /**
@@ -133,15 +133,15 @@ trait ManagesSettings
      *
      * @return array|null
      */
-    public static function getScopeValues($scope = null)
+    public static function getScopeValues($scope = null): ?array
     {
         if (! config('sitesettings.use_scopes')) {
-            return;
+            return null;
         }
 
-        $scope_id = is_null($scope) ? 0 : app(ScopeInterface::class)->where('name', $scope)->first()->id;
+        $scope_id = $scope === null ? 0 : app(ScopeInterface::class)->where('name', $scope)->first()->id;
 
-        return (new self)->getSettings()
+        return (new self())->getSettings()
                          ->where('scope_id', $scope_id)
                          ->pluck('value', 'name')
                          ->toArray();
@@ -153,9 +153,9 @@ trait ManagesSettings
      * @param string $name
      * @return int|null
      */
-    public static function getUpdatedBy(string $name)
+    public static function getUpdatedBy(string $name): ?int
     {
-        return (int) (new self)->getProperty('updated_by', $name);
+        return (int) (new self())->getProperty('updated_by', $name);
     }
 
     /**
@@ -164,9 +164,9 @@ trait ManagesSettings
      * @param string|null $scope
      * @return int|null
      */
-    public static function getScopeUpdatedBy($scope = null)
+    public static function getScopeUpdatedBy($scope = null): ?int
     {
-        return (new self)->getScopeProperty('updated_by', $scope);
+        return (new self())->getScopeProperty('updated_by', $scope);
     }
 
     /**
@@ -177,7 +177,7 @@ trait ManagesSettings
      */
     public static function getUpdatedAt(string $name)
     {
-        return (new self)->getProperty('updated_at', $name);
+        return (new self())->getProperty('updated_at', $name);
     }
 
     /**
@@ -188,7 +188,7 @@ trait ManagesSettings
      */
     public static function getScopeUpdatedAt($scope = null)
     {
-        return (new self)->getScopeProperty('updated_at', $scope);
+        return (new self())->getScopeProperty('updated_at', $scope);
     }
 
     /**
@@ -197,7 +197,7 @@ trait ManagesSettings
      * @param string $name
      * @return array
      */
-    protected function parseScopeName(string $name)
+    protected function parseScopeName(string $name): array
     {
         $name_parts = explode('.', $name);
 
@@ -243,7 +243,7 @@ trait ManagesSettings
             return;
         }
 
-        if (is_null($scope)) {
+        if ($scope === null) {
             return $this->getSettings()
                         ->where('scope_id', 0)
                         ->sortBy('updated_at')
@@ -253,7 +253,7 @@ trait ManagesSettings
 
         return $this->getSettings()
                     ->reject(function (SettingInterface $setting) use ($scope) {
-                        if (is_null($setting->scope)) {
+                        if ($setting->scope === null) {
                             return true;
                         }
 
@@ -267,7 +267,7 @@ trait ManagesSettings
     /**
      * Cache all Setting objects.
      */
-    public function refreshCache()
+    public function refreshCache(): void
     {
         app(Cache::class)->forever('bwibrew.settings', self::with('scope')->get());
     }
@@ -277,7 +277,7 @@ trait ManagesSettings
      * If the models aren't already in the cache then this
      * method will cache and then return them.
      *
-     * @return $this
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getSettings()
     {

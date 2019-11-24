@@ -21,5 +21,10 @@ class SettingWithMedia extends Model implements SettingWithMediaInterface
         'updated_by',
     ];
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'settings';
 }

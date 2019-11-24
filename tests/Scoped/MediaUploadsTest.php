@@ -23,7 +23,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_registers_a_file_upload_with_a_scope()
+    public function it_registers_a_file_upload_with_a_scope(): void
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());
@@ -39,7 +39,7 @@ class MediaUploadsTest extends TestCase
     }
 
     /** @test */
-    public function it_updates_with_a_scope_with_a_file_upload()
+    public function it_updates_with_a_scope_with_a_file_upload(): void
     {
         $this->app['config']->set('sitesettings.use_scopes', true);
         Auth::shouldReceive('user')->andReturn(factory(User::class)->create());

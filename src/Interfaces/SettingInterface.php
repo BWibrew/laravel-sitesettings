@@ -13,7 +13,7 @@ interface SettingInterface
      * Update current setting name.
      *
      * @param string $name
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function updateName(string $name);
 
@@ -22,7 +22,7 @@ interface SettingInterface
      *
      * @param $value
      * @param $delete_media
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      * @throws \Spatie\MediaLibrary\Exceptions\FileCannotBeAdded
      */
     public function updateValue($value = null, bool $delete_media = false);
@@ -31,14 +31,14 @@ interface SettingInterface
      * Update a scope.
      *
      * @param string|null $scope
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function updateScope($scope);
 
     /**
      * Remove scope from setting.
      *
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function removeScope();
 
@@ -132,7 +132,7 @@ interface SettingInterface
      * If the models aren't already in the cache then this
      * method will cache and then return them.
      *
-     * @return $this
+     * @return $this|\Illuminate\Database\Eloquent\Model
      */
     public function getSettings();
 }
