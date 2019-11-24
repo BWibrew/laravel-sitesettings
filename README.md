@@ -7,17 +7,12 @@
 [![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
 ## Support
-This version supports Laravel 5.5 / PHP 7.1 and above.
+This version supports Laravel 5.5 - 6 / PHP 7.2 and above.
 
 ## Installation
 Install using Composer by running:
 ```
 composer require BWibrew/laravel-sitesettings
-```
-
-Then run table migrations with:
-```
-php artisan migrate
 ```
 
 Publish the config file with:
@@ -28,6 +23,11 @@ php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceP
 Publish the migrations with:
 ```
 php artisan vendor:publish --provider="BWibrew\SiteSettings\SiteSettingsServiceProvider" --tag="migrations"
+```
+
+Then run table migrations with:
+```
+php artisan migrate
 ```
 
 ### Configuring your models

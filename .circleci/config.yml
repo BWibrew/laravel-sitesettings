@@ -41,22 +41,6 @@ default_steps: &default_steps
           path: tests/phpunit
 
 jobs:
-  php-7.1:
-    docker:
-      -   image: circleci/php:7.1
-    environment:
-      SETUP: stable
-
-    <<: *default_steps
-
-  php-7.1-lowest:
-    docker:
-      -   image: circleci/php:7.1
-    environment:
-      SETUP: lowest
-
-    <<: *default_steps
-
   php-7.2:
     docker:
       -   image: circleci/php:7.2
@@ -89,13 +73,29 @@ jobs:
 
     <<: *default_steps
 
+  php-7.4:
+    docker:
+      -   image: circleci/php:7.4
+    environment:
+      SETUP: stable
+
+    <<: *default_steps
+
+  php-7.4-lowest:
+    docker:
+      -   image: circleci/php:7.4
+    environment:
+      SETUP: lowest
+
+    <<: *default_steps
+
 workflows:
   version: 2
   build:
     jobs:
-      - php-7.1
-      - php-7.1-lowest
       - php-7.2
       - php-7.2-lowest
       - php-7.3
       - php-7.3-lowest
+      - php-7.4
+      - php-7.4-lowest
