@@ -1,6 +1,6 @@
 # Persistent CMS style site settings for Laravel
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/bwibrew/laravel-sitesettings.svg?style=flat-square)](https://packagist.org/packages/BWibrew/laravel-sitesettings)
 [![CircleCI](https://img.shields.io/circleci/project/github/BWibrew/laravel-sitesettings.svg?style=flat-square)](https://circleci.com/gh/BWibrew/laravel-sitesettings)
 [![StyleCI](https://styleci.io/repos/99725839/shield?branch=master)](https://styleci.io/repos/99725839)
 [![Codacy grade](https://img.shields.io/codacy/grade/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
