@@ -7,7 +7,7 @@
 [![Codacy coverage](https://img.shields.io/codacy/coverage/17b87061f0fa410d85ed63787e630f18.svg?style=flat-square)](https://www.codacy.com/app/BWibrew/laravel-sitesettings)
 
 ## Support
-This version supports Laravel 5.5 - 6 / PHP 7.2 and above.
+This version supports Laravel 5.5 / PHP 7.2 and above.
 
 ## Installation
 Install using Composer by running:
@@ -44,13 +44,13 @@ use BWibrew\SiteSettings\Interfaces\SettingInterface;
 class Setting extends Model implements SettingInterface
 {
     use ManagesSettings;
-    
+
     protected $fillable = [
         'name',
         'value',
         'updated_by',
     ];
-    
+
     //
 }
 ```
@@ -68,18 +68,18 @@ use BWibrew\SiteSettings\Traits\ManagesSettingScopes;
 class Scope extends Model implements ScopeInterface
 {
     use ManagesSettingScopes;
-    
+
     protected $fillable = [
         'name',
     ];
-    
+
     //
 }
 ```
 
 ### File Uploads
 
-To support the ability to save uploaded files as settings you also need to install the `spatie/laravel-medialibrary` 
+To support the ability to save uploaded files as settings you also need to install the `spatie/laravel-medialibrary`
 package.
 ```
 composer require spatie/laravel-medialibrary
@@ -111,7 +111,7 @@ Add a disk to `app/config/filesystems.php`. e.g:
     ...
 ```
 
-Lastly, you will need to use `SettingWithMediaInterface` and `ManagesSettingsWithMedia` instead 
+Lastly, you will need to use `SettingWithMediaInterface` and `ManagesSettingsWithMedia` instead
 of `SettingInterface` and `ManagesSettings` on your `Setting` model.
 
 ## Usage
@@ -123,7 +123,7 @@ A setting is created like this:
 ```php
 Setting::register('homepage_title');
 ```
-    
+
 You can also assign a value when creating a setting:
 
 ```php
@@ -160,7 +160,7 @@ Setting::getUpdatedAt($name); // Returns Carbon date object
 ### Using scopes
 You can categories your settings into 'scopes'. Scopes use a simple dot syntax on the setting name.
 
-To assign or retrieve a setting in a scope, place the scope name in front of the setting name and separate them with a 
+To assign or retrieve a setting in a scope, place the scope name in front of the setting name and separate them with a
 dot: `scope_name.setting_name`.
 This works the same way with all methods which take a setting name as a parameter.
 
@@ -187,10 +187,10 @@ $setting->removeScope();
 ```
 
 ### Usage with file uploads
-This package can make use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to 
+This package can make use of the amazing [Spatie/MediaLibrary](https://github.com/spatie/laravel-medialibrary) to
 provide the ability to associate settings with uploaded media.
 
-To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.5/requests#files) as the 
+To use a file upload as a setting simply set the [file upload](https://laravel.com/docs/5.5/requests#files) as the
 setting value.
 
 Example:
@@ -205,7 +205,7 @@ The value returned on a file upload setting is a string controlled by the `file_
 ## Configuration
 Set `use_scopes` to `false` to disable the use of scopes.
 
-The `file_value_type` setting controls the value stored in the settings table. This can be set to `'file_name'`, 
+The `file_value_type` setting controls the value stored in the settings table. This can be set to `'file_name'`,
 `'path'` or `'url'`.
 
 ## Testing
